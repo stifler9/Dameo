@@ -1,12 +1,11 @@
 package Dameo;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
 public class Igra {
 	public Stanje stanje;
-	public HashMap<Lokacija, HashSet<Poteza>> moznePoteze;
+	public HashSet<Poteza> moznePoteze;
 	public int napotezi;
 	public int maks;
 	public Lokacija nujnost;
@@ -15,7 +14,7 @@ public class Igra {
 		stanje = new Stanje();
 		//crni zgoraj pozitivni, beli spodaj negativni
 		//1/-1 možje, 2/-2 kralji.
-		moznePoteze = new HashMap<Lokacija, HashSet<Poteza>>();
+		moznePoteze = new HashSet<Poteza>();
 		napotezi = 1;
 		// 1 - je beli (negativen), 2 - je crni (pozitiven)
 		nujnost = new Lokacija(1,1);
@@ -36,11 +35,9 @@ public class Igra {
 	public void Odigraj(Lokacija lok1, Lokacija lok2){
 		//Poteze igramo 1 polje naenkrat, torej moramo izbrati da se figura premakne na 2. mesto v možni potezi.
 		boolean ali = false;
-		for(HashSet<Poteza> set: moznePoteze.values()){
-			for(Poteza poteza: set){
-				if(poteza.sestavljena.get(0).equals(lok1) && poteza.sestavljena.get(1).equals(lok2)){
-					ali = true;
-				}
+		for(Poteza poteza: moznePoteze){
+			if(poteza.sestavljena.get(0).equals(lok1) && poteza.sestavljena.get(1).equals(lok2)){
+				ali = true;
 			}
 		}
 		
@@ -103,18 +100,10 @@ public class Igra {
 						for(Poteza poteza: set){
 							int k = poteza.size() - 1;
 							if(k == maks){
-								if(moznePoteze.containsKey(nujnost)){
-									moznePoteze.get(nujnost).add(poteza);
-								}else{
-									HashSet<Poteza> nov = new HashSet<Poteza>();
-									nov.add(poteza);
-									moznePoteze.put(nujnost, nov);
-								}
+								moznePoteze.add(poteza);
 							}else if(k > maks){
 								moznePoteze.clear();
-								HashSet<Poteza> nov = new HashSet<Poteza>();
-								nov.add(poteza);
-								moznePoteze.put(nujnost, nov);
+								moznePoteze.add(poteza);
 								maks = k;
 							}
 						}
@@ -124,18 +113,10 @@ public class Igra {
 						for(Poteza poteza: set){
 							int k = poteza.size() - 1;
 							if(k == maks){
-								if(moznePoteze.containsKey(nujnost)){
-									moznePoteze.get(nujnost).add(poteza);
-								}else{
-									HashSet<Poteza> nov = new HashSet<Poteza>();
-									nov.add(poteza);
-									moznePoteze.put(nujnost, nov);
-								}
+								moznePoteze.add(poteza);
 							}else if(k > maks){
 								moznePoteze.clear();
-								HashSet<Poteza> nov = new HashSet<Poteza>();
-								nov.add(poteza);
-								moznePoteze.put(nujnost, nov);
+								moznePoteze.add(poteza);
 								maks = k;
 							}
 						}
@@ -149,18 +130,10 @@ public class Igra {
 						for(Poteza poteza: set){
 							int k = poteza.size() - 1;
 							if(k == maks){
-								if(moznePoteze.containsKey(nujnost)){
-									moznePoteze.get(nujnost).add(poteza);
-								}else{
-									HashSet<Poteza> nov = new HashSet<Poteza>();
-									nov.add(poteza);
-									moznePoteze.put(nujnost, nov);
-								}
+								moznePoteze.add(poteza);
 							}else if(k > maks){
 								moznePoteze.clear();
-								HashSet<Poteza> nov = new HashSet<Poteza>();
-								nov.add(poteza);
-								moznePoteze.put(nujnost, nov);
+								moznePoteze.add(poteza);
 								maks = k;
 							}
 						}
@@ -170,18 +143,10 @@ public class Igra {
 						for(Poteza poteza: set){
 							int k = poteza.size() - 1;
 							if(k == maks){
-								if(moznePoteze.containsKey(nujnost)){
-									moznePoteze.get(nujnost).add(poteza);
-								}else{
-									HashSet<Poteza> nov = new HashSet<Poteza>();
-									nov.add(poteza);
-									moznePoteze.put(nujnost, nov);
-								}
+								moznePoteze.add(poteza);
 							}else if(k > maks){
 								moznePoteze.clear();
-								HashSet<Poteza> nov = new HashSet<Poteza>();
-								nov.add(poteza);
-								moznePoteze.put(nujnost, nov);
+								moznePoteze.add(poteza);
 								maks = k;
 							}
 						}
@@ -191,11 +156,11 @@ public class Igra {
 		}else{System.out.println("Ne moreš odigrati!");}
 	}
 	
-	public HashMap<Lokacija, HashSet<Poteza>> generirajPoteze(){
+	public HashSet<Poteza> generirajPoteze(){
 		
 		//Najprej èe sploh lahko koga poje:
 		
-		HashMap<Lokacija, HashSet<Poteza>> f = new HashMap<Lokacija, HashSet<Poteza>>();
+		HashSet<Poteza> f = new HashSet<Poteza>();
 		maks = 1;
 		for(int i=0; i<8; i++){
 			for(int j=0; j<8; j++){
@@ -208,18 +173,10 @@ public class Igra {
 						for(Poteza poteza: gen){
 							int k = poteza.size() - 1;
 							if(k == maks){
-								if(f.containsKey(lok)){
-									f.get(lok).add(poteza);
-								}else{
-									HashSet<Poteza> set = new HashSet<Poteza>();
-									set.add(poteza);
-									f.put(lok, set);
-								}
+								f.add(poteza);
 							}else if(k > maks){
 								f.clear();
-								HashSet<Poteza> set = new HashSet<Poteza>();
-								set.add(poteza);
-								f.put(lok, set);
+								f.add(poteza);
 								maks = k;
 							}
 						}
@@ -231,18 +188,10 @@ public class Igra {
 						for(Poteza poteza: gen){
 							int k = poteza.size() - 1;
 							if(k == maks){
-								if(f.containsKey(lok)){
-									f.get(lok).add(poteza);
-								}else{
-									HashSet<Poteza> set = new HashSet<Poteza>();
-									set.add(poteza);
-									f.put(lok, set);
-								}
+								f.add(poteza);
 							}else if(k > maks){
 								f.clear();
-								HashSet<Poteza> set = new HashSet<Poteza>();
-								set.add(poteza);
-								f.put(lok, set);
+								f.add(poteza);
 								maks = k;
 							}
 						}
@@ -256,18 +205,10 @@ public class Igra {
 						for(Poteza poteza: gen){
 							int k = poteza.size() - 1;
 							if(k == maks){
-								if(f.containsKey(lok)){
-									f.get(lok).add(poteza);
-								}else{
-									HashSet<Poteza> set = new HashSet<Poteza>();
-									set.add(poteza);
-									f.put(lok, set);
-								}
+								f.add(poteza);
 							}else if(k > maks){
 								f.clear();
-								HashSet<Poteza> set = new HashSet<Poteza>();
-								set.add(poteza);
-								f.put(lok, set);
+								f.add(poteza);
 								maks = k;
 							}
 						}
@@ -279,18 +220,10 @@ public class Igra {
 						for(Poteza poteza: gen){
 							int k = poteza.size() - 1;
 							if(k == maks){
-								if(f.containsKey(lok)){
-									f.get(lok).add(poteza);
-								}else{
-									HashSet<Poteza> set = new HashSet<Poteza>();
-									set.add(poteza);
-									f.put(lok, set);
-								}
+								f.add(poteza);
 							}else if(k > maks){
 								f.clear();
-								HashSet<Poteza> set = new HashSet<Poteza>();
-								set.add(poteza);
-								f.put(lok, set);
+								f.add(poteza);
 								maks = k;
 							}
 						}
@@ -307,8 +240,8 @@ public class Igra {
 		
 	}
 	
-	public HashMap<Lokacija, HashSet<Poteza>> generirajEnostavne(){
-		HashMap<Lokacija, HashSet<Poteza>> f = new HashMap<Lokacija, HashSet<Poteza>>();
+	public HashSet<Poteza> generirajEnostavne(){
+		HashSet<Poteza> f = new HashSet<Poteza>();
 		for(int i=0; i<8; i++){
 			for(int j=0; j<8; j++){
 				if(napotezi == 1){
@@ -318,13 +251,7 @@ public class Igra {
 						pot.sestavljena.add(lok);
 						Set<Poteza> gen = generirajEnostavne_belmoz(pot);
 						for(Poteza poteza: gen){
-							if(f.containsKey(lok)){
-								f.get(lok).add(poteza);
-							}else{
-								HashSet<Poteza> set = new HashSet<Poteza>();
-								set.add(poteza);
-								f.put(lok, set);
-							}
+							f.add(poteza);
 						}
 					}else if(stanje.matrika[j][i] == -2){
 						Lokacija lok = new Lokacija(i, j);
@@ -332,13 +259,7 @@ public class Igra {
 						pot.sestavljena.add(lok);
 						Set<Poteza> gen = generirajEnostavne_kralj(pot);
 						for(Poteza poteza: gen){
-							if(f.containsKey(lok)){
-								f.get(lok).add(poteza);
-							}else{
-								HashSet<Poteza> set = new HashSet<Poteza>();
-								set.add(poteza);
-								f.put(lok, set);
-							}
+							f.add(poteza);
 						}
 					}
 				}else if(napotezi == 2){
@@ -348,13 +269,7 @@ public class Igra {
 						pot.sestavljena.add(lok);
 						Set<Poteza> gen = generirajEnostavne_crnimoz(pot);
 						for(Poteza poteza: gen){
-							if(f.containsKey(lok)){
-								f.get(lok).add(poteza);
-							}else{
-								HashSet<Poteza> set = new HashSet<Poteza>();
-								set.add(poteza);
-								f.put(lok, set);
-							}
+							f.add(poteza);
 						}
 					}else if(stanje.matrika[j][i] == 2){
 						Lokacija lok = new Lokacija(i, j);
@@ -362,13 +277,7 @@ public class Igra {
 						pot.sestavljena.add(lok);
 						Set<Poteza> gen = generirajEnostavne_kralj(pot);
 						for(Poteza poteza: gen){
-							if(f.containsKey(lok)){
-								f.get(lok).add(poteza);
-							}else{
-								HashSet<Poteza> set = new HashSet<Poteza>();
-								set.add(poteza);
-								f.put(lok, set);
-							}
+							f.add(poteza);
 						}
 					}
 				}

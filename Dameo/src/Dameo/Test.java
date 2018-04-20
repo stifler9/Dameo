@@ -6,14 +6,10 @@ public class Test {
 		// TODO Auto-generated method stub
 		Igra dameo = new Igra();
 		dameo.moznePoteze = dameo.generirajPoteze();
-		for(Lokacija lok: dameo.moznePoteze.keySet()){
+		for(Poteza pot: dameo.moznePoteze){
 			System.out.println(" ");
-			System.out.println(lok.x + "," + lok.y + " :");
-			for(Poteza pot: dameo.moznePoteze.get(lok)){
-				System.out.println(" ");
-				for(Lokacija lokacija: pot.sestavljena){
-					System.out.print(" " + lokacija.x + "," + lokacija.y);
-				}
+			for(Lokacija lok: pot.sestavljena){
+				System.out.print(" " + lok.x + "," + lok.y);
 			}
 		}
 		System.out.println("na novo");
@@ -48,27 +44,19 @@ public class Test {
 		dameo.stanje.matrika[2][0] = -1;
 		
 		dameo.moznePoteze = dameo.generirajPoteze();
-		for(Lokacija lok: dameo.moznePoteze.keySet()){
+		for(Poteza pot: dameo.moznePoteze){
 			System.out.println(" ");
-			System.out.println(lok.x + "," + lok.y + " :");
-			for(Poteza pot: dameo.moznePoteze.get(lok)){
-				System.out.println(" ");
-				for(Lokacija lokacija: pot.sestavljena){
-					System.out.print(" " + lokacija.x + "," + lokacija.y);
-				}
+			for(Lokacija lok: pot.sestavljena){
+				System.out.print(" " + lok.x + "," + lok.y);
 			}
 		}
 		Lokacija lok4 = new Lokacija(0,2);
 		Lokacija lok5 = new Lokacija(2,0);
 		dameo.Odigraj(lok4, lok5);
-		for(Lokacija lok: dameo.moznePoteze.keySet()){
+		for(Poteza pot: dameo.moznePoteze){
 			System.out.println(" ");
-			System.out.println(lok.x + "," + lok.y + " :");
-			for(Poteza pot: dameo.moznePoteze.get(lok)){
-				System.out.println(" ");
-				for(Lokacija lokacija: pot.sestavljena){
-					System.out.print(" " + lokacija.x + "," + lokacija.y);
-				}
+			for(Lokacija lok: pot.sestavljena){
+				System.out.print(" " + lok.x + "," + lok.y);
 			}
 		}
 		Lokacija lok6 = new Lokacija(3,0);
