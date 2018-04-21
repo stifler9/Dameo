@@ -6,7 +6,7 @@ import java.util.Set;
 public class Igra {
 	public Stanje stanje;
 	public HashSet<Poteza> moznePoteze;
-	public int napotezi;
+	public Igralec napotezi;
 	public int maks;
 	public Lokacija nujnost;
 	
@@ -15,14 +15,13 @@ public class Igra {
 		//crni zgoraj pozitivni, beli spodaj negativni
 		//1/-1 možje, 2/-2 kralji.
 		moznePoteze = new HashSet<Poteza>();
-		napotezi = 1;
+		napotezi = Igralec.I1;
 		// 1 - je beli (negativen), 2 - je crni (pozitiven)
-		nujnost = new Lokacija(1,1);
+		nujnost = null;
 	}
 	
 	{
 		moznePoteze = generirajPoteze();
-		nujnost = null;
 	}
 	
 	//Figuro na polju lok1 premaknemo na lok2:
@@ -45,8 +44,8 @@ public class Igra {
 			System.out.println("Odigrali bomo");
 			if(maks == 0){
 				stanje.matrika[lok2.y][lok2.x] = stanje.matrika[lok1.y][lok1.x];
-				stanje.matrika[lok1.y][lok1.x] = 0;
-				if(napotezi == 1){napotezi = 2;}else{napotezi=1;}
+				stanje.matrika[lok1.y][lok1.x] = Polje.Prazno;
+				if(napotezi == Igralec.I1){napotezi = Igralec.I2;}else{napotezi=Igralec.I1;}
 			}else{
 				//da vemo koga pojemo:
 				int dolzina;
@@ -56,25 +55,27 @@ public class Igra {
 				
 				int[] smer = {(lok2.x - lok1.x)/dolzina, (lok2.y - lok1.y)/dolzina};
 				stanje.matrika[lok2.y][lok2.x] = stanje.matrika[lok1.y][lok1.x];
-				stanje.matrika[lok1.y][lok1.x] = 0;
+				stanje.matrika[lok1.y][lok1.x] = Polje.Prazno;
+				
 				//Èe je kralj jedel, moramo pojesti tistega, ki je eno polje pred lokacijo 2.
-				stanje.matrika[lok2.y - smer[1]][lok2.x - smer[0]] = 0;
+				
+				stanje.matrika[lok2.y - smer[1]][lok2.x - smer[0]] = Polje.Prazno;
 				if(maks > 1){
-					nujnost.set(lok2.x, lok2.y);
+					nujnost = lok2;
 				}else{
 					if(!(nujnost == null)){
 						nujnost = null;
 					}
-					if(napotezi == 1){napotezi = 2;}else{napotezi=1;}
+					if(napotezi == Igralec.I1){napotezi = Igralec.I2;}else{napotezi=Igralec.I1;}
 				}
 			}
 			//Èe kdo pride na zadnje polje, se spremeni v kralja:
 			for(int i = 0; i<8; i++){
-				if(stanje.matrika[7][i] == 1){
-					stanje.matrika[7][i] = 2;
+				if(stanje.matrika[7][i] == Polje.CrniMoz){
+					stanje.matrika[7][i] = Polje.CrniKralj;
 				}
-				if(stanje.matrika[0][i] == -1){
-					stanje.matrika[0][i] = -2;
+				if(stanje.matrika[0][i] == Polje.BelMoz){
+					stanje.matrika[0][i] = Polje.BelKralj;
 				}
 			}
 			//Spremenili smo stanje, kdo je na potezi in nujnost
@@ -82,19 +83,21 @@ public class Igra {
 			if(nujnost == null){
 				moznePoteze = generirajPoteze();
 				if(moznePoteze.isEmpty()){
-					if(napotezi == 1){
+					if(napotezi == Igralec.I1){
+						napotezi = Igralec.ZMAGA2;
 						System.out.println("Zmagal je CRNI!");
 					}else{
+						napotezi = Igralec.ZMAGA1;
 						System.out.println("Zmagal je BELI!");
 					}
 				}
 			// Èe imamo nujnost
 			}else{
 				maks = 1;
-				if(napotezi == 1){
+				if(napotezi == Igralec.I1){
 					Poteza pot = new Poteza();
 					pot.sestavljena.add(nujnost);
-					if(stanje.matrika[nujnost.y][nujnost.x] == -1){
+					if(stanje.matrika[nujnost.y][nujnost.x] == Polje.BelMoz){
 						Set<Poteza> set = generirajPoteze_belmoz(pot);
 						moznePoteze.clear();
 						for(Poteza poteza: set){
@@ -121,10 +124,10 @@ public class Igra {
 							}
 						}
 					}
-				}else if(napotezi == 2){
+				}else if(napotezi == Igralec.I2){
 					Poteza pot = new Poteza();
 					pot.sestavljena.add(nujnost);
-					if(stanje.matrika[nujnost.y][nujnost.x] == 1){
+					if(stanje.matrika[nujnost.y][nujnost.x] == Polje.CrniMoz){
 						Set<Poteza> set = generirajPoteze_crnimoz(pot);
 						moznePoteze.clear();
 						for(Poteza poteza: set){
@@ -156,6 +159,16 @@ public class Igra {
 		}else{System.out.println("Ne moreš odigrati!");}
 	}
 	
+	public Polje[][] praznoPolje(){
+		Polje[][] polje = new Polje[8][8];
+		for(int i=0; i<8; i++) {
+			for(int j=0; j<8; j++){
+				polje[j][i] = Polje.Prazno;
+			}
+		}
+		return polje;
+	}
+	
 	public HashSet<Poteza> generirajPoteze(){
 		
 		//Najprej èe sploh lahko koga poje:
@@ -164,8 +177,8 @@ public class Igra {
 		maks = 1;
 		for(int i=0; i<8; i++){
 			for(int j=0; j<8; j++){
-				if(napotezi == 1){
-					if(stanje.matrika[j][i] == -1){
+				if(napotezi == Igralec.I1){
+					if(stanje.matrika[j][i] == Polje.BelMoz){
 						Lokacija lok = new Lokacija(i, j);
 						Poteza pot = new Poteza();
 						pot.sestavljena.add(lok);
@@ -180,7 +193,7 @@ public class Igra {
 								maks = k;
 							}
 						}
-					}else if(stanje.matrika[j][i] == -2){
+					}else if(stanje.matrika[j][i] == Polje.BelKralj){
 						Lokacija lok = new Lokacija(i, j);
 						Poteza pot = new Poteza();
 						pot.sestavljena.add(lok);
@@ -196,8 +209,8 @@ public class Igra {
 							}
 						}
 					}
-				}else if(napotezi == 2){
-					if(stanje.matrika[j][i] == 1){
+				}else if(napotezi == Igralec.I2){
+					if(stanje.matrika[j][i] == Polje.CrniMoz){
 						Lokacija lok = new Lokacija(i, j);
 						Poteza pot = new Poteza();
 						pot.sestavljena.add(lok);
@@ -212,7 +225,7 @@ public class Igra {
 								maks = k;
 							}
 						}
-					}else if(stanje.matrika[j][i] == 2){
+					}else if(stanje.matrika[j][i] == Polje.CrniKralj){
 						Lokacija lok = new Lokacija(i, j);
 						Poteza pot = new Poteza();
 						pot.sestavljena.add(lok);
@@ -244,8 +257,8 @@ public class Igra {
 		HashSet<Poteza> f = new HashSet<Poteza>();
 		for(int i=0; i<8; i++){
 			for(int j=0; j<8; j++){
-				if(napotezi == 1){
-					if(stanje.matrika[j][i] == -1){
+				if(napotezi == Igralec.I1){
+					if(stanje.matrika[j][i] == Polje.BelMoz){
 						Lokacija lok = new Lokacija(i, j);
 						Poteza pot = new Poteza();
 						pot.sestavljena.add(lok);
@@ -253,7 +266,7 @@ public class Igra {
 						for(Poteza poteza: gen){
 							f.add(poteza);
 						}
-					}else if(stanje.matrika[j][i] == -2){
+					}else if(stanje.matrika[j][i] == Polje.BelKralj){
 						Lokacija lok = new Lokacija(i, j);
 						Poteza pot = new Poteza();
 						pot.sestavljena.add(lok);
@@ -262,8 +275,8 @@ public class Igra {
 							f.add(poteza);
 						}
 					}
-				}else if(napotezi == 2){
-					if(stanje.matrika[j][i] == 1){
+				}else if(napotezi == Igralec.I2){
+					if(stanje.matrika[j][i] == Polje.CrniMoz){
 						Lokacija lok = new Lokacija(i, j);
 						Poteza pot = new Poteza();
 						pot.sestavljena.add(lok);
@@ -271,7 +284,7 @@ public class Igra {
 						for(Poteza poteza: gen){
 							f.add(poteza);
 						}
-					}else if(stanje.matrika[j][i] == 2){
+					}else if(stanje.matrika[j][i] == Polje.CrniKralj){
 						Lokacija lok = new Lokacija(i, j);
 						Poteza pot = new Poteza();
 						pot.sestavljena.add(lok);
@@ -297,8 +310,8 @@ public class Igra {
 			
 			// Èe pade ven:
 			if(0 <= y + 2*xy[1] && y + 2*xy[1] <= 7 && 0 <= x + 2*xy[0] && x + 2*xy[0] <= 7){
-				if(stanje.matrika[y + xy[1]][x + xy[0]] > 0){
-					if(stanje.matrika[y + 2*xy[1]][x + 2*xy[0]] == 0){
+				if(stanje.matrika[y + xy[1]][x + xy[0]] == Polje.CrniMoz || stanje.matrika[y + xy[1]][x + xy[0]] == Polje.CrniKralj){
+					if(stanje.matrika[y + 2*xy[1]][x + 2*xy[0]] == Polje.Prazno){
 						lahkoje = true;
 						// Èe beli moz pride na konèno polje se tam poteza zakljuèi, spremeni se v kralja:
 						if(y + 2*xy[1] == 0){
@@ -307,10 +320,10 @@ public class Igra {
 							nova.sestavljena.add(novalok);
 							set.add(nova);
 						}else{
-							int pojeden = stanje.matrika[y + xy[1]][x + xy[0]];
-							stanje.matrika[y][x] = 0;
-							stanje.matrika[y + xy[1]][x + xy[0]] = 0;
-							stanje.matrika[y + 2*xy[1]][x + 2*xy[0]] = -1;
+							Polje pojeden = stanje.matrika[y + xy[1]][x + xy[0]];
+							stanje.matrika[y][x] = Polje.Prazno;
+							stanje.matrika[y + xy[1]][x + xy[0]] = Polje.Prazno;
+							stanje.matrika[y + 2*xy[1]][x + 2*xy[0]] = Polje.BelMoz;
 							Poteza nova = pot;
 							Lokacija novalok = new Lokacija(x + 2*xy[0], y + 2*xy[1]);
 							nova.sestavljena.add(novalok);
@@ -320,8 +333,8 @@ public class Igra {
 							}
 							//razveljavimo:
 							stanje.matrika[y + xy[1]][x + xy[0]] = pojeden;
-							stanje.matrika[y + 2*xy[1]][x + 2*xy[0]] = 0;
-							stanje.matrika[y][x] = -1;
+							stanje.matrika[y + 2*xy[1]][x + 2*xy[0]] = Polje.Prazno;
+							stanje.matrika[y][x] = Polje.BelMoz;
 							// podaljšaj potezo za en skok
 							// g = rekurzivni klic, ki dopolni potezo do konca
 							// posodobi f glede na g
@@ -350,8 +363,8 @@ public class Igra {
 		for(int[] xy: smeri){
 			// Èe pade ven:
 			if(0 <= y + 2*xy[1] && y + 2*xy[1] <= 7 && 0 <= x + 2*xy[0] && x + 2*xy[0] <= 7){
-				if(stanje.matrika[y + xy[1]][x + xy[0]] < 0){
-					if(stanje.matrika[y + 2*xy[1]][x + 2*xy[0]] == 0){
+				if(stanje.matrika[y + xy[1]][x + xy[0]] == Polje.BelMoz || stanje.matrika[y + xy[1]][x + xy[0]] == Polje.BelKralj){
+					if(stanje.matrika[y + 2*xy[1]][x + 2*xy[0]] == Polje.Prazno){
 						lahkoje = true;
 						// Èe crni moz pride na konèno polje se tam poteza zakljuèi, spremeni se v kralja:
 						if(y + 2*xy[1] == 7){
@@ -360,10 +373,10 @@ public class Igra {
 							nova.sestavljena.add(novalok);
 							set.add(nova);
 						}else{
-							int pojeden = stanje.matrika[y + xy[1]][x + xy[0]];
-							stanje.matrika[y][x] = 0;
-							stanje.matrika[y + xy[1]][x + xy[0]] = 0;
-							stanje.matrika[y + 2*xy[1]][x + 2*xy[0]] = 1;
+							Polje pojeden = stanje.matrika[y + xy[1]][x + xy[0]];
+							stanje.matrika[y][x] = Polje.Prazno;
+							stanje.matrika[y + xy[1]][x + xy[0]] = Polje.Prazno;
+							stanje.matrika[y + 2*xy[1]][x + 2*xy[0]] = Polje.CrniMoz;
 							Poteza nova = pot;
 							Lokacija novalok = new Lokacija(x + 2*xy[0], y + 2*xy[1]);
 							nova.sestavljena.add(novalok);
@@ -373,8 +386,8 @@ public class Igra {
 							}
 							//razveljavimo:
 							stanje.matrika[y + xy[1]][x + xy[0]] = pojeden;
-							stanje.matrika[y + 2*xy[1]][x + 2*xy[0]] = 0;
-							stanje.matrika[y][x] = 1;
+							stanje.matrika[y + 2*xy[1]][x + 2*xy[0]] = Polje.Prazno;
+							stanje.matrika[y][x] = Polje.CrniMoz;
 							// podaljšaj potezo za en skok
 							// g = rekurzivni klic, ki dopolni potezo do konca
 							// posodobi f glede na g
@@ -407,13 +420,13 @@ public class Igra {
 				
 				// Èe pade ven:
 				if(0 <= y + k*xy[1] && y + k*xy[1] <= 7 && 0 <= x + k*xy[0] && x + k*xy[0] <= 7){
-					if(stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] > 0){
-						if(stanje.matrika[y + k*xy[1]][x + k*xy[0]] == 0){
+					if(stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] == Polje.CrniMoz || stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] == Polje.CrniKralj){
+						if(stanje.matrika[y + k*xy[1]][x + k*xy[0]] == Polje.Prazno){
 							lahkoje = true;
-							int pojeden = stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]];
-							stanje.matrika[y][x] = 0;
-							stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] = 0;
-							stanje.matrika[y + k*xy[1]][x + k*xy[0]] = -2;
+							Polje pojeden = stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]];
+							stanje.matrika[y][x] = Polje.Prazno;
+							stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] = Polje.Prazno;
+							stanje.matrika[y + k*xy[1]][x + k*xy[0]] = Polje.BelKralj;
 							Poteza nova = pot;
 							Lokacija novalok = new Lokacija(x + k*xy[0], y + k*xy[1]);
 							nova.sestavljena.add(novalok);
@@ -423,8 +436,8 @@ public class Igra {
 							}
 							//razveljavimo:
 							stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] = pojeden;
-							stanje.matrika[y + k*xy[1]][x + k*xy[0]] = 0;
-							stanje.matrika[y][x] = -2;
+							stanje.matrika[y + k*xy[1]][x + k*xy[0]] = Polje.Prazno;
+							stanje.matrika[y][x] = Polje.BelKralj;
 							// podaljšaj potezo za en skok
 							// g = rekurzivni klic, ki dopolni potezo do konca
 							// posodobi f glede na g
@@ -459,13 +472,13 @@ public class Igra {
 				
 				// Èe pade ven:
 				if(0 <= y + k*xy[1] && y + k*xy[1] <= 7 && 0 <= x + k*xy[0] && x + k*xy[0] <= 7){
-					if(stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] < 0){
-						if(stanje.matrika[y + k*xy[1]][x + k*xy[0]] == 0){
+					if(stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] == Polje.BelMoz || stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] == Polje.BelKralj){
+						if(stanje.matrika[y + k*xy[1]][x + k*xy[0]] == Polje.Prazno){
 							lahkoje = true;
-							int pojeden = stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]];
-							stanje.matrika[y][x] = 0;
-							stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] = 0;
-							stanje.matrika[y + k*xy[1]][x + k*xy[0]] = 2;
+							Polje pojeden = stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]];
+							stanje.matrika[y][x] = Polje.Prazno;
+							stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] = Polje.Prazno;
+							stanje.matrika[y + k*xy[1]][x + k*xy[0]] = Polje.CrniKralj;
 							Poteza nova = pot;
 							Lokacija novalok = new Lokacija(x + k*xy[0], y + k*xy[1]);
 							nova.sestavljena.add(novalok);
@@ -475,8 +488,8 @@ public class Igra {
 							}
 							//razveljavimo:
 							stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] = pojeden;
-							stanje.matrika[y + k*xy[1]][x + k*xy[0]] = 0;
-							stanje.matrika[y][x] = 2;
+							stanje.matrika[y + k*xy[1]][x + k*xy[0]] = Polje.Prazno;
+							stanje.matrika[y][x] = Polje.CrniKralj;
 							// podaljšaj potezo za en skok
 							// g = rekurzivni klic, ki dopolni potezo do konca
 							// posodobi f glede na g
@@ -509,7 +522,7 @@ public class Igra {
 			while(stikalo){
 				// Èe pade ven:
 				if(0 <= y + k*xy[1] && y + k*xy[1] <= 7 && 0 <= x + k*xy[0] && x + k*xy[0] <= 7){
-					if(stanje.matrika[y + k*xy[1]][x + k*xy[0]] == 0){
+					if(stanje.matrika[y + k*xy[1]][x + k*xy[0]] == Polje.Prazno){
 						Poteza nova = new Poteza();
 						Lokacija lok1 = new Lokacija(x,y);
 						nova.sestavljena.add(lok1);
@@ -517,7 +530,7 @@ public class Igra {
 						nova.sestavljena.add(novalok);
 						set.add(nova);
 						stikalo = false;
-					}else if(stanje.matrika[y + k*xy[1]][x + k*xy[0]] == -1){}else{stikalo = false;}
+					}else if(stanje.matrika[y + k*xy[1]][x + k*xy[0]] == Polje.BelMoz){}else{stikalo = false;}
 				}else{stikalo = false;}
 				k++;
 			}	
@@ -537,7 +550,7 @@ public class Igra {
 			while(stikalo){
 				// Èe pade ven:
 				if(0 <= y + k*xy[1] && y + k*xy[1] <= 7 && 0 <= x + k*xy[0] && x + k*xy[0] <= 7){
-					if(stanje.matrika[y + k*xy[1]][x + k*xy[0]] == 0){
+					if(stanje.matrika[y + k*xy[1]][x + k*xy[0]] == Polje.Prazno){
 						Poteza nova = new Poteza();
 						Lokacija lok1 = new Lokacija(x,y);
 						nova.sestavljena.add(lok1);
@@ -545,7 +558,7 @@ public class Igra {
 						nova.sestavljena.add(novalok);
 						set.add(nova);
 						stikalo = false;
-					}else if(stanje.matrika[y + k*xy[1]][x + k*xy[0]] == 1){}else{stikalo = false;}
+					}else if(stanje.matrika[y + k*xy[1]][x + k*xy[0]] == Polje.CrniMoz){}else{stikalo = false;}
 				}else{stikalo = false;}
 				k++;
 			}
@@ -565,7 +578,7 @@ public class Igra {
 			while(stikalo){
 				// Èe pade ven:
 				if(0 <= y + k*xy[1] && y + k*xy[1] <= 7 && 0 <= x + k*xy[0] && x + k*xy[0] <= 7){
-					if(stanje.matrika[y + k*xy[1]][x + k*xy[0]] == 0){
+					if(stanje.matrika[y + k*xy[1]][x + k*xy[0]] == Polje.Prazno){
 						Poteza nova = new Poteza();
 						Lokacija lok1 = new Lokacija(x,y);
 						nova.sestavljena.add(lok1);
