@@ -11,5 +11,6 @@ public class Okno extends JFrame{
 		setTitle("Dameo");
 		platno = new Platno();
 		this.add(this.platno);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 }

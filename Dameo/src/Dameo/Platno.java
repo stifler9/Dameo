@@ -27,6 +27,13 @@ public class Platno extends JPanel implements MouseListener{
 	
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		g.setColor(Color.LIGHT_GRAY);
+		for(int i = 0; i<4; i++) {
+			for(int j = 0; j<4; j++) {
+				g.fillRect(i*128, j*128, 64, 64);
+				g.fillRect(64 + i*128, 64 + j*128, 64, 64);
+			}
+		}
 		g.setColor(Color.black);
 		for(int i = 1; i<=7; i++) {
 			g.drawLine(i*64, 0, i*64, 512);
@@ -37,6 +44,9 @@ public class Platno extends JPanel implements MouseListener{
 				if(dameo.stanje.matrika[j][i] == Polje.CrniMoz) {
 					g.fillOval(i*64+2, j*64+2, 60, 60);
 				}else if(dameo.stanje.matrika[j][i] == Polje.BelMoz) {
+					g.setColor(Color.WHITE);
+					g.fillOval(i*64+3, j*64+3, 58, 58);
+					g.setColor(Color.black);
 					g.drawOval(i*64+2, j*64+2, 60, 60);
 				}else if(dameo.stanje.matrika[j][i] == Polje.CrniKralj) {
 					g.fillOval(i*64+2, j*64+2, 60, 60);
@@ -44,10 +54,12 @@ public class Platno extends JPanel implements MouseListener{
 					g.fillOval(i*64+16, j*64+16, 32, 32);
 					g.setColor(Color.black);
 				}else if(dameo.stanje.matrika[j][i] == Polje.BelKralj) {
-					g.drawOval(i*64+2, j*64+2, 60, 60);
+					g.setColor(Color.WHITE);
+					g.fillOval(i*64+3, j*64+3, 58, 58);
 					g.setColor(Color.ORANGE);
 					g.fillOval(i*64+16, j*64+16, 32, 32);
 					g.setColor(Color.black);
+					g.drawOval(i*64+2, j*64+2, 60, 60);
 				}
 			}
 		}
