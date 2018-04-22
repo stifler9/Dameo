@@ -4,6 +4,7 @@ public class Test {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		/*
 		Igra dameo = new Igra();
 		dameo.moznePoteze = dameo.generirajPoteze();
 		for(Poteza pot: dameo.moznePoteze){
@@ -75,11 +76,15 @@ public class Test {
 				System.out.print(" " + lok.x + "," + lok.y);
 			}
 		}
-		/*
+		
 		Lokacija lok6 = new Lokacija(3,0);
 		Lokacija lok7 = new Lokacija(1,0);
 		dameo.Odigraj(lok6, lok7);
 		*/
+		Okno glavnoOkno = new Okno();
+		glavnoOkno.pack();
+		glavnoOkno.setVisible(true);
+		
 	}
 
 }

@@ -12,15 +12,11 @@ public class Igra {
 	
 	public Igra(){
 		stanje = new Stanje();
-		//crni zgoraj pozitivni, beli spodaj negativni
-		//1/-1 možje, 2/-2 kralji.
 		moznePoteze = new HashSet<Poteza>();
 		napotezi = Igralec.I1;
-		// 1 - je beli (negativen), 2 - je crni (pozitiven)
+		// 1 - je beli 
+		// 2 - je crni 
 		nujnost = null;
-	}
-	
-	{
 		moznePoteze = generirajPoteze();
 	}
 	
@@ -35,7 +31,9 @@ public class Igra {
 		//Poteze igramo 1 polje naenkrat, torej moramo izbrati da se figura premakne na 2. mesto v možni potezi.
 		boolean ali = false;
 		for(Poteza poteza: moznePoteze){
-			if(poteza.sestavljena.get(0).equals(lok1) && poteza.sestavljena.get(1).equals(lok2)){
+			Lokacija nova1 = poteza.sestavljena.get(0);
+			Lokacija nova2 = poteza.sestavljena.get(1);
+			if(nova1.equals(lok1) && nova2.equals(lok2)){
 				ali = true;
 			}
 		}
@@ -101,7 +99,7 @@ public class Igra {
 						Set<Poteza> set = generirajPoteze_belmoz(pot);
 						moznePoteze.clear();
 						for(Poteza poteza: set){
-							int k = poteza.size() - 1;
+							int k = poteza.size() -1;
 							if(k == maks){
 								moznePoteze.add(poteza);
 							}else if(k > maks){
@@ -262,7 +260,7 @@ public class Igra {
 						Lokacija lok = new Lokacija(i, j);
 						Poteza pot = new Poteza();
 						pot.sestavljena.add(lok);
-						Set<Poteza> gen = generirajEnostavne_belmoz(pot);
+						HashSet<Poteza> gen = generirajEnostavne_belmoz(pot);
 						for(Poteza poteza: gen){
 							f.add(poteza);
 						}
@@ -270,7 +268,7 @@ public class Igra {
 						Lokacija lok = new Lokacija(i, j);
 						Poteza pot = new Poteza();
 						pot.sestavljena.add(lok);
-						Set<Poteza> gen = generirajEnostavne_kralj(pot);
+						HashSet<Poteza> gen = generirajEnostavne_kralj(pot);
 						for(Poteza poteza: gen){
 							f.add(poteza);
 						}
@@ -280,7 +278,7 @@ public class Igra {
 						Lokacija lok = new Lokacija(i, j);
 						Poteza pot = new Poteza();
 						pot.sestavljena.add(lok);
-						Set<Poteza> gen = generirajEnostavne_crnimoz(pot);
+						HashSet<Poteza> gen = generirajEnostavne_crnimoz(pot);
 						for(Poteza poteza: gen){
 							f.add(poteza);
 						}
@@ -288,7 +286,7 @@ public class Igra {
 						Lokacija lok = new Lokacija(i, j);
 						Poteza pot = new Poteza();
 						pot.sestavljena.add(lok);
-						Set<Poteza> gen = generirajEnostavne_kralj(pot);
+						HashSet<Poteza> gen = generirajEnostavne_kralj(pot);
 						for(Poteza poteza: gen){
 							f.add(poteza);
 						}
@@ -299,8 +297,8 @@ public class Igra {
 		return f;
 	}
 	
-	public Set<Poteza> generirajPoteze_belmoz(Poteza pot){
-		Set<Poteza> set = new HashSet<Poteza>();
+	public HashSet<Poteza> generirajPoteze_belmoz(Poteza pot){
+		HashSet<Poteza> set = new HashSet<Poteza>();
 		int[][] smeri = {{-1, 0},{-1,-1},{0,-1},{1, -1},{1, 0}};
 		int x = pot.sestavljena.get(pot.sestavljena.size()-1).x;
 		int y = pot.sestavljena.get(pot.sestavljena.size()-1).y;
@@ -327,7 +325,7 @@ public class Igra {
 							Poteza nova = pot;
 							Lokacija novalok = new Lokacija(x + 2*xy[0], y + 2*xy[1]);
 							nova.sestavljena.add(novalok);
-							Set<Poteza> novset = generirajPoteze_belmoz(nova);
+							HashSet<Poteza> novset = generirajPoteze_belmoz(nova);
 							for(Poteza poteza: novset){
 								set.add(poteza);
 							}
@@ -353,8 +351,8 @@ public class Igra {
 		}
 	}
 	
-	public Set<Poteza> generirajPoteze_crnimoz(Poteza pot){
-		Set<Poteza> set = new HashSet<Poteza>();
+	public HashSet<Poteza> generirajPoteze_crnimoz(Poteza pot){
+		HashSet<Poteza> set = new HashSet<Poteza>();
 		int[][] smeri = {{-1, 0},{-1,1},{0,1},{1, 1},{1, 0}};
 		int x = pot.sestavljena.get(pot.sestavljena.size()-1).x;
 		int y = pot.sestavljena.get(pot.sestavljena.size()-1).y;
@@ -380,7 +378,7 @@ public class Igra {
 							Poteza nova = pot;
 							Lokacija novalok = new Lokacija(x + 2*xy[0], y + 2*xy[1]);
 							nova.sestavljena.add(novalok);
-							Set<Poteza> novset = generirajPoteze_crnimoz(nova);
+							HashSet<Poteza> novset = generirajPoteze_crnimoz(nova);
 							for(Poteza poteza: novset){
 								set.add(poteza);
 							}
@@ -406,8 +404,8 @@ public class Igra {
 		}
 	}
 	
-	public Set<Poteza> generirajPoteze_belkralj(Poteza pot){
-		Set<Poteza> set = new HashSet<Poteza>();
+	public HashSet<Poteza> generirajPoteze_belkralj(Poteza pot){
+		HashSet<Poteza> set = new HashSet<Poteza>();
 		int[][] smeri = {{-1, 0},{-1,-1},{0,-1},{1, -1},{1, 0},{1,1},{0,1},{-1,1}};
 		int x = pot.sestavljena.get(pot.sestavljena.size()-1).x;
 		int y = pot.sestavljena.get(pot.sestavljena.size()-1).y;
@@ -417,11 +415,10 @@ public class Igra {
 			boolean stikalo = true;
 			int k = 2;
 			while(stikalo){
-				
 				// Èe pade ven:
 				if(0 <= y + k*xy[1] && y + k*xy[1] <= 7 && 0 <= x + k*xy[0] && x + k*xy[0] <= 7){
-					if(stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] == Polje.CrniMoz || stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] == Polje.CrniKralj){
-						if(stanje.matrika[y + k*xy[1]][x + k*xy[0]] == Polje.Prazno){
+					if((stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] == Polje.CrniMoz || stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] == Polje.CrniKralj)
+					&& (stanje.matrika[y + k*xy[1]][x + k*xy[0]] == Polje.Prazno)) {
 							lahkoje = true;
 							Polje pojeden = stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]];
 							stanje.matrika[y][x] = Polje.Prazno;
@@ -430,7 +427,7 @@ public class Igra {
 							Poteza nova = pot;
 							Lokacija novalok = new Lokacija(x + k*xy[0], y + k*xy[1]);
 							nova.sestavljena.add(novalok);
-							Set<Poteza> novset = generirajPoteze_belkralj(nova);
+							HashSet<Poteza> novset = generirajPoteze_belkralj(nova);
 							for(Poteza poteza: novset){
 								set.add(poteza);
 							}
@@ -444,8 +441,7 @@ public class Igra {
 							// èe smo našli daljšo potezo ...
 							// razveljavi skok v potezi
 							stikalo = false;
-						}
-					}
+					}else if(!(stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] == Polje.Prazno)) {stikalo = false;}
 					k++;
 				}else{stikalo = false;}
 			}
@@ -458,8 +454,8 @@ public class Igra {
 		}
 	}
 	
-	public Set<Poteza> generirajPoteze_crnikralj(Poteza pot){
-		Set<Poteza> set = new HashSet<Poteza>();
+	public HashSet<Poteza> generirajPoteze_crnikralj(Poteza pot){
+		HashSet<Poteza> set = new HashSet<Poteza>();
 		int[][] smeri = {{-1, 0},{-1,-1},{0,-1},{1, -1},{1, 0},{1,1},{0,1},{-1,1}};
 		int x = pot.sestavljena.get(pot.sestavljena.size()-1).x;
 		int y = pot.sestavljena.get(pot.sestavljena.size()-1).y;
@@ -472,8 +468,8 @@ public class Igra {
 				
 				// Èe pade ven:
 				if(0 <= y + k*xy[1] && y + k*xy[1] <= 7 && 0 <= x + k*xy[0] && x + k*xy[0] <= 7){
-					if(stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] == Polje.BelMoz || stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] == Polje.BelKralj){
-						if(stanje.matrika[y + k*xy[1]][x + k*xy[0]] == Polje.Prazno){
+					if((stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] == Polje.BelMoz || stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] == Polje.BelKralj)
+					&& (stanje.matrika[y + k*xy[1]][x + k*xy[0]] == Polje.Prazno)){
 							lahkoje = true;
 							Polje pojeden = stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]];
 							stanje.matrika[y][x] = Polje.Prazno;
@@ -482,7 +478,7 @@ public class Igra {
 							Poteza nova = pot;
 							Lokacija novalok = new Lokacija(x + k*xy[0], y + k*xy[1]);
 							nova.sestavljena.add(novalok);
-							Set<Poteza> novset = generirajPoteze_crnikralj(nova);
+							HashSet<Poteza> novset = generirajPoteze_crnikralj(nova);
 							for(Poteza poteza: novset){
 								set.add(poteza);
 							}
@@ -496,8 +492,7 @@ public class Igra {
 							// èe smo našli daljšo potezo ...
 							// razveljavi skok v potezi
 							stikalo = false;
-						}
-					}
+					}else if(!(stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] == Polje.Prazno)) {stikalo = false;}
 					k++;
 				}else{stikalo = false;}
 			}
@@ -510,8 +505,8 @@ public class Igra {
 		}
 	}
 	
-	public Set<Poteza> generirajEnostavne_belmoz(Poteza pot){
-		Set<Poteza> set = new HashSet<Poteza>();
+	public HashSet<Poteza> generirajEnostavne_belmoz(Poteza pot){
+		HashSet<Poteza> set = new HashSet<Poteza>();
 		int[][] smeri = {{-1, 0},{-1,-1},{0,-1},{1, -1},{1, 0}};
 		int x = pot.sestavljena.get(pot.sestavljena.size()-1).x;
 		int y = pot.sestavljena.get(pot.sestavljena.size()-1).y;
@@ -538,8 +533,8 @@ public class Igra {
 		return set;
 	}
 	
-	public Set<Poteza> generirajEnostavne_crnimoz(Poteza pot){
-		Set<Poteza> set = new HashSet<Poteza>();
+	public HashSet<Poteza> generirajEnostavne_crnimoz(Poteza pot){
+		HashSet<Poteza> set = new HashSet<Poteza>();
 		int[][] smeri = {{-1, 0},{-1,1},{0,1},{1, 1},{1, 0}};
 		int x = pot.sestavljena.get(pot.sestavljena.size()-1).x;
 		int y = pot.sestavljena.get(pot.sestavljena.size()-1).y;
@@ -566,8 +561,8 @@ public class Igra {
 		return set;
 	}
 	
-	public Set<Poteza> generirajEnostavne_kralj(Poteza pot){
-		Set<Poteza> set = new HashSet<Poteza>();
+	public HashSet<Poteza> generirajEnostavne_kralj(Poteza pot){
+		HashSet<Poteza> set = new HashSet<Poteza>();
 		int[][] smeri = {{-1, 0},{-1,-1},{0,-1},{1, -1},{1, 0},{-1,1},{0,1},{1, 1}};
 		int x = pot.sestavljena.get(pot.sestavljena.size()-1).x;
 		int y = pot.sestavljena.get(pot.sestavljena.size()-1).y;
