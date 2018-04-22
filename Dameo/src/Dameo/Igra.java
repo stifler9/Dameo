@@ -32,6 +32,7 @@ public class Igra {
 		for(Poteza poteza: moznePoteze){
 			if(poteza.naPrvemMestu(lok1) && poteza.naDrugemMestu(lok2)){
 				ali = true;
+				break;
 			}
 		}
 		
