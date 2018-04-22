@@ -13,4 +13,18 @@ public class Poteza {
 		return sestavljena.size();
 	}
 	
+	public boolean naDrugemMestu(Lokacija lok) {
+		return sestavljena.get(1).equals(lok);
+	}
+	
+	public boolean naPrvemMestu(Lokacija lok) {
+		return sestavljena.get(0).equals(lok);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Poteza clone() {
+		Poteza pot = new Poteza();
+		pot.sestavljena = (ArrayList<Lokacija>) this.sestavljena.clone();
+		return pot;
+	}
 }

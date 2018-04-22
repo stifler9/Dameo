@@ -30,9 +30,7 @@ public class Igra {
 		//Poteze igramo 1 polje naenkrat, torej moramo izbrati da se figura premakne na 2. mesto v možni potezi.
 		boolean ali = false;
 		for(Poteza poteza: moznePoteze){
-			Lokacija nova1 = poteza.sestavljena.get(0);
-			Lokacija nova2 = poteza.sestavljena.get(1);
-			if(nova1.equals(lok1) && nova2.equals(lok2)){
+			if(poteza.naPrvemMestu(lok1) && poteza.naDrugemMestu(lok2)){
 				ali = true;
 			}
 		}
@@ -88,10 +86,11 @@ public class Igra {
 				}
 			// Èe imamo nujnost
 			}else{
-				maks = 1;
+				maks = 0;
 				if(napotezi == Igralec.I1){
 					Poteza pot = new Poteza();
-					pot.sestavljena.add(nujnost);
+					Lokacija loka = new Lokacija(nujnost.x, nujnost.y);
+					pot.sestavljena.add(loka);
 					if(stanje.matrika[nujnost.y][nujnost.x] == Polje.BelMoz){
 						LinkedList<Poteza> set = generirajPoteze_belmoz(pot);
 						moznePoteze.clear();
@@ -123,7 +122,8 @@ public class Igra {
 					}
 				}else if(napotezi == Igralec.I2){
 					Poteza pot = new Poteza();
-					pot.sestavljena.add(nujnost);
+					Lokacija loka = new Lokacija(nujnost.x, nujnost.y);
+					pot.sestavljena.add(loka);
 					if(stanje.matrika[nujnost.y][nujnost.x] == Polje.CrniMoz){
 						LinkedList<Poteza> set = generirajPoteze_crnimoz(pot);
 						moznePoteze.clear();
@@ -316,7 +316,7 @@ public class Igra {
 						// Èe beli moz pride na konèno polje se tam poteza zakljuèi, spremeni se v kralja:
 						if(y + 2*xy[1] == 0){
 							Poteza nova = new Poteza();
-							nova = pot;
+							nova = pot.clone();
 							Lokacija novalok = new Lokacija(x + 2*xy[0], y + 2*xy[1]);
 							nova.sestavljena.add(novalok);
 							set.add(nova);
@@ -328,7 +328,7 @@ public class Igra {
 							stanje.matrika[y + xy[1]][x + xy[0]] = Polje.Prazno;
 							stanje.matrika[y + 2*xy[1]][x + 2*xy[0]] = Polje.BelMoz;
 							Poteza nova = new Poteza();
-							nova = pot;
+							nova = pot.clone();
 							Lokacija novalok = new Lokacija(x + 2*xy[0], y + 2*xy[1]);
 							nova.sestavljena.add(novalok);
 							
@@ -371,7 +371,7 @@ public class Igra {
 						// Èe crni moz pride na konèno polje se tam poteza zakljuèi, spremeni se v kralja:
 						if(y + 2*xy[1] == 7){
 							Poteza nova = new Poteza();
-							nova = pot;
+							nova = pot.clone();
 							Lokacija novalok = new Lokacija(x + 2*xy[0], y + 2*xy[1]);
 							nova.sestavljena.add(novalok);
 							set.add(nova);
@@ -382,7 +382,7 @@ public class Igra {
 							stanje.matrika[y + xy[1]][x + xy[0]] = Polje.Prazno;
 							stanje.matrika[y + 2*xy[1]][x + 2*xy[0]] = Polje.CrniMoz;
 							Poteza nova = new Poteza();
-							nova = pot;
+							nova = pot.clone();
 							Lokacija novalok = new Lokacija(x + 2*xy[0], y + 2*xy[1]);
 							nova.sestavljena.add(novalok);
 							
@@ -431,8 +431,8 @@ public class Igra {
 							stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] = Polje.Prazno;
 							stanje.matrika[y + k*xy[1]][x + k*xy[0]] = Polje.BelKralj;
 							Poteza nova = new Poteza();
-							nova = pot;
-							Lokacija novalok = new Lokacija(x + k*xy[0], y + k*xy[1]);
+							nova = pot.clone();
+							Lokacija novalok = new Lokacija(x + k * xy[0], y + k * xy[1]);
 							nova.sestavljena.add(novalok);
 							
 							
@@ -482,7 +482,7 @@ public class Igra {
 							stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] = Polje.Prazno;
 							stanje.matrika[y + k*xy[1]][x + k*xy[0]] = Polje.CrniKralj;
 							Poteza nova = new Poteza();
-							nova = pot;
+							nova = pot.clone();
 							Lokacija novalok = new Lokacija(x + k*xy[0], y + k*xy[1]);
 							nova.sestavljena.add(novalok);
 							
