@@ -109,7 +109,7 @@ public class Platno extends JPanel implements MouseListener{
 					Poteza pot = obarvanePoteze.get(i);
 					if(pot.naDrugemMestu(lokacija)) {
 						i = n;
-						dameo.Odigraj(izbranaFigura, lokacija);
+						dameo.odigraj(izbranaFigura, lokacija);
 						obarvanePoteze.clear();
 						if(dameo.nujnost == null) {
 							izbranaFigura = null;

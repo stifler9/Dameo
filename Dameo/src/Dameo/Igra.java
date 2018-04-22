@@ -26,7 +26,7 @@ public class Igra {
 		}else{return -x;}
 	}
 	
-	public void Odigraj(Lokacija lok1, Lokacija lok2){
+	public void odigraj(Lokacija lok1, Lokacija lok2){
 		//Poteze igramo 1 polje naenkrat, torej moramo izbrati da se figura premakne na 2. mesto v možni potezi.
 		boolean ali = false;
 		for(Poteza poteza: moznePoteze){
