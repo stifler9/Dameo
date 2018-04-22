@@ -1,18 +1,17 @@
 package Dameo;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
 
 public class Igra {
 	public Stanje stanje;
-	public HashSet<Poteza> moznePoteze;
+	public LinkedList<Poteza> moznePoteze;
 	public Igralec napotezi;
 	public int maks;
 	public Lokacija nujnost;
 	
 	public Igra(){
 		stanje = new Stanje();
-		moznePoteze = new HashSet<Poteza>();
+		moznePoteze = new LinkedList<Poteza>();
 		napotezi = Igralec.I1;
 		// 1 - je beli 
 		// 2 - je crni 
@@ -61,9 +60,7 @@ public class Igra {
 				if(maks > 1){
 					nujnost = lok2;
 				}else{
-					if(!(nujnost == null)){
-						nujnost = null;
-					}
+					nujnost = null;
 					if(napotezi == Igralec.I1){napotezi = Igralec.I2;}else{napotezi=Igralec.I1;}
 				}
 			}
@@ -96,26 +93,28 @@ public class Igra {
 					Poteza pot = new Poteza();
 					pot.sestavljena.add(nujnost);
 					if(stanje.matrika[nujnost.y][nujnost.x] == Polje.BelMoz){
-						Set<Poteza> set = generirajPoteze_belmoz(pot);
+						LinkedList<Poteza> set = generirajPoteze_belmoz(pot);
 						moznePoteze.clear();
 						for(Poteza poteza: set){
 							int k = poteza.size() -1;
 							if(k == maks){
 								moznePoteze.add(poteza);
-							}else if(k > maks){
+							}
+							if(k > maks){
 								moznePoteze.clear();
 								moznePoteze.add(poteza);
 								maks = k;
 							}
 						}
 					}else{
-						Set<Poteza> set = generirajPoteze_belkralj(pot);
+						LinkedList<Poteza> set = generirajPoteze_belkralj(pot);
 						moznePoteze.clear();
 						for(Poteza poteza: set){
 							int k = poteza.size() - 1;
 							if(k == maks){
 								moznePoteze.add(poteza);
-							}else if(k > maks){
+							}
+							if(k > maks){
 								moznePoteze.clear();
 								moznePoteze.add(poteza);
 								maks = k;
@@ -126,26 +125,28 @@ public class Igra {
 					Poteza pot = new Poteza();
 					pot.sestavljena.add(nujnost);
 					if(stanje.matrika[nujnost.y][nujnost.x] == Polje.CrniMoz){
-						Set<Poteza> set = generirajPoteze_crnimoz(pot);
+						LinkedList<Poteza> set = generirajPoteze_crnimoz(pot);
 						moznePoteze.clear();
 						for(Poteza poteza: set){
 							int k = poteza.size() - 1;
 							if(k == maks){
 								moznePoteze.add(poteza);
-							}else if(k > maks){
+							}
+							if(k > maks){
 								moznePoteze.clear();
 								moznePoteze.add(poteza);
 								maks = k;
 							}
 						}
 					}else{
-						Set<Poteza> set = generirajPoteze_crnikralj(pot);
+						LinkedList<Poteza> set = generirajPoteze_crnikralj(pot);
 						moznePoteze.clear();
 						for(Poteza poteza: set){
 							int k = poteza.size() - 1;
 							if(k == maks){
 								moznePoteze.add(poteza);
-							}else if(k > maks){
+							}
+							if(k > maks){
 								moznePoteze.clear();
 								moznePoteze.add(poteza);
 								maks = k;
@@ -153,6 +154,7 @@ public class Igra {
 						}
 					}
 				}
+			if(moznePoteze.isEmpty()) {System.out.println("Nekaj je narobe!");}
 			}
 		}else{System.out.println("Ne moreš odigrati!");}
 	}
@@ -167,11 +169,11 @@ public class Igra {
 		return polje;
 	}
 	
-	public HashSet<Poteza> generirajPoteze(){
+	public LinkedList<Poteza> generirajPoteze(){
 		
 		//Najprej èe sploh lahko koga poje:
 		
-		HashSet<Poteza> f = new HashSet<Poteza>();
+		LinkedList<Poteza> f = new LinkedList<Poteza>();
 		maks = 1;
 		for(int i=0; i<8; i++){
 			for(int j=0; j<8; j++){
@@ -180,7 +182,7 @@ public class Igra {
 						Lokacija lok = new Lokacija(i, j);
 						Poteza pot = new Poteza();
 						pot.sestavljena.add(lok);
-						Set<Poteza> gen = generirajPoteze_belmoz(pot);
+						LinkedList<Poteza> gen = generirajPoteze_belmoz(pot);
 						for(Poteza poteza: gen){
 							int k = poteza.size() - 1;
 							if(k == maks){
@@ -195,7 +197,7 @@ public class Igra {
 						Lokacija lok = new Lokacija(i, j);
 						Poteza pot = new Poteza();
 						pot.sestavljena.add(lok);
-						Set<Poteza> gen = generirajPoteze_belkralj(pot);
+						LinkedList<Poteza> gen = generirajPoteze_belkralj(pot);
 						for(Poteza poteza: gen){
 							int k = poteza.size() - 1;
 							if(k == maks){
@@ -212,7 +214,7 @@ public class Igra {
 						Lokacija lok = new Lokacija(i, j);
 						Poteza pot = new Poteza();
 						pot.sestavljena.add(lok);
-						Set<Poteza> gen = generirajPoteze_crnimoz(pot);
+						LinkedList<Poteza> gen = generirajPoteze_crnimoz(pot);
 						for(Poteza poteza: gen){
 							int k = poteza.size() - 1;
 							if(k == maks){
@@ -227,7 +229,7 @@ public class Igra {
 						Lokacija lok = new Lokacija(i, j);
 						Poteza pot = new Poteza();
 						pot.sestavljena.add(lok);
-						Set<Poteza> gen = generirajPoteze_crnikralj(pot);
+						LinkedList<Poteza> gen = generirajPoteze_crnikralj(pot);
 						for(Poteza poteza: gen){
 							int k = poteza.size() - 1;
 							if(k == maks){
@@ -251,8 +253,8 @@ public class Igra {
 		
 	}
 	
-	public HashSet<Poteza> generirajEnostavne(){
-		HashSet<Poteza> f = new HashSet<Poteza>();
+	public LinkedList<Poteza> generirajEnostavne(){
+		LinkedList<Poteza> f = new LinkedList<Poteza>();
 		for(int i=0; i<8; i++){
 			for(int j=0; j<8; j++){
 				if(napotezi == Igralec.I1){
@@ -260,7 +262,7 @@ public class Igra {
 						Lokacija lok = new Lokacija(i, j);
 						Poteza pot = new Poteza();
 						pot.sestavljena.add(lok);
-						HashSet<Poteza> gen = generirajEnostavne_belmoz(pot);
+						LinkedList<Poteza> gen = generirajEnostavne_belmoz(pot);
 						for(Poteza poteza: gen){
 							f.add(poteza);
 						}
@@ -268,7 +270,7 @@ public class Igra {
 						Lokacija lok = new Lokacija(i, j);
 						Poteza pot = new Poteza();
 						pot.sestavljena.add(lok);
-						HashSet<Poteza> gen = generirajEnostavne_kralj(pot);
+						LinkedList<Poteza> gen = generirajEnostavne_kralj(pot);
 						for(Poteza poteza: gen){
 							f.add(poteza);
 						}
@@ -278,7 +280,7 @@ public class Igra {
 						Lokacija lok = new Lokacija(i, j);
 						Poteza pot = new Poteza();
 						pot.sestavljena.add(lok);
-						HashSet<Poteza> gen = generirajEnostavne_crnimoz(pot);
+						LinkedList<Poteza> gen = generirajEnostavne_crnimoz(pot);
 						for(Poteza poteza: gen){
 							f.add(poteza);
 						}
@@ -286,7 +288,7 @@ public class Igra {
 						Lokacija lok = new Lokacija(i, j);
 						Poteza pot = new Poteza();
 						pot.sestavljena.add(lok);
-						HashSet<Poteza> gen = generirajEnostavne_kralj(pot);
+						LinkedList<Poteza> gen = generirajEnostavne_kralj(pot);
 						for(Poteza poteza: gen){
 							f.add(poteza);
 						}
@@ -297,11 +299,11 @@ public class Igra {
 		return f;
 	}
 	
-	public HashSet<Poteza> generirajPoteze_belmoz(Poteza pot){
-		HashSet<Poteza> set = new HashSet<Poteza>();
+	public LinkedList<Poteza> generirajPoteze_belmoz(Poteza pot){
+		LinkedList<Poteza> set = new LinkedList<Poteza>();
 		int[][] smeri = {{-1, 0},{-1,-1},{0,-1},{1, -1},{1, 0}};
-		int x = pot.sestavljena.get(pot.sestavljena.size()-1).x;
-		int y = pot.sestavljena.get(pot.sestavljena.size()-1).y;
+		int x = pot.sestavljena.get(pot.size()-1).x;
+		int y = pot.sestavljena.get(pot.size()-1).y;
 		boolean lahkoje = false;
 			// zaèetna poteza = <lok>
 		for(int[] xy: smeri){
@@ -313,31 +315,33 @@ public class Igra {
 						lahkoje = true;
 						// Èe beli moz pride na konèno polje se tam poteza zakljuèi, spremeni se v kralja:
 						if(y + 2*xy[1] == 0){
-							Poteza nova = pot;
+							Poteza nova = new Poteza();
+							nova = pot;
 							Lokacija novalok = new Lokacija(x + 2*xy[0], y + 2*xy[1]);
 							nova.sestavljena.add(novalok);
 							set.add(nova);
 						}else{
+							//Naredimo potezo na matriki in si zapomnemo koga smo pojedli:
+							
 							Polje pojeden = stanje.matrika[y + xy[1]][x + xy[0]];
 							stanje.matrika[y][x] = Polje.Prazno;
 							stanje.matrika[y + xy[1]][x + xy[0]] = Polje.Prazno;
 							stanje.matrika[y + 2*xy[1]][x + 2*xy[0]] = Polje.BelMoz;
-							Poteza nova = pot;
+							Poteza nova = new Poteza();
+							nova = pot;
 							Lokacija novalok = new Lokacija(x + 2*xy[0], y + 2*xy[1]);
 							nova.sestavljena.add(novalok);
-							HashSet<Poteza> novset = generirajPoteze_belmoz(nova);
+							
+							//Rekurzivni klic:
+							LinkedList<Poteza> novset = generirajPoteze_belmoz(nova);
 							for(Poteza poteza: novset){
 								set.add(poteza);
 							}
+							
 							//razveljavimo:
 							stanje.matrika[y + xy[1]][x + xy[0]] = pojeden;
 							stanje.matrika[y + 2*xy[1]][x + 2*xy[0]] = Polje.Prazno;
 							stanje.matrika[y][x] = Polje.BelMoz;
-							// podaljšaj potezo za en skok
-							// g = rekurzivni klic, ki dopolni potezo do konca
-							// posodobi f glede na g
-							// èe smo našli daljšo potezo ...
-							// razveljavi skok v potezi
 						}
 					}
 				}
@@ -351,11 +355,11 @@ public class Igra {
 		}
 	}
 	
-	public HashSet<Poteza> generirajPoteze_crnimoz(Poteza pot){
-		HashSet<Poteza> set = new HashSet<Poteza>();
+	public LinkedList<Poteza> generirajPoteze_crnimoz(Poteza pot){
+		LinkedList<Poteza> set = new LinkedList<Poteza>();
 		int[][] smeri = {{-1, 0},{-1,1},{0,1},{1, 1},{1, 0}};
-		int x = pot.sestavljena.get(pot.sestavljena.size()-1).x;
-		int y = pot.sestavljena.get(pot.sestavljena.size()-1).y;
+		int x = pot.sestavljena.get(pot.size()-1).x;
+		int y = pot.sestavljena.get(pot.size()-1).y;
 		boolean lahkoje = false;
 			// zaèetna poteza = <lok>
 		for(int[] xy: smeri){
@@ -366,19 +370,24 @@ public class Igra {
 						lahkoje = true;
 						// Èe crni moz pride na konèno polje se tam poteza zakljuèi, spremeni se v kralja:
 						if(y + 2*xy[1] == 7){
-							Poteza nova = pot;
+							Poteza nova = new Poteza();
+							nova = pot;
 							Lokacija novalok = new Lokacija(x + 2*xy[0], y + 2*xy[1]);
 							nova.sestavljena.add(novalok);
 							set.add(nova);
 						}else{
+							//Naredimo potezo na matriki in si zapomnemo koga smo pojedli:
 							Polje pojeden = stanje.matrika[y + xy[1]][x + xy[0]];
 							stanje.matrika[y][x] = Polje.Prazno;
 							stanje.matrika[y + xy[1]][x + xy[0]] = Polje.Prazno;
 							stanje.matrika[y + 2*xy[1]][x + 2*xy[0]] = Polje.CrniMoz;
-							Poteza nova = pot;
+							Poteza nova = new Poteza();
+							nova = pot;
 							Lokacija novalok = new Lokacija(x + 2*xy[0], y + 2*xy[1]);
 							nova.sestavljena.add(novalok);
-							HashSet<Poteza> novset = generirajPoteze_crnimoz(nova);
+							
+							//Rekurzivni klic
+							LinkedList<Poteza> novset = generirajPoteze_crnimoz(nova);
 							for(Poteza poteza: novset){
 								set.add(poteza);
 							}
@@ -386,11 +395,6 @@ public class Igra {
 							stanje.matrika[y + xy[1]][x + xy[0]] = pojeden;
 							stanje.matrika[y + 2*xy[1]][x + 2*xy[0]] = Polje.Prazno;
 							stanje.matrika[y][x] = Polje.CrniMoz;
-							// podaljšaj potezo za en skok
-							// g = rekurzivni klic, ki dopolni potezo do konca
-							// posodobi f glede na g
-							// èe smo našli daljšo potezo ...
-							// razveljavi skok v potezi
 						}
 					}
 				}
@@ -404,11 +408,11 @@ public class Igra {
 		}
 	}
 	
-	public HashSet<Poteza> generirajPoteze_belkralj(Poteza pot){
-		HashSet<Poteza> set = new HashSet<Poteza>();
+	public LinkedList<Poteza> generirajPoteze_belkralj(Poteza pot){
+		LinkedList<Poteza> set = new LinkedList<Poteza>();
 		int[][] smeri = {{-1, 0},{-1,-1},{0,-1},{1, -1},{1, 0},{1,1},{0,1},{-1,1}};
-		int x = pot.sestavljena.get(pot.sestavljena.size()-1).x;
-		int y = pot.sestavljena.get(pot.sestavljena.size()-1).y;
+		int x = pot.sestavljena.get(pot.size()-1).x;
+		int y = pot.sestavljena.get(pot.size()-1).y;
 		boolean lahkoje = false;
 			// zaèetna poteza = <lok>
 		for(int[] xy: smeri){
@@ -420,14 +424,19 @@ public class Igra {
 					if((stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] == Polje.CrniMoz || stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] == Polje.CrniKralj)
 					&& (stanje.matrika[y + k*xy[1]][x + k*xy[0]] == Polje.Prazno)) {
 							lahkoje = true;
+							
+							//Naredimo potezo na matriki in si zapomnemo koga smo pojedli:
 							Polje pojeden = stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]];
 							stanje.matrika[y][x] = Polje.Prazno;
 							stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] = Polje.Prazno;
 							stanje.matrika[y + k*xy[1]][x + k*xy[0]] = Polje.BelKralj;
-							Poteza nova = pot;
+							Poteza nova = new Poteza();
+							nova = pot;
 							Lokacija novalok = new Lokacija(x + k*xy[0], y + k*xy[1]);
 							nova.sestavljena.add(novalok);
-							HashSet<Poteza> novset = generirajPoteze_belkralj(nova);
+							
+							
+							LinkedList<Poteza> novset = generirajPoteze_belkralj(nova);
 							for(Poteza poteza: novset){
 								set.add(poteza);
 							}
@@ -435,11 +444,6 @@ public class Igra {
 							stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] = pojeden;
 							stanje.matrika[y + k*xy[1]][x + k*xy[0]] = Polje.Prazno;
 							stanje.matrika[y][x] = Polje.BelKralj;
-							// podaljšaj potezo za en skok
-							// g = rekurzivni klic, ki dopolni potezo do konca
-							// posodobi f glede na g
-							// èe smo našli daljšo potezo ...
-							// razveljavi skok v potezi
 							stikalo = false;
 					}else if(!(stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] == Polje.Prazno)) {stikalo = false;}
 					k++;
@@ -454,11 +458,11 @@ public class Igra {
 		}
 	}
 	
-	public HashSet<Poteza> generirajPoteze_crnikralj(Poteza pot){
-		HashSet<Poteza> set = new HashSet<Poteza>();
+	public LinkedList<Poteza> generirajPoteze_crnikralj(Poteza pot){
+		LinkedList<Poteza> set = new LinkedList<Poteza>();
 		int[][] smeri = {{-1, 0},{-1,-1},{0,-1},{1, -1},{1, 0},{1,1},{0,1},{-1,1}};
-		int x = pot.sestavljena.get(pot.sestavljena.size()-1).x;
-		int y = pot.sestavljena.get(pot.sestavljena.size()-1).y;
+		int x = pot.sestavljena.get(pot.size()-1).x;
+		int y = pot.sestavljena.get(pot.size()-1).y;
 		boolean lahkoje = false;
 			// zaèetna poteza = <lok>
 		for(int[] xy: smeri){
@@ -471,14 +475,19 @@ public class Igra {
 					if((stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] == Polje.BelMoz || stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] == Polje.BelKralj)
 					&& (stanje.matrika[y + k*xy[1]][x + k*xy[0]] == Polje.Prazno)){
 							lahkoje = true;
+							
+							//Naredimo potezo na matriki in si zapomnemo koga smo pojedli:
 							Polje pojeden = stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]];
 							stanje.matrika[y][x] = Polje.Prazno;
 							stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] = Polje.Prazno;
 							stanje.matrika[y + k*xy[1]][x + k*xy[0]] = Polje.CrniKralj;
-							Poteza nova = pot;
+							Poteza nova = new Poteza();
+							nova = pot;
 							Lokacija novalok = new Lokacija(x + k*xy[0], y + k*xy[1]);
 							nova.sestavljena.add(novalok);
-							HashSet<Poteza> novset = generirajPoteze_crnikralj(nova);
+							
+							
+							LinkedList<Poteza> novset = generirajPoteze_crnikralj(nova);
 							for(Poteza poteza: novset){
 								set.add(poteza);
 							}
@@ -486,11 +495,6 @@ public class Igra {
 							stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] = pojeden;
 							stanje.matrika[y + k*xy[1]][x + k*xy[0]] = Polje.Prazno;
 							stanje.matrika[y][x] = Polje.CrniKralj;
-							// podaljšaj potezo za en skok
-							// g = rekurzivni klic, ki dopolni potezo do konca
-							// posodobi f glede na g
-							// èe smo našli daljšo potezo ...
-							// razveljavi skok v potezi
 							stikalo = false;
 					}else if(!(stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] == Polje.Prazno)) {stikalo = false;}
 					k++;
@@ -505,11 +509,11 @@ public class Igra {
 		}
 	}
 	
-	public HashSet<Poteza> generirajEnostavne_belmoz(Poteza pot){
-		HashSet<Poteza> set = new HashSet<Poteza>();
+	public LinkedList<Poteza> generirajEnostavne_belmoz(Poteza pot){
+		LinkedList<Poteza> set = new LinkedList<Poteza>();
 		int[][] smeri = {{-1, 0},{-1,-1},{0,-1},{1, -1},{1, 0}};
-		int x = pot.sestavljena.get(pot.sestavljena.size()-1).x;
-		int y = pot.sestavljena.get(pot.sestavljena.size()-1).y;
+		int x = pot.sestavljena.get(pot.size()-1).x;
+		int y = pot.sestavljena.get(pot.size()-1).y;
 		
 		for(int[] xy: smeri){
 			int k = 1;
@@ -533,11 +537,11 @@ public class Igra {
 		return set;
 	}
 	
-	public HashSet<Poteza> generirajEnostavne_crnimoz(Poteza pot){
-		HashSet<Poteza> set = new HashSet<Poteza>();
+	public LinkedList<Poteza> generirajEnostavne_crnimoz(Poteza pot){
+		LinkedList<Poteza> set = new LinkedList<Poteza>();
 		int[][] smeri = {{-1, 0},{-1,1},{0,1},{1, 1},{1, 0}};
-		int x = pot.sestavljena.get(pot.sestavljena.size()-1).x;
-		int y = pot.sestavljena.get(pot.sestavljena.size()-1).y;
+		int x = pot.sestavljena.get(pot.size()-1).x;
+		int y = pot.sestavljena.get(pot.size()-1).y;
 		
 		for(int[] xy: smeri){
 			int k = 1;
@@ -561,11 +565,11 @@ public class Igra {
 		return set;
 	}
 	
-	public HashSet<Poteza> generirajEnostavne_kralj(Poteza pot){
-		HashSet<Poteza> set = new HashSet<Poteza>();
+	public LinkedList<Poteza> generirajEnostavne_kralj(Poteza pot){
+		LinkedList<Poteza> set = new LinkedList<Poteza>();
 		int[][] smeri = {{-1, 0},{-1,-1},{0,-1},{1, -1},{1, 0},{-1,1},{0,1},{1, 1}};
-		int x = pot.sestavljena.get(pot.sestavljena.size()-1).x;
-		int y = pot.sestavljena.get(pot.sestavljena.size()-1).y;
+		int x = pot.sestavljena.get(pot.size()-1).x;
+		int y = pot.sestavljena.get(pot.size()-1).y;
 		
 		for(int[] xy: smeri){
 			int k = 1;

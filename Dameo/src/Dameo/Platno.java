@@ -53,9 +53,16 @@ public class Platno extends JPanel implements MouseListener{
 		}
 		g.setColor(Color.GREEN);
 		for(Poteza pot: obarvanePoteze) {
+			int[] xi = new int[pot.size()];
+			int[] yi = new int[pot.size()];
+			int n = 0;
 			for(Lokacija lok: pot.sestavljena) {
 				g.fillOval(lok.x*64 + 24, lok.y*64 + 24, 16, 16);
+				xi[n] = lok.x*64 + 32;
+				yi[n] = lok.y*64 + 32;
+				n++;
 			}
+			g.drawPolyline(xi, yi, n);
 		}
 	}
 	
@@ -82,17 +89,24 @@ public class Platno extends JPanel implements MouseListener{
 				obarvanePoteze.clear();
 				izbranaFigura = null;
 			}else {
-				for(Poteza pot: obarvanePoteze) {
+				int i = 0;
+				final int n = obarvanePoteze.size();
+				while(i < n) {
+					Poteza pot = obarvanePoteze.get(i);
 					if(pot.sestavljena.get(1).equals(lokacija)) {
+						i = n;
 						dameo.Odigraj(izbranaFigura, lokacija);
 						obarvanePoteze.clear();
 						if(dameo.nujnost == null) {
 							izbranaFigura = null;
 						}else {
 							izbranaFigura = dameo.nujnost;
-							obarvanePoteze.addAll(dameo.moznePoteze);
+							for(Poteza poteza: dameo.moznePoteze) {
+								obarvanePoteze.add(poteza);
+							}
 						}
 					}
+					i++;
 				}
 			}
 		}
