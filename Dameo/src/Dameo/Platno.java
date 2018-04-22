@@ -85,7 +85,6 @@ public class Platno extends JPanel implements MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		System.out.println("kliknil sem");
 		Lokacija lokacija = new Lokacija(e.getX()/64, e.getY()/64);
 		if(izbranaFigura == null) {
 			boolean dodaj = false;

@@ -39,8 +39,7 @@ public class Igra {
 		if(ali){
 			System.out.println("Odigrali bomo");
 			if(maks == 0){
-				stanje.matrika[lok2.y][lok2.x] = stanje.matrika[lok1.y][lok1.x];
-				stanje.matrika[lok1.y][lok1.x] = Polje.Prazno;
+				stanje.narediPotezo(lok1.x, lok1.y, lok2.x, lok2.y);
 				if(napotezi == Igralec.I1){napotezi = Igralec.I2;}else{napotezi=Igralec.I1;}
 			}else{
 				//da vemo koga pojemo:
@@ -49,13 +48,10 @@ public class Igra {
 					dolzina = abs(lok2.y - lok1.y);
 				}else{dolzina = abs(lok2.x - lok1.x);}
 				
-				int[] smer = {(lok2.x - lok1.x)/dolzina, (lok2.y - lok1.y)/dolzina};
-				stanje.matrika[lok2.y][lok2.x] = stanje.matrika[lok1.y][lok1.x];
-				stanje.matrika[lok1.y][lok1.x] = Polje.Prazno;
-				
 				//Èe je kralj jedel, moramo pojesti tistega, ki je eno polje pred lokacijo 2.
-				
-				stanje.matrika[lok2.y - smer[1]][lok2.x - smer[0]] = Polje.Prazno;
+				int[] smer = {(lok2.x - lok1.x)/dolzina, (lok2.y - lok1.y)/dolzina};
+				stanje.narediPotezo(lok1.x, lok1.y, lok2.x - smer[0], lok2.y - smer[1], lok2.x, lok2.y);
+
 				if(maks > 1){
 					nujnost = lok2;
 				}else{
@@ -64,14 +60,8 @@ public class Igra {
 				}
 			}
 			//Èe kdo pride na zadnje polje, se spremeni v kralja:
-			for(int i = 0; i<8; i++){
-				if(stanje.matrika[7][i] == Polje.CrniMoz){
-					stanje.matrika[7][i] = Polje.CrniKralj;
-				}
-				if(stanje.matrika[0][i] == Polje.BelMoz){
-					stanje.matrika[0][i] = Polje.BelKralj;
-				}
-			}
+			stanje.mozjeVKralje();
+
 			//Spremenili smo stanje, kdo je na potezi in nujnost
 			//Treba je na novo izraèunati možne poteze:
 			if(nujnost == null){
@@ -155,19 +145,8 @@ public class Igra {
 						}
 					}
 				}
-			if(moznePoteze.isEmpty()) {System.out.println("Nekaj je narobe!");}
 			}
 		}else{System.out.println("Ne moreš odigrati!");}
-	}
-	
-	public Polje[][] praznoPolje(){
-		Polje[][] polje = new Polje[8][8];
-		for(int i=0; i<8; i++) {
-			for(int j=0; j<8; j++){
-				polje[j][i] = Polje.Prazno;
-			}
-		}
-		return polje;
 	}
 	
 	public LinkedList<Poteza> generirajPoteze(){
@@ -323,11 +302,8 @@ public class Igra {
 							set.add(nova);
 						}else{
 							//Naredimo potezo na matriki in si zapomnemo koga smo pojedli:
+							Polje pojeden = stanje.narediPotezo(x, y, x + xy[0], y + xy[1], x + 2*xy[0], y + 2*xy[1]);
 							
-							Polje pojeden = stanje.matrika[y + xy[1]][x + xy[0]];
-							stanje.matrika[y][x] = Polje.Prazno;
-							stanje.matrika[y + xy[1]][x + xy[0]] = Polje.Prazno;
-							stanje.matrika[y + 2*xy[1]][x + 2*xy[0]] = Polje.BelMoz;
 							Poteza nova = new Poteza();
 							nova = pot.clone();
 							Lokacija novalok = new Lokacija(x + 2*xy[0], y + 2*xy[1]);
@@ -340,9 +316,7 @@ public class Igra {
 							}
 							
 							//razveljavimo:
-							stanje.matrika[y + xy[1]][x + xy[0]] = pojeden;
-							stanje.matrika[y + 2*xy[1]][x + 2*xy[0]] = Polje.Prazno;
-							stanje.matrika[y][x] = Polje.BelMoz;
+							stanje.razveljaviPotezo(x, y, x + xy[0], y + xy[1], x + 2*xy[0], y + 2*xy[1], pojeden);
 						}
 					}
 				}
@@ -378,10 +352,8 @@ public class Igra {
 							set.add(nova);
 						}else{
 							//Naredimo potezo na matriki in si zapomnemo koga smo pojedli:
-							Polje pojeden = stanje.matrika[y + xy[1]][x + xy[0]];
-							stanje.matrika[y][x] = Polje.Prazno;
-							stanje.matrika[y + xy[1]][x + xy[0]] = Polje.Prazno;
-							stanje.matrika[y + 2*xy[1]][x + 2*xy[0]] = Polje.CrniMoz;
+							Polje pojeden = stanje.narediPotezo(x, y, x + xy[0], y + xy[1], x + 2*xy[0], y + 2*xy[1]);
+							
 							Poteza nova = new Poteza();
 							nova = pot.clone();
 							Lokacija novalok = new Lokacija(x + 2*xy[0], y + 2*xy[1]);
@@ -393,9 +365,7 @@ public class Igra {
 								set.add(poteza);
 							}
 							//razveljavimo:
-							stanje.matrika[y + xy[1]][x + xy[0]] = pojeden;
-							stanje.matrika[y + 2*xy[1]][x + 2*xy[0]] = Polje.Prazno;
-							stanje.matrika[y][x] = Polje.CrniMoz;
+							stanje.razveljaviPotezo(x, y, x + xy[0], y + xy[1], x + 2*xy[0], y + 2*xy[1], pojeden);
 						}
 					}
 				}
@@ -427,10 +397,8 @@ public class Igra {
 							lahkoje = true;
 							
 							//Naredimo potezo na matriki in si zapomnemo koga smo pojedli:
-							Polje pojeden = stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]];
-							stanje.matrika[y][x] = Polje.Prazno;
-							stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] = Polje.Prazno;
-							stanje.matrika[y + k*xy[1]][x + k*xy[0]] = Polje.BelKralj;
+							Polje pojeden = stanje.narediPotezo(x, y, x + (k-1)*xy[0], y + (k-1)*xy[1], x + k*xy[0], y + k*xy[1]);
+
 							Poteza nova = new Poteza();
 							nova = pot.clone();
 							Lokacija novalok = new Lokacija(x + k * xy[0], y + k * xy[1]);
@@ -442,9 +410,7 @@ public class Igra {
 								set.add(poteza);
 							}
 							//razveljavimo:
-							stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] = pojeden;
-							stanje.matrika[y + k*xy[1]][x + k*xy[0]] = Polje.Prazno;
-							stanje.matrika[y][x] = Polje.BelKralj;
+							stanje.razveljaviPotezo(x, y, x + (k-1)*xy[0], y + (k-1)*xy[1], x + k*xy[0], y + k*xy[1], pojeden);
 							stikalo = false;
 					}else if(!(stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] == Polje.Prazno)) {stikalo = false;}
 					k++;
@@ -478,10 +444,8 @@ public class Igra {
 							lahkoje = true;
 							
 							//Naredimo potezo na matriki in si zapomnemo koga smo pojedli:
-							Polje pojeden = stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]];
-							stanje.matrika[y][x] = Polje.Prazno;
-							stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] = Polje.Prazno;
-							stanje.matrika[y + k*xy[1]][x + k*xy[0]] = Polje.CrniKralj;
+							Polje pojeden = stanje.narediPotezo(x, y, x + (k-1)*xy[0], y + (k-1)*xy[1], x + k*xy[0], y + k*xy[1]);
+							
 							Poteza nova = new Poteza();
 							nova = pot.clone();
 							Lokacija novalok = new Lokacija(x + k*xy[0], y + k*xy[1]);
@@ -493,9 +457,7 @@ public class Igra {
 								set.add(poteza);
 							}
 							//razveljavimo:
-							stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] = pojeden;
-							stanje.matrika[y + k*xy[1]][x + k*xy[0]] = Polje.Prazno;
-							stanje.matrika[y][x] = Polje.CrniKralj;
+							stanje.razveljaviPotezo(x, y, x + (k-1)*xy[0], y + (k-1)*xy[1], x + k*xy[0], y + k*xy[1], pojeden);
 							stikalo = false;
 					}else if(!(stanje.matrika[y + (k-1)*xy[1]][x + (k-1)*xy[0]] == Polje.Prazno)) {stikalo = false;}
 					k++;
