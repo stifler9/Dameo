@@ -3,7 +3,7 @@ package Dameo;
 import java.util.ArrayList;
 
 public class Poteza {
-	public ArrayList<Lokacija> sestavljena;
+	private ArrayList<Lokacija> sestavljena;
 	
 	public Poteza(){
 		sestavljena = new ArrayList<Lokacija>();
@@ -19,6 +19,22 @@ public class Poteza {
 	
 	public boolean naPrvemMestu(Lokacija lok) {
 		return sestavljena.get(0).equals(lok);
+	}
+	
+	public Lokacija get(int i){
+		return sestavljena.get(i);
+	}
+	
+	public int getX(int i){
+		return sestavljena.get(i).x;
+	}
+	
+	public int getY(int i){
+		return sestavljena.get(i).y;
+	}
+	
+	public void add(Lokacija lok){
+		sestavljena.add(lok);
 	}
 	
 	@SuppressWarnings("unchecked")

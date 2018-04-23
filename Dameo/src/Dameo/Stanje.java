@@ -1,7 +1,7 @@
 package Dameo;
 
 public class Stanje {
-	public Polje[][] matrika;
+	private Polje[][] matrika;
 	
 	public Stanje(){
 		matrika = new Polje[8][8];
@@ -52,5 +52,9 @@ public class Stanje {
 				matrika[0][i] = Polje.BelKralj;
 			}
 		}
+	}
+	
+	public Polje get(int x, int y){
+		return matrika[y][x];
 	}
 }

@@ -12,9 +12,9 @@ import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class Platno extends JPanel implements MouseListener{
-	public Igra dameo;
-	public Lokacija izbranaFigura;
-	public LinkedList<Poteza> obarvanePoteze;
+	private Igra dameo;
+	private Lokacija izbranaFigura;
+	private LinkedList<Poteza> obarvanePoteze;
 	
 	public Platno(){
 		super();
@@ -41,19 +41,19 @@ public class Platno extends JPanel implements MouseListener{
 		}
 		for(int i=0;i<8;i++) {
 			for(int j=0;j<8;j++) {
-				if(dameo.stanje.matrika[j][i] == Polje.CrniMoz) {
+				if(dameo.stanje.get(i,j) == Polje.CrniMoz) {
 					g.fillOval(i*64+2, j*64+2, 60, 60);
-				}else if(dameo.stanje.matrika[j][i] == Polje.BelMoz) {
+				}else if(dameo.stanje.get(i,j) == Polje.BelMoz) {
 					g.setColor(Color.WHITE);
 					g.fillOval(i*64+3, j*64+3, 58, 58);
 					g.setColor(Color.black);
 					g.drawOval(i*64+2, j*64+2, 60, 60);
-				}else if(dameo.stanje.matrika[j][i] == Polje.CrniKralj) {
+				}else if(dameo.stanje.get(i,j) == Polje.CrniKralj) {
 					g.fillOval(i*64+2, j*64+2, 60, 60);
 					g.setColor(Color.ORANGE);
 					g.fillOval(i*64+16, j*64+16, 32, 32);
 					g.setColor(Color.black);
-				}else if(dameo.stanje.matrika[j][i] == Polje.BelKralj) {
+				}else if(dameo.stanje.get(i,j) == Polje.BelKralj) {
 					g.setColor(Color.WHITE);
 					g.fillOval(i*64+3, j*64+3, 58, 58);
 					g.setColor(Color.ORANGE);
@@ -68,7 +68,8 @@ public class Platno extends JPanel implements MouseListener{
 			int[] xi = new int[pot.size()];
 			int[] yi = new int[pot.size()];
 			int n = 0;
-			for(Lokacija lok: pot.sestavljena) {
+			for(int i=0; i<pot.size();i++) {
+				Lokacija lok = pot.get(i);
 				g.fillOval(lok.x*64 + 24, lok.y*64 + 24, 16, 16);
 				xi[n] = lok.x*64 + 32;
 				yi[n] = lok.y*64 + 32;
@@ -89,7 +90,7 @@ public class Platno extends JPanel implements MouseListener{
 		if(izbranaFigura == null) {
 			boolean dodaj = false;
 			for(Poteza pot: dameo.moznePoteze) {
-				if(pot.sestavljena.get(0).equals(lokacija)) {
+				if(pot.get(0).equals(lokacija)) {
 					obarvanePoteze.add(pot);
 					dodaj = true;
 				}

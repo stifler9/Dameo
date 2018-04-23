@@ -1,8 +1,8 @@
 package Dameo;
 
 public class Lokacija {
-	public int x;
-	public int y;
+	public final int x;
+	public final int y;
 	
 	public Lokacija(int i, int j){
 		x = i;
