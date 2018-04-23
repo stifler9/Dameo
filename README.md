@@ -8,7 +8,7 @@ https://en.wikipedia.org/wiki/Dameo
 * a man may move one step sideways, straight or diagonally forward;
 * an unbroken line of men (of any length) may move one step forward along its line (if the cell ahead is empty);
 * kings move like a queen in chess (any number of unobstructed spaces in any direction);
-* capturing is always performed by jumping over opponent on your path (if the cell ahead is empty); in that case opponent's figure is removed from board;
+* capturing is always performed by jumping over 1 opponent on your path (if the cell ahead is empty); in that case opponent's figure is removed from board;
 * white moves first, then moves alternate; a player may not pass (skip) a turn;
 * if a man reaches the last row of the board (the row nearest his opponent) at the conclusion of a move, it promotes to king;
 * jumping (capturing) is mandatory, including making multiple jumps if available. If there are jumping options, the player must always select the option that captures the maximum number of the opponent's pieces (men or kings); if two options capture the same number, the player may choose;
