@@ -3,7 +3,7 @@ Dameo game (similar to checkers)
 
 https://en.wikipedia.org/wiki/Dameo
 
-# Game rules:
+## Game rules:
 
 * a man may move one step sideways, straight or diagonally forward;
 * an unbroken line of men (of any length) may move one step forward along its line (if the cell ahead is empty);
