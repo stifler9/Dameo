@@ -30,8 +30,8 @@ public class Platno extends JPanel implements MouseListener{
 		g.setColor(Color.LIGHT_GRAY);
 		for(int i = 0; i<4; i++) {
 			for(int j = 0; j<4; j++) {
-				g.fillRect(i*128, j*128, 64, 64);
-				g.fillRect(64 + i*128, 64 + j*128, 64, 64);
+				g.fillRect(i*128, 64 + j*128, 64, 64);
+				g.fillRect(64 + i*128, j*128, 64, 64);
 			}
 		}
 		g.setColor(Color.black);

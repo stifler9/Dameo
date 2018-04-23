@@ -19,13 +19,13 @@ public class Igra {
 		moznePoteze = generirajPoteze();
 	}
 	
-	//Figuro na polju lok1 premaknemo na lok2:
-	public static int abs(int x){
+	private static int abs(int x){
 		if(x>=0){
 			return x;
 		}else{return -x;}
 	}
 	
+	//Figuro na polju lok1 premaknemo na lok2:
 	public void odigraj(Lokacija lok1, Lokacija lok2){
 		//Poteze igramo 1 polje naenkrat, torej moramo izbrati da se figura premakne na 2. mesto v možni potezi.
 		boolean ali = false;
@@ -148,7 +148,7 @@ public class Igra {
 		}else{System.out.println("Ne moreš odigrati!");}
 	}
 	
-	public LinkedList<Poteza> generirajPoteze(){
+	private LinkedList<Poteza> generirajPoteze(){
 		
 		//Najprej èe sploh lahko koga poje:
 		
@@ -232,7 +232,7 @@ public class Igra {
 		
 	}
 	
-	public LinkedList<Poteza> generirajEnostavne(){
+	private LinkedList<Poteza> generirajEnostavne(){
 		LinkedList<Poteza> f = new LinkedList<Poteza>();
 		for(int i=0; i<8; i++){
 			for(int j=0; j<8; j++){
@@ -278,7 +278,7 @@ public class Igra {
 		return f;
 	}
 	
-	public LinkedList<Poteza> generirajPoteze_belmoz(Poteza pot){
+	private LinkedList<Poteza> generirajPoteze_belmoz(Poteza pot){
 		LinkedList<Poteza> set = new LinkedList<Poteza>();
 		int[][] smeri = {{-1, 0},{-1,-1},{0,-1},{1, -1},{1, 0}};
 		int x = pot.getX(pot.size()-1);
@@ -329,7 +329,7 @@ public class Igra {
 		}
 	}
 	
-	public LinkedList<Poteza> generirajPoteze_crnimoz(Poteza pot){
+	private LinkedList<Poteza> generirajPoteze_crnimoz(Poteza pot){
 		LinkedList<Poteza> set = new LinkedList<Poteza>();
 		int[][] smeri = {{-1, 0},{-1,1},{0,1},{1, 1},{1, 0}};
 		int x = pot.getX(pot.size()-1);
@@ -378,7 +378,7 @@ public class Igra {
 		}
 	}
 	
-	public LinkedList<Poteza> generirajPoteze_belkralj(Poteza pot){
+	private LinkedList<Poteza> generirajPoteze_belkralj(Poteza pot){
 		LinkedList<Poteza> set = new LinkedList<Poteza>();
 		int[][] smeri = {{-1, 0},{-1,-1},{0,-1},{1, -1},{1, 0},{1,1},{0,1},{-1,1}};
 		int x = pot.getX(pot.size()-1);
@@ -424,7 +424,7 @@ public class Igra {
 		}
 	}
 	
-	public LinkedList<Poteza> generirajPoteze_crnikralj(Poteza pot){
+	private LinkedList<Poteza> generirajPoteze_crnikralj(Poteza pot){
 		LinkedList<Poteza> set = new LinkedList<Poteza>();
 		int[][] smeri = {{-1, 0},{-1,-1},{0,-1},{1, -1},{1, 0},{1,1},{0,1},{-1,1}};
 		int x = pot.getX(pot.size()-1);
@@ -471,7 +471,7 @@ public class Igra {
 		}
 	}
 	
-	public LinkedList<Poteza> generirajEnostavne_belmoz(Poteza pot){
+	private LinkedList<Poteza> generirajEnostavne_belmoz(Poteza pot){
 		LinkedList<Poteza> set = new LinkedList<Poteza>();
 		int[][] smeri = {{-1, 0},{-1,-1},{0,-1},{1, -1},{1, 0}};
 		int x = pot.getX(pot.size()-1);
@@ -499,7 +499,7 @@ public class Igra {
 		return set;
 	}
 	
-	public LinkedList<Poteza> generirajEnostavne_crnimoz(Poteza pot){
+	private LinkedList<Poteza> generirajEnostavne_crnimoz(Poteza pot){
 		LinkedList<Poteza> set = new LinkedList<Poteza>();
 		int[][] smeri = {{-1, 0},{-1,1},{0,1},{1, 1},{1, 0}};
 		int x = pot.getX(pot.size()-1);
@@ -527,7 +527,7 @@ public class Igra {
 		return set;
 	}
 	
-	public LinkedList<Poteza> generirajEnostavne_kralj(Poteza pot){
+	private LinkedList<Poteza> generirajEnostavne_kralj(Poteza pot){
 		LinkedList<Poteza> set = new LinkedList<Poteza>();
 		int[][] smeri = {{-1, 0},{-1,-1},{0,-1},{1, -1},{1, 0},{-1,1},{0,1},{1, 1}};
 		int x = pot.getX(pot.size()-1);
