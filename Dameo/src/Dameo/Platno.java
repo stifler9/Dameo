@@ -150,5 +150,4 @@ public class Platno extends JPanel implements MouseListener{
 		// TODO Auto-generated method stub
 		
 	}
-
 }
