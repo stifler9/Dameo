@@ -1,4 +1,4 @@
-package logika;
+package testokna;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -9,6 +9,11 @@ import java.awt.event.MouseListener;
 import java.util.LinkedList;
 
 import javax.swing.JPanel;
+
+import logika.Igra;
+import logika.Lokacija;
+import logika.Polje;
+import logika.Poteza;
 
 @SuppressWarnings("serial")
 public class Platno extends JPanel implements MouseListener{

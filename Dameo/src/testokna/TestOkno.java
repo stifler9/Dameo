@@ -1,4 +1,4 @@
-package logika;
+package testokna;
 
 public class TestOkno {
 

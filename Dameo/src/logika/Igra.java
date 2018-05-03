@@ -12,12 +12,8 @@ public class Igra {
 	public Igra(){
 		stanje = new Stanje();
 		moznePoteze = new LinkedList<Poteza>();
-		/*
-		 * I1 - beli
-		 * I2 - crni
-		 */
 		maks = 0;
-		napotezi = Igralec.I1;
+		napotezi = Igralec.BELI;
 		nujnost = null;
 		moznePoteze = generirajPoteze();
 	}
@@ -47,7 +43,7 @@ public class Igra {
 				 * naredimo enostavno potezo (1 skok, kjer ne jemo).
 				 */
 				stanje.narediPotezo(lok1.getX(), lok1.getY(), lok2.getX(), lok2.getY());
-				if(napotezi == Igralec.I1){napotezi = Igralec.I2;}else{napotezi=Igralec.I1;}
+				if(napotezi == Igralec.BELI){napotezi = Igralec.CRNI;}else{napotezi=Igralec.BELI;}
 			}else{
 				/*
 				 * Ce je kralj jedel, moramo pojesti tistega, ki je eno polje pred lok2.
@@ -64,7 +60,7 @@ public class Igra {
 					nujnost = lok2;
 				}else{
 					nujnost = null;
-					if(napotezi == Igralec.I1){napotezi = Igralec.I2;}else{napotezi=Igralec.I1;}
+					if(napotezi == Igralec.BELI){napotezi = Igralec.CRNI;}else{napotezi=Igralec.BELI;}
 				}
 			}
 			/*
@@ -79,17 +75,17 @@ public class Igra {
 			if(nujnost == null){
 				moznePoteze = generirajPoteze();
 				if(moznePoteze.isEmpty()){
-					if(napotezi == Igralec.I1){
-						napotezi = Igralec.ZMAGA2;
+					if(napotezi == Igralec.BELI){
+						napotezi = Igralec.ZMAGACRNI;
 						System.out.println("Zmagal je CRNI!");
 					}else{
-						napotezi = Igralec.ZMAGA1;
+						napotezi = Igralec.ZMAGABELI;
 						System.out.println("Zmagal je BELI!");
 					}
 				}
 			}else{
 				maks = 0;
-				if(napotezi == Igralec.I1){
+				if(napotezi == Igralec.BELI){
 					Poteza pot = new Poteza();
 					pot.add(nujnost);
 					if(stanje.get(nujnost.getX(),nujnost.getY()) == Polje.BelMoz){
@@ -121,7 +117,7 @@ public class Igra {
 							}
 						}
 					}
-				}else if(napotezi == Igralec.I2){
+				}else if(napotezi == Igralec.CRNI){
 					Poteza pot = new Poteza();
 					pot.add(nujnost);
 					if(stanje.get(nujnost.getX(),nujnost.getY()) == Polje.CrniMoz){
@@ -167,7 +163,7 @@ public class Igra {
 		maks = 1;
 		for(int i=0; i<8; i++){
 			for(int j=0; j<8; j++){
-				if(napotezi == Igralec.I1){
+				if(napotezi == Igralec.BELI){
 					if(stanje.get(i, j) == Polje.BelMoz){
 						Lokacija lok = new Lokacija(i, j);
 						Poteza pot = new Poteza();
@@ -199,7 +195,7 @@ public class Igra {
 							}
 						}
 					}
-				}else if(napotezi == Igralec.I2){
+				}else if(napotezi == Igralec.CRNI){
 					if(stanje.get(i, j) == Polje.CrniMoz){
 						Lokacija lok = new Lokacija(i, j);
 						Poteza pot = new Poteza();
@@ -249,7 +245,7 @@ public class Igra {
 		LinkedList<Poteza> f = new LinkedList<Poteza>();
 		for(int i=0; i<8; i++){
 			for(int j=0; j<8; j++){
-				if(napotezi == Igralec.I1){
+				if(napotezi == Igralec.BELI){
 					if(stanje.get(i, j) == Polje.BelMoz){
 						Lokacija lok = new Lokacija(i, j);
 						Poteza pot = new Poteza();
@@ -267,7 +263,7 @@ public class Igra {
 							f.add(poteza);
 						}
 					}
-				}else if(napotezi == Igralec.I2){
+				}else if(napotezi == Igralec.CRNI){
 					if(stanje.get(i, j) == Polje.CrniMoz){
 						Lokacija lok = new Lokacija(i, j);
 						Poteza pot = new Poteza();
@@ -291,7 +287,7 @@ public class Igra {
 		return f;
 	}
 	/*
-	 * Rekurzivno izraèunamo poti po katerih lahko bel moz je'.
+	 * Rekurzivno izracunamo poti po katerih lahko bel moz je'.
 	 */
 	private LinkedList<Poteza> generirajPoteze_belmoz(Poteza pot){
 		LinkedList<Poteza> set = new LinkedList<Poteza>();
@@ -301,12 +297,12 @@ public class Igra {
 		boolean lahkoje = false;
 		for(int[] xy: smeri){
 			
-			// Èe pade ven:
+			// Ce pade ven:
 			if(0 <= y + 2*xy[1] && y + 2*xy[1] <= 7 && 0 <= x + 2*xy[0] && x + 2*xy[0] <= 7){
 				if(stanje.get(x + xy[0],y + xy[1]) == Polje.CrniMoz || stanje.get(x + xy[0],y + xy[1]) == Polje.CrniKralj){
 					if(stanje.get(x + 2*xy[0],y + 2*xy[1]) == Polje.Prazno){
 						lahkoje = true;
-						// Èe beli moz pride na konèno polje se tam poteza zakljuèi, spremeni se v kralja:
+						// Ce beli moz pride na koncno polje se tam poteza zakljuci, spremeni se v kralja:
 						if(y + 2*xy[1] == 0){
 							Poteza nova = new Poteza();
 							nova = pot.clone();
@@ -343,7 +339,7 @@ public class Igra {
 		}
 	}
 	/*
-	 * Rekurzivno izraèunamo poti po katerih lahko crni moz je'.
+	 * Rekurzivno izracunamo poti po katerih lahko crni moz je'.
 	 */
 	private LinkedList<Poteza> generirajPoteze_crnimoz(Poteza pot){
 		LinkedList<Poteza> set = new LinkedList<Poteza>();
@@ -352,12 +348,12 @@ public class Igra {
 		int y = pot.getY(pot.size()-1);
 		boolean lahkoje = false;
 		for(int[] xy: smeri){
-			// Èe pade ven:
+			// Ce pade ven:
 			if(0 <= y + 2*xy[1] && y + 2*xy[1] <= 7 && 0 <= x + 2*xy[0] && x + 2*xy[0] <= 7){
 				if(stanje.get(x + xy[0],y + xy[1]) == Polje.BelMoz || stanje.get(x + xy[0],y + xy[1]) == Polje.BelKralj){
 					if(stanje.get(x + 2*xy[0],y + 2*xy[1]) == Polje.Prazno){
 						lahkoje = true;
-						// Èe crni moz pride na konèno polje se tam poteza zakljuèi, spremeni se v kralja:
+						// Ce crni moz pride na koncno polje se tam poteza zakljuci, spremeni se v kralja:
 						if(y + 2*xy[1] == 7){
 							Poteza nova = new Poteza();
 							nova = pot.clone();
@@ -393,7 +389,7 @@ public class Igra {
 		}
 	}
 	/*
-	 * Rekurzivno izraèunamo poti po katerih lahko bel kralj je'.
+	 * Rekurzivno izracunamo poti po katerih lahko bel kralj je'.
 	 */
 	private LinkedList<Poteza> generirajPoteze_belkralj(Poteza pot){
 		LinkedList<Poteza> set = new LinkedList<Poteza>();
@@ -405,7 +401,7 @@ public class Igra {
 			boolean stikalo = true;
 			int k = 2;
 			while(stikalo){
-				// Èe pade ven:
+				// Ce pade ven:
 				if(0 <= y + k*xy[1] && y + k*xy[1] <= 7 && 0 <= x + k*xy[0] && x + k*xy[0] <= 7){
 					if((stanje.get(x + (k-1)*xy[0],y + (k-1)*xy[1]) == Polje.CrniMoz || stanje.get(x + (k-1)*xy[0],y + (k-1)*xy[1]) == Polje.CrniKralj)
 					&& (stanje.get(x + k*xy[0],y + k*xy[1]) == Polje.Prazno)) {
@@ -440,7 +436,7 @@ public class Igra {
 		}
 	}
 	/*
-	 * Rekurzivno izraèunamo poti po katerih lahko crni kralj je'.
+	 * Rekurzivno izracunamo poti po katerih lahko crni kralj je'.
 	 */
 	private LinkedList<Poteza> generirajPoteze_crnikralj(Poteza pot){
 		LinkedList<Poteza> set = new LinkedList<Poteza>();
@@ -453,7 +449,7 @@ public class Igra {
 			int k = 2;
 			while(stikalo){
 				
-				// Èe pade ven:
+				// Ce pade ven:
 				if(0 <= y + k*xy[1] && y + k*xy[1] <= 7 && 0 <= x + k*xy[0] && x + k*xy[0] <= 7){
 					if((stanje.get(x + (k-1)*xy[0],y + (k-1)*xy[1]) == Polje.BelMoz || stanje.get(x + (k-1)*xy[0],y + (k-1)*xy[1]) == Polje.BelKralj)
 					&& (stanje.get(x + k*xy[0],y + k*xy[1]) == Polje.Prazno)){
@@ -498,7 +494,7 @@ public class Igra {
 			int k = 1;
 			boolean stikalo = true;
 			while(stikalo){
-				// Èe pade ven:
+				// Ce pade ven:
 				if(0 <= y + k*xy[1] && y + k*xy[1] <= 7 && 0 <= x + k*xy[0] && x + k*xy[0] <= 7){
 					if(stanje.get(x + k*xy[0],y + k*xy[1]) == Polje.Prazno){
 						Poteza nova = new Poteza();
@@ -526,7 +522,7 @@ public class Igra {
 			int k = 1;
 			boolean stikalo = true;
 			while(stikalo){
-				// Èe pade ven:
+				// Ce pade ven:
 				if(0 <= y + k*xy[1] && y + k*xy[1] <= 7 && 0 <= x + k*xy[0] && x + k*xy[0] <= 7){
 					if(stanje.get(x + k*xy[0],y + k*xy[1]) == Polje.Prazno){
 						Poteza nova = new Poteza();
@@ -554,7 +550,7 @@ public class Igra {
 			int k = 1;
 			boolean stikalo = true;
 			while(stikalo){
-				// Èe pade ven:
+				// Ce pade ven:
 				if(0 <= y + k*xy[1] && y + k*xy[1] <= 7 && 0 <= x + k*xy[0] && x + k*xy[0] <= 7){
 					if(stanje.get(x + k*xy[0],y + k*xy[1]) == Polje.Prazno){
 						Poteza nova = new Poteza();

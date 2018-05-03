@@ -1,8 +1,8 @@
 package logika;
 
 public enum Igralec {
-	I1,
-	I2,
-	ZMAGA1,
-	ZMAGA2;
+	BELI,
+	CRNI,
+	ZMAGABELI,
+	ZMAGACRNI;
 }
