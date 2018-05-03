@@ -4,8 +4,10 @@ import java.util.LinkedList;
 
 public class Igra {
 	public Stanje stanje;
+	// Probaj dati ven
 	public LinkedList<Poteza> moznePoteze;
 	public Igralec napotezi;
+	// Probaj dati ven
 	private int maks;
 	public Lokacija nujnost;
 	
