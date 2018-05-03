@@ -27,10 +27,12 @@ public class Igra {
 			return x;
 		}else{return -x;}
 	}
-	
-	//Figuro na polju lok1 premaknemo na lok2:
+	/*
+	 * Figuro na mestu lok1 premaknemo na lok2
+	 * (Igramo 1 SKOK naenkrat)
+	 * (Ce ima igralec na voljo vec skokov, ostane na potezi)
+	 */
 	public boolean odigraj(Lokacija lok1, Lokacija lok2){
-		//Poteze igramo 1 polje naenkrat, torej moramo izbrati da se figura premakne na 2. mesto v možni potezi.
 		boolean ali = false;
 		for(Poteza poteza: moznePoteze){
 			if(poteza.naPrvemMestu(lok1) && poteza.naDrugemMestu(lok2)){
@@ -41,16 +43,20 @@ public class Igra {
 		
 		if(ali){
 			if(maks == 0){
+				/*
+				 * naredimo enostavno potezo (1 skok, kjer ne jemo).
+				 */
 				stanje.narediPotezo(lok1.getX(), lok1.getY(), lok2.getX(), lok2.getY());
 				if(napotezi == Igralec.I1){napotezi = Igralec.I2;}else{napotezi=Igralec.I1;}
 			}else{
-				//da vemo koga pojemo:
+				/*
+				 * Ce je kralj jedel, moramo pojesti tistega, ki je eno polje pred lok2.
+				 */
 				int dolzina;
 				if(lok2.getX() - lok1.getX() == 0){
 					dolzina = abs(lok2.getY() - lok1.getY());
 				}else{dolzina = abs(lok2.getX() - lok1.getX());}
 				
-				//Èe je kralj jedel, moramo pojesti tistega, ki je eno polje pred lokacijo 2.
 				int[] smer = {(lok2.getX() - lok1.getX())/dolzina, (lok2.getY() - lok1.getY())/dolzina};
 				stanje.narediPotezo(lok1.getX(), lok1.getY(), lok2.getX() - smer[0], lok2.getY() - smer[1], lok2.getX(), lok2.getY());
 
@@ -61,11 +67,15 @@ public class Igra {
 					if(napotezi == Igralec.I1){napotezi = Igralec.I2;}else{napotezi=Igralec.I1;}
 				}
 			}
-			//Èe kdo pride na zadnje polje, se spremeni v kralja:
+			/*
+			 * Ce kdo pride na zadnje polje, se spremeni v kralja:
+			 */
 			stanje.mozjeVKralje();
 
-			//Spremenili smo stanje, kdo je na potezi in nujnost
-			//Treba je na novo izraèunati možne poteze:
+			/*
+			 * Spremenili smo stanje, kdo je na potezi in nujnost,
+			 * treba je na novo izraèunati možne poteze:
+			 */
 			if(nujnost == null){
 				moznePoteze = generirajPoteze();
 				if(moznePoteze.isEmpty()){
@@ -77,7 +87,6 @@ public class Igra {
 						System.out.println("Zmagal je BELI!");
 					}
 				}
-			// Èe imamo nujnost
 			}else{
 				maks = 0;
 				if(napotezi == Igralec.I1){

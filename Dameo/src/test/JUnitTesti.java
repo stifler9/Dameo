@@ -49,6 +49,14 @@ public class JUnitTesti {
 		//To se nebi smelo odigrati
 		assert(!dameo.odigraj(lok9, lok10));
 		assert(dameo.napotezi == igralec);
+		
+		Lokacija lok11 = new Lokacija(2,6);
+		Lokacija lok12 = new Lokacija(0,4);
+		assert(dameo.odigraj(lok11, lok12));
+		assert(dameo.odigraj(new Lokacija(2,0), new Lokacija(5,3)));
+		assert(dameo.odigraj(new Lokacija(4,4), new Lokacija(6,2)));
+		assert(dameo.odigraj(new Lokacija(6,2), new Lokacija(4,0)));
+		assert(dameo.stanje.get(4, 0) == Polje.BelKralj);
 	}
 
 }
