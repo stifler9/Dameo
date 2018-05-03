@@ -1,4 +1,4 @@
-package Dameo;
+package logika;
 
 import java.util.LinkedList;
 
@@ -12,9 +12,12 @@ public class Igra {
 	public Igra(){
 		stanje = new Stanje();
 		moznePoteze = new LinkedList<Poteza>();
+		/*
+		 * I1 - beli
+		 * I2 - crni
+		 */
+		maks = 0;
 		napotezi = Igralec.I1;
-		// 1 - je beli 
-		// 2 - je crni 
 		nujnost = null;
 		moznePoteze = generirajPoteze();
 	}
@@ -26,7 +29,7 @@ public class Igra {
 	}
 	
 	//Figuro na polju lok1 premaknemo na lok2:
-	public void odigraj(Lokacija lok1, Lokacija lok2){
+	public boolean odigraj(Lokacija lok1, Lokacija lok2){
 		//Poteze igramo 1 polje naenkrat, torej moramo izbrati da se figura premakne na 2. mesto v možni potezi.
 		boolean ali = false;
 		for(Poteza poteza: moznePoteze){
@@ -38,18 +41,18 @@ public class Igra {
 		
 		if(ali){
 			if(maks == 0){
-				stanje.narediPotezo(lok1.x, lok1.y, lok2.x, lok2.y);
+				stanje.narediPotezo(lok1.getX(), lok1.getY(), lok2.getX(), lok2.getY());
 				if(napotezi == Igralec.I1){napotezi = Igralec.I2;}else{napotezi=Igralec.I1;}
 			}else{
 				//da vemo koga pojemo:
 				int dolzina;
-				if(lok2.x - lok1.x == 0){
-					dolzina = abs(lok2.y - lok1.y);
-				}else{dolzina = abs(lok2.x - lok1.x);}
+				if(lok2.getX() - lok1.getX() == 0){
+					dolzina = abs(lok2.getY() - lok1.getY());
+				}else{dolzina = abs(lok2.getX() - lok1.getX());}
 				
 				//Èe je kralj jedel, moramo pojesti tistega, ki je eno polje pred lokacijo 2.
-				int[] smer = {(lok2.x - lok1.x)/dolzina, (lok2.y - lok1.y)/dolzina};
-				stanje.narediPotezo(lok1.x, lok1.y, lok2.x - smer[0], lok2.y - smer[1], lok2.x, lok2.y);
+				int[] smer = {(lok2.getX() - lok1.getX())/dolzina, (lok2.getY() - lok1.getY())/dolzina};
+				stanje.narediPotezo(lok1.getX(), lok1.getY(), lok2.getX() - smer[0], lok2.getY() - smer[1], lok2.getX(), lok2.getY());
 
 				if(maks > 1){
 					nujnost = lok2;
@@ -79,9 +82,8 @@ public class Igra {
 				maks = 0;
 				if(napotezi == Igralec.I1){
 					Poteza pot = new Poteza();
-					Lokacija loka = new Lokacija(nujnost.x, nujnost.y);
-					pot.add(loka);
-					if(stanje.get(nujnost.x,nujnost.y) == Polje.BelMoz){
+					pot.add(nujnost);
+					if(stanje.get(nujnost.getX(),nujnost.getY()) == Polje.BelMoz){
 						LinkedList<Poteza> set = generirajPoteze_belmoz(pot);
 						moznePoteze.clear();
 						for(Poteza poteza: set){
@@ -112,9 +114,8 @@ public class Igra {
 					}
 				}else if(napotezi == Igralec.I2){
 					Poteza pot = new Poteza();
-					Lokacija loka = new Lokacija(nujnost.x, nujnost.y);
-					pot.add(loka);
-					if(stanje.get(nujnost.x,nujnost.y) == Polje.CrniMoz){
+					pot.add(nujnost);
+					if(stanje.get(nujnost.getX(),nujnost.getY()) == Polje.CrniMoz){
 						LinkedList<Poteza> set = generirajPoteze_crnimoz(pot);
 						moznePoteze.clear();
 						for(Poteza poteza: set){
@@ -145,13 +146,14 @@ public class Igra {
 					}
 				}
 			}
-		}else{System.out.println("Ne moreš odigrati!");}
+		}
+		return ali;
 	}
+	/*
+	 * Poteze kjer lahko figura je'.
+	 */
 	
 	private LinkedList<Poteza> generirajPoteze(){
-		
-		//Najprej èe sploh lahko koga poje:
-		
 		LinkedList<Poteza> f = new LinkedList<Poteza>();
 		maks = 1;
 		for(int i=0; i<8; i++){
@@ -231,7 +233,9 @@ public class Igra {
 		}
 		
 	}
-	
+	/*
+	 * Poteze kjer fugura ne je'.
+	 */
 	private LinkedList<Poteza> generirajEnostavne(){
 		LinkedList<Poteza> f = new LinkedList<Poteza>();
 		for(int i=0; i<8; i++){
@@ -277,14 +281,15 @@ public class Igra {
 		}
 		return f;
 	}
-	
+	/*
+	 * Rekurzivno izraèunamo poti po katerih lahko bel moz je'.
+	 */
 	private LinkedList<Poteza> generirajPoteze_belmoz(Poteza pot){
 		LinkedList<Poteza> set = new LinkedList<Poteza>();
 		int[][] smeri = {{-1, 0},{-1,-1},{0,-1},{1, -1},{1, 0}};
 		int x = pot.getX(pot.size()-1);
 		int y = pot.getY(pot.size()-1);
 		boolean lahkoje = false;
-			// zaèetna poteza = <lok>
 		for(int[] xy: smeri){
 			
 			// Èe pade ven:
@@ -328,14 +333,15 @@ public class Igra {
 			return set;
 		}
 	}
-	
+	/*
+	 * Rekurzivno izraèunamo poti po katerih lahko crni moz je'.
+	 */
 	private LinkedList<Poteza> generirajPoteze_crnimoz(Poteza pot){
 		LinkedList<Poteza> set = new LinkedList<Poteza>();
 		int[][] smeri = {{-1, 0},{-1,1},{0,1},{1, 1},{1, 0}};
 		int x = pot.getX(pot.size()-1);
 		int y = pot.getY(pot.size()-1);
 		boolean lahkoje = false;
-			// zaèetna poteza = <lok>
 		for(int[] xy: smeri){
 			// Èe pade ven:
 			if(0 <= y + 2*xy[1] && y + 2*xy[1] <= 7 && 0 <= x + 2*xy[0] && x + 2*xy[0] <= 7){
@@ -377,14 +383,15 @@ public class Igra {
 			return set;
 		}
 	}
-	
+	/*
+	 * Rekurzivno izraèunamo poti po katerih lahko bel kralj je'.
+	 */
 	private LinkedList<Poteza> generirajPoteze_belkralj(Poteza pot){
 		LinkedList<Poteza> set = new LinkedList<Poteza>();
 		int[][] smeri = {{-1, 0},{-1,-1},{0,-1},{1, -1},{1, 0},{1,1},{0,1},{-1,1}};
 		int x = pot.getX(pot.size()-1);
 		int y = pot.getY(pot.size()-1);
 		boolean lahkoje = false;
-			// zaèetna poteza = <lok>
 		for(int[] xy: smeri){
 			boolean stikalo = true;
 			int k = 2;
@@ -423,14 +430,15 @@ public class Igra {
 			return set;
 		}
 	}
-	
+	/*
+	 * Rekurzivno izraèunamo poti po katerih lahko crni kralj je'.
+	 */
 	private LinkedList<Poteza> generirajPoteze_crnikralj(Poteza pot){
 		LinkedList<Poteza> set = new LinkedList<Poteza>();
 		int[][] smeri = {{-1, 0},{-1,-1},{0,-1},{1, -1},{1, 0},{1,1},{0,1},{-1,1}};
 		int x = pot.getX(pot.size()-1);
 		int y = pot.getY(pot.size()-1);
 		boolean lahkoje = false;
-			// zaèetna poteza = <lok>
 		for(int[] xy: smeri){
 			boolean stikalo = true;
 			int k = 2;

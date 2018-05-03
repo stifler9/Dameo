@@ -1,4 +1,4 @@
-package Dameo;
+package logika;
 
 public enum Igralec {
 	I1,

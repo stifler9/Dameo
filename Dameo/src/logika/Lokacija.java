@@ -1,8 +1,8 @@
-package Dameo;
+package logika;
 
 public class Lokacija {
-	public final int x;
-	public final int y;
+	private final int x;
+	private final int y;
 	
 	public Lokacija(int i, int j){
 		x = i;
@@ -11,5 +11,13 @@ public class Lokacija {
 	
 	public boolean equals(Lokacija lok){
 		return (this.x == lok.x && this.y == lok.y);
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
 	}
 }

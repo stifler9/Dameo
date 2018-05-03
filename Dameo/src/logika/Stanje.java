@@ -1,4 +1,4 @@
-package Dameo;
+package logika;
 
 public class Stanje {
 	private Polje[][] matrika;
@@ -24,7 +24,7 @@ public class Stanje {
 		}
 	}
 	
-	public Polje narediPotezo(final int x1,final int y1,final int x2,final int y2,final int x3,final int y3) {
+	public Polje narediPotezo(int x1,int y1,int x2,int y2,int x3,int y3) {
 		matrika[y3][x3] = matrika[y1][x1];
 		Polje polje = matrika[y2][x2];
 		matrika[y2][x2] = Polje.Prazno;
@@ -32,12 +32,12 @@ public class Stanje {
 		return polje;
 	}
 	
-	public void narediPotezo(final int x1, final int y1, final int x2, final int y2) {
+	public void narediPotezo(int x1, int y1, int x2, int y2) {
 		matrika[y2][x2] = matrika[y1][x1];
 		matrika[y1][x1] = Polje.Prazno;
 	}
 	
-	public void razveljaviPotezo(final int x1,final int y1,final int x2,final int y2,final int x3,final int y3, Polje pojeden) {
+	public void razveljaviPotezo(int x1,int y1,int x2,int y2,int x3,int y3, Polje pojeden) {
 		matrika[y1][x1] = matrika[y3][x3];
 		matrika[y2][x2] = pojeden;
 		matrika[y3][x3] = Polje.Prazno;
@@ -54,7 +54,7 @@ public class Stanje {
 		}
 	}
 	
-	public Polje get(final int x, final int y){
+	public Polje get(int x, int y){
 		return matrika[y][x];
 	}
 }

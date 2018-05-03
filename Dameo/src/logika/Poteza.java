@@ -1,4 +1,4 @@
-package Dameo;
+package logika;
 
 import java.util.ArrayList;
 
@@ -26,11 +26,11 @@ public class Poteza {
 	}
 	
 	public int getX(int i){
-		return sestavljena.get(i).x;
+		return sestavljena.get(i).getX();
 	}
 	
 	public int getY(int i){
-		return sestavljena.get(i).y;
+		return sestavljena.get(i).getY();
 	}
 	
 	public void add(Lokacija lok){

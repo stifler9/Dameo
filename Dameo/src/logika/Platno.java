@@ -1,4 +1,4 @@
-package Dameo;
+package logika;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -70,9 +70,9 @@ public class Platno extends JPanel implements MouseListener{
 			int n = 0;
 			for(int i=0; i<pot.size();i++) {
 				Lokacija lok = pot.get(i);
-				g.fillOval(lok.x*64 + 24, lok.y*64 + 24, 16, 16);
-				xi[n] = lok.x*64 + 32;
-				yi[n] = lok.y*64 + 32;
+				g.fillOval(lok.getX()*64 + 24, lok.getY()*64 + 24, 16, 16);
+				xi[n] = lok.getX()*64 + 32;
+				yi[n] = lok.getY()*64 + 32;
 				n++;
 			}
 			g.drawPolyline(xi, yi, n);
@@ -103,12 +103,8 @@ public class Platno extends JPanel implements MouseListener{
 					izbranaFigura = null;
 				}
 			}else {
-				int i = 0;
-				final int n = obarvanePoteze.size();
-				while(i < n) {
-					Poteza pot = obarvanePoteze.get(i);
+				for(Poteza pot: obarvanePoteze){
 					if(pot.naDrugemMestu(lokacija)) {
-						i = n;
 						dameo.odigraj(izbranaFigura, lokacija);
 						obarvanePoteze.clear();
 						if(dameo.nujnost == null) {
@@ -119,8 +115,8 @@ public class Platno extends JPanel implements MouseListener{
 								obarvanePoteze.add(poteza);
 							}
 						}
+						break;
 					}
-					i++;
 				}
 			}
 		}
