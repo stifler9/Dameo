@@ -4,20 +4,15 @@ import java.util.LinkedList;
 
 public class Igra {
 	public Stanje stanje;
-	// Probaj dati ven
-	public LinkedList<Poteza> moznePoteze;
 	public Igralec napotezi;
-	// Probaj dati ven
-	private int maks;
 	public Lokacija nujnost;
 	
 	public Igra(){
 		stanje = new Stanje();
-		moznePoteze = new LinkedList<Poteza>();
-		maks = 0;
+		//moznePoteze = new LinkedList<Poteza>();
 		napotezi = Igralec.BELI;
 		nujnost = null;
-		moznePoteze = generirajPoteze();
+		//moznePoteze = generirajPoteze();
 	}
 	
 	private static int abs(int x){
@@ -32,15 +27,19 @@ public class Igra {
 	 */
 	public boolean odigraj(Lokacija lok1, Lokacija lok2){
 		boolean ali = false;
-		for(Poteza poteza: moznePoteze){
+		boolean enostavnost = false;
+		int maks = 0;
+		for(Poteza poteza: generirajPoteze()){
 			if(poteza.naPrvemMestu(lok1) && poteza.naDrugemMestu(lok2)){
 				ali = true;
+				enostavnost = poteza.enostavnost;
+				maks = poteza.size();
 				break;
 			}
 		}
 		
 		if(ali){
-			if(maks == 0){
+			if(enostavnost){
 				/*
 				 * naredimo enostavno potezo (1 skok, kjer ne jemo).
 				 */
@@ -58,7 +57,7 @@ public class Igra {
 				int[] smer = {(lok2.getX() - lok1.getX())/dolzina, (lok2.getY() - lok1.getY())/dolzina};
 				stanje.narediPotezo(lok1.getX(), lok1.getY(), lok2.getX() - smer[0], lok2.getY() - smer[1], lok2.getX(), lok2.getY());
 
-				if(maks > 1){
+				if(maks > 2){
 					nujnost = lok2;
 				}else{
 					nujnost = null;
@@ -72,85 +71,16 @@ public class Igra {
 
 			/*
 			 * Spremenili smo stanje, kdo je na potezi in nujnost,
-			 * treba je na novo izraèunati možne poteze:
+			 * treba je pogledati ce se lahko igra
 			 */
-			if(nujnost == null){
-				moznePoteze = generirajPoteze();
-				if(moznePoteze.isEmpty()){
-					if(napotezi == Igralec.BELI){
-						napotezi = Igralec.ZMAGACRNI;
-						System.out.println("Zmagal je CRNI!");
-					}else{
-						napotezi = Igralec.ZMAGABELI;
-						System.out.println("Zmagal je BELI!");
-					}
-				}
-			}else{
-				maks = 0;
+			
+			if(generirajPoteze().isEmpty()){
 				if(napotezi == Igralec.BELI){
-					Poteza pot = new Poteza();
-					pot.add(nujnost);
-					if(stanje.get(nujnost.getX(),nujnost.getY()) == Polje.BelMoz){
-						LinkedList<Poteza> set = generirajPoteze_belmoz(pot);
-						moznePoteze.clear();
-						for(Poteza poteza: set){
-							int k = poteza.size() -1;
-							if(k == maks){
-								moznePoteze.add(poteza);
-							}
-							if(k > maks){
-								moznePoteze.clear();
-								moznePoteze.add(poteza);
-								maks = k;
-							}
-						}
-					}else{
-						LinkedList<Poteza> set = generirajPoteze_belkralj(pot);
-						moznePoteze.clear();
-						for(Poteza poteza: set){
-							int k = poteza.size() - 1;
-							if(k == maks){
-								moznePoteze.add(poteza);
-							}
-							if(k > maks){
-								moznePoteze.clear();
-								moznePoteze.add(poteza);
-								maks = k;
-							}
-						}
-					}
-				}else if(napotezi == Igralec.CRNI){
-					Poteza pot = new Poteza();
-					pot.add(nujnost);
-					if(stanje.get(nujnost.getX(),nujnost.getY()) == Polje.CrniMoz){
-						LinkedList<Poteza> set = generirajPoteze_crnimoz(pot);
-						moznePoteze.clear();
-						for(Poteza poteza: set){
-							int k = poteza.size() - 1;
-							if(k == maks){
-								moznePoteze.add(poteza);
-							}
-							if(k > maks){
-								moznePoteze.clear();
-								moznePoteze.add(poteza);
-								maks = k;
-							}
-						}
-					}else{
-						LinkedList<Poteza> set = generirajPoteze_crnikralj(pot);
-						moznePoteze.clear();
-						for(Poteza poteza: set){
-							int k = poteza.size() - 1;
-							if(k == maks){
-								moznePoteze.add(poteza);
-							}
-							if(k > maks){
-								moznePoteze.clear();
-								moznePoteze.add(poteza);
-								maks = k;
-							}
-						}
-					}
+					napotezi = Igralec.ZMAGACRNI;
+					System.out.println("Zmagal je CRNI!");
+				}else{
+					napotezi = Igralec.ZMAGABELI;
+					System.out.println("Zmagal je BELI!");
 				}
 			}
 		}
@@ -160,83 +90,147 @@ public class Igra {
 	 * Poteze kjer lahko figura je'.
 	 */
 	
-	private LinkedList<Poteza> generirajPoteze(){
+	public LinkedList<Poteza> generirajPoteze(){
 		LinkedList<Poteza> f = new LinkedList<Poteza>();
-		maks = 1;
-		for(int i=0; i<8; i++){
-			for(int j=0; j<8; j++){
-				if(napotezi == Igralec.BELI){
-					if(stanje.get(i, j) == Polje.BelMoz){
-						Lokacija lok = new Lokacija(i, j);
-						Poteza pot = new Poteza();
-						pot.add(lok);
-						LinkedList<Poteza> gen = generirajPoteze_belmoz(pot);
-						for(Poteza poteza: gen){
-							int k = poteza.size() - 1;
-							if(k == maks){
-								f.add(poteza);
-							}else if(k > maks){
-								f.clear();
-								f.add(poteza);
-								maks = k;
+		int maks = 2;
+		if (nujnost == null) {
+			for (int i = 0; i < 8; i++) {
+				for (int j = 0; j < 8; j++) {
+					if (napotezi == Igralec.BELI) {
+						if (stanje.get(i, j) == Polje.BelMoz) {
+							Lokacija lok = new Lokacija(i, j);
+							Poteza pot = new Poteza();
+							pot.add(lok);
+							LinkedList<Poteza> gen = generirajPoteze_belmoz(pot);
+							for (Poteza poteza : gen) {
+								int k = poteza.size();
+								if (k == maks) {
+									f.add(poteza);
+								} else if (k > maks) {
+									f.clear();
+									f.add(poteza);
+									maks = k;
+								}
+							}
+						} else if (stanje.get(i, j) == Polje.BelKralj) {
+							Lokacija lok = new Lokacija(i, j);
+							Poteza pot = new Poteza();
+							pot.add(lok);
+							LinkedList<Poteza> gen = generirajPoteze_belkralj(pot);
+							for (Poteza poteza : gen) {
+								int k = poteza.size();
+								if (k == maks) {
+									f.add(poteza);
+								} else if (k > maks) {
+									f.clear();
+									f.add(poteza);
+									maks = k;
+								}
 							}
 						}
-					}else if(stanje.get(i, j) == Polje.BelKralj){
-						Lokacija lok = new Lokacija(i, j);
-						Poteza pot = new Poteza();
-						pot.add(lok);
-						LinkedList<Poteza> gen = generirajPoteze_belkralj(pot);
-						for(Poteza poteza: gen){
-							int k = poteza.size() - 1;
-							if(k == maks){
-								f.add(poteza);
-							}else if(k > maks){
-								f.clear();
-								f.add(poteza);
-								maks = k;
+					} else if (napotezi == Igralec.CRNI) {
+						if (stanje.get(i, j) == Polje.CrniMoz) {
+							Lokacija lok = new Lokacija(i, j);
+							Poteza pot = new Poteza();
+							pot.add(lok);
+							LinkedList<Poteza> gen = generirajPoteze_crnimoz(pot);
+							for (Poteza poteza : gen) {
+								int k = poteza.size();
+								if (k == maks) {
+									f.add(poteza);
+								} else if (k > maks) {
+									f.clear();
+									f.add(poteza);
+									maks = k;
+								}
+							}
+						} else if (stanje.get(i, j) == Polje.CrniKralj) {
+							Lokacija lok = new Lokacija(i, j);
+							Poteza pot = new Poteza();
+							pot.add(lok);
+							LinkedList<Poteza> gen = generirajPoteze_crnikralj(pot);
+							for (Poteza poteza : gen) {
+								int k = poteza.size();
+								if (k == maks) {
+									f.add(poteza);
+								} else if (k > maks) {
+									f.clear();
+									f.add(poteza);
+									maks = k;
+								}
 							}
 						}
 					}
-				}else if(napotezi == Igralec.CRNI){
-					if(stanje.get(i, j) == Polje.CrniMoz){
-						Lokacija lok = new Lokacija(i, j);
-						Poteza pot = new Poteza();
-						pot.add(lok);
-						LinkedList<Poteza> gen = generirajPoteze_crnimoz(pot);
-						for(Poteza poteza: gen){
-							int k = poteza.size() - 1;
-							if(k == maks){
-								f.add(poteza);
-							}else if(k > maks){
-								f.clear();
-								f.add(poteza);
-								maks = k;
-							}
-						}
-					}else if(stanje.get(i, j) == Polje.CrniKralj){
-						Lokacija lok = new Lokacija(i, j);
-						Poteza pot = new Poteza();
-						pot.add(lok);
-						LinkedList<Poteza> gen = generirajPoteze_crnikralj(pot);
-						for(Poteza poteza: gen){
-							int k = poteza.size() - 1;
-							if(k == maks){
-								f.add(poteza);
-							}else if(k > maks){
-								f.clear();
-								f.add(poteza);
-								maks = k;
-							}
-						}
-					}	
 				}
 			}
-		}
-		if(f.isEmpty()){
-			maks = 0;
-			return generirajEnostavne();
-		}else{
+			if (f.isEmpty()) {
+				return generirajEnostavne();
+			} else {
+				return f;
+			} 
+		}else {
+			if(stanje.get(nujnost.getX(), nujnost.getY())==Polje.BelMoz) {
+				Poteza pot = new Poteza();
+				pot.add(nujnost);
+				LinkedList<Poteza> gen = generirajPoteze_belmoz(pot);
+				for(Poteza poteza: gen) {
+					int k = poteza.size();
+					if (k == maks) {
+						f.add(poteza);
+					} else if (k > maks) {
+						f.clear();
+						f.add(poteza);
+						maks = k;
+					}
+				}
+			}
+			if(stanje.get(nujnost.getX(), nujnost.getY())==Polje.CrniMoz) {
+				Poteza pot = new Poteza();
+				pot.add(nujnost);
+				LinkedList<Poteza> gen = generirajPoteze_crnimoz(pot);
+				for(Poteza poteza: gen) {
+					int k = poteza.size();
+					if (k == maks) {
+						f.add(poteza);
+					} else if (k > maks) {
+						f.clear();
+						f.add(poteza);
+						maks = k;
+					}
+				}
+			}
+			if(stanje.get(nujnost.getX(), nujnost.getY())==Polje.BelKralj) {
+				Poteza pot = new Poteza();
+				pot.add(nujnost);
+				LinkedList<Poteza> gen = generirajPoteze_belkralj(pot);
+				for(Poteza poteza: gen) {
+					int k = poteza.size();
+					if (k == maks) {
+						f.add(poteza);
+					} else if (k > maks) {
+						f.clear();
+						f.add(poteza);
+						maks = k;
+					}
+				}
+			}
+			if(stanje.get(nujnost.getX(), nujnost.getY())==Polje.CrniKralj) {
+				Poteza pot = new Poteza();
+				pot.add(nujnost);
+				LinkedList<Poteza> gen = generirajPoteze_crnikralj(pot);
+				for(Poteza poteza: gen) {
+					int k = poteza.size();
+					if (k == maks) {
+						f.add(poteza);
+					} else if (k > maks) {
+						f.clear();
+						f.add(poteza);
+						maks = k;
+					}
+				}
+			}
 			return f;
+			
 		}
 		
 	}
@@ -250,7 +244,7 @@ public class Igra {
 				if(napotezi == Igralec.BELI){
 					if(stanje.get(i, j) == Polje.BelMoz){
 						Lokacija lok = new Lokacija(i, j);
-						Poteza pot = new Poteza();
+						Poteza pot = new Poteza(true);
 						pot.add(lok);
 						LinkedList<Poteza> gen = generirajEnostavne_belmoz(pot);
 						for(Poteza poteza: gen){
@@ -258,7 +252,7 @@ public class Igra {
 						}
 					}else if(stanje.get(i, j) == Polje.BelKralj){
 						Lokacija lok = new Lokacija(i, j);
-						Poteza pot = new Poteza();
+						Poteza pot = new Poteza(true);
 						pot.add(lok);
 						LinkedList<Poteza> gen = generirajEnostavne_kralj(pot);
 						for(Poteza poteza: gen){
@@ -268,7 +262,7 @@ public class Igra {
 				}else if(napotezi == Igralec.CRNI){
 					if(stanje.get(i, j) == Polje.CrniMoz){
 						Lokacija lok = new Lokacija(i, j);
-						Poteza pot = new Poteza();
+						Poteza pot = new Poteza(true);
 						pot.add(lok);
 						LinkedList<Poteza> gen = generirajEnostavne_crnimoz(pot);
 						for(Poteza poteza: gen){
@@ -276,7 +270,7 @@ public class Igra {
 						}
 					}else if(stanje.get(i, j) == Polje.CrniKralj){
 						Lokacija lok = new Lokacija(i, j);
-						Poteza pot = new Poteza();
+						Poteza pot = new Poteza(true);
 						pot.add(lok);
 						LinkedList<Poteza> gen = generirajEnostavne_kralj(pot);
 						for(Poteza poteza: gen){
@@ -499,9 +493,9 @@ public class Igra {
 				// Ce pade ven:
 				if(0 <= y + k*xy[1] && y + k*xy[1] <= 7 && 0 <= x + k*xy[0] && x + k*xy[0] <= 7){
 					if(stanje.get(x + k*xy[0],y + k*xy[1]) == Polje.Prazno){
-						Poteza nova = new Poteza();
-						Lokacija lok1 = new Lokacija(x,y);
-						nova.add(lok1);
+						Poteza nova = new Poteza(true);
+						Lokacija prva = new Lokacija(x,y);
+						nova.add(prva);
 						Lokacija novalok = new Lokacija(x + k*xy[0], y + k*xy[1]);
 						nova.add(novalok);
 						set.add(nova);
@@ -527,9 +521,9 @@ public class Igra {
 				// Ce pade ven:
 				if(0 <= y + k*xy[1] && y + k*xy[1] <= 7 && 0 <= x + k*xy[0] && x + k*xy[0] <= 7){
 					if(stanje.get(x + k*xy[0],y + k*xy[1]) == Polje.Prazno){
-						Poteza nova = new Poteza();
-						Lokacija lok1 = new Lokacija(x,y);
-						nova.add(lok1);
+						Poteza nova = new Poteza(true);
+						Lokacija prva = new Lokacija(x,y);
+						nova.add(prva);
 						Lokacija novalok = new Lokacija(x + k*xy[0], y + k*xy[1]);
 						nova.add(novalok);
 						set.add(nova);
@@ -555,9 +549,9 @@ public class Igra {
 				// Ce pade ven:
 				if(0 <= y + k*xy[1] && y + k*xy[1] <= 7 && 0 <= x + k*xy[0] && x + k*xy[0] <= 7){
 					if(stanje.get(x + k*xy[0],y + k*xy[1]) == Polje.Prazno){
-						Poteza nova = new Poteza();
-						Lokacija lok1 = new Lokacija(x,y);
-						nova.add(lok1);
+						Poteza nova = new Poteza(true);
+						Lokacija prva = new Lokacija(x,y);
+						nova.add(prva);
 						Lokacija novalok = new Lokacija(x + k*xy[0], y + k*xy[1]);
 						nova.add(novalok);
 						set.add(nova);

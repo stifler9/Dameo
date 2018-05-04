@@ -4,9 +4,16 @@ import java.util.ArrayList;
 
 public class Poteza {
 	private ArrayList<Lokacija> sestavljena;
+	public boolean enostavnost;
 	
 	public Poteza(){
 		sestavljena = new ArrayList<Lokacija>();
+		enostavnost = false;
+	}
+	
+	public Poteza(boolean enostavnost) {
+		sestavljena = new ArrayList<Lokacija>();
+		this.enostavnost = enostavnost;
 	}
 	
 	public int size(){
@@ -39,7 +46,7 @@ public class Poteza {
 	
 	@SuppressWarnings("unchecked")
 	public Poteza clone() {
-		Poteza pot = new Poteza();
+		Poteza pot = new Poteza(this.enostavnost);
 		pot.sestavljena = (ArrayList<Lokacija>) this.sestavljena.clone();
 		return pot;
 	}

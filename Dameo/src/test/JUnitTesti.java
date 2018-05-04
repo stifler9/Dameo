@@ -30,7 +30,7 @@ public class JUnitTesti {
 		Lokacija lok8 = new Lokacija(1,5);
 		
 		boolean ali = false;
-		for(Poteza poteza: dameo.moznePoteze){
+		for(Poteza poteza: dameo.generirajPoteze()){
 			if(poteza.naPrvemMestu(lok7) && poteza.naDrugemMestu(lok8)){
 				ali = true;
 			}

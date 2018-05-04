@@ -94,8 +94,8 @@ public class Platno extends JPanel implements MouseListener{
 		Lokacija lokacija = new Lokacija(e.getX()/64, e.getY()/64);
 		if(izbranaFigura == null) {
 			boolean dodaj = false;
-			for(Poteza pot: dameo.moznePoteze) {
-				if(pot.get(0).equals(lokacija)) {
+			for(Poteza pot: dameo.generirajPoteze()) {
+				if(pot.naPrvemMestu(lokacija)) {
 					obarvanePoteze.add(pot);
 					dodaj = true;
 				}
@@ -116,7 +116,7 @@ public class Platno extends JPanel implements MouseListener{
 							izbranaFigura = null;
 						}else {
 							izbranaFigura = dameo.nujnost;
-							for(Poteza poteza: dameo.moznePoteze) {
+							for(Poteza poteza: dameo.generirajPoteze()) {
 								obarvanePoteze.add(poteza);
 							}
 						}
