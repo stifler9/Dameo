@@ -244,17 +244,13 @@ public class Igra {
 				if(napotezi == Igralec.BELI){
 					if(stanje.get(i, j) == Polje.BelMoz){
 						Lokacija lok = new Lokacija(i, j);
-						Poteza pot = new Poteza(true);
-						pot.add(lok);
-						LinkedList<Poteza> gen = generirajEnostavne_belmoz(pot);
+						LinkedList<Poteza> gen = generirajEnostavne_belmoz(lok);
 						for(Poteza poteza: gen){
 							f.add(poteza);
 						}
 					}else if(stanje.get(i, j) == Polje.BelKralj){
 						Lokacija lok = new Lokacija(i, j);
-						Poteza pot = new Poteza(true);
-						pot.add(lok);
-						LinkedList<Poteza> gen = generirajEnostavne_kralj(pot);
+						LinkedList<Poteza> gen = generirajEnostavne_kralj(lok);
 						for(Poteza poteza: gen){
 							f.add(poteza);
 						}
@@ -262,17 +258,13 @@ public class Igra {
 				}else if(napotezi == Igralec.CRNI){
 					if(stanje.get(i, j) == Polje.CrniMoz){
 						Lokacija lok = new Lokacija(i, j);
-						Poteza pot = new Poteza(true);
-						pot.add(lok);
-						LinkedList<Poteza> gen = generirajEnostavne_crnimoz(pot);
+						LinkedList<Poteza> gen = generirajEnostavne_crnimoz(lok);
 						for(Poteza poteza: gen){
 							f.add(poteza);
 						}
 					}else if(stanje.get(i, j) == Polje.CrniKralj){
 						Lokacija lok = new Lokacija(i, j);
-						Poteza pot = new Poteza(true);
-						pot.add(lok);
-						LinkedList<Poteza> gen = generirajEnostavne_kralj(pot);
+						LinkedList<Poteza> gen = generirajEnostavne_kralj(lok);
 						for(Poteza poteza: gen){
 							f.add(poteza);
 						}
@@ -480,11 +472,11 @@ public class Igra {
 		}
 	}
 	
-	private LinkedList<Poteza> generirajEnostavne_belmoz(Poteza pot){
+	private LinkedList<Poteza> generirajEnostavne_belmoz(Lokacija lok){
 		LinkedList<Poteza> set = new LinkedList<Poteza>();
 		int[][] smeri = {{-1, 0},{-1,-1},{0,-1},{1, -1},{1, 0}};
-		int x = pot.getX(pot.size()-1);
-		int y = pot.getY(pot.size()-1);
+		int x = lok.getX();
+		int y = lok.getY();
 		
 		for(int[] xy: smeri){
 			int k = 1;
@@ -494,8 +486,7 @@ public class Igra {
 				if(0 <= y + k*xy[1] && y + k*xy[1] <= 7 && 0 <= x + k*xy[0] && x + k*xy[0] <= 7){
 					if(stanje.get(x + k*xy[0],y + k*xy[1]) == Polje.Prazno){
 						Poteza nova = new Poteza(true);
-						Lokacija prva = new Lokacija(x,y);
-						nova.add(prva);
+						nova.add(lok);
 						Lokacija novalok = new Lokacija(x + k*xy[0], y + k*xy[1]);
 						nova.add(novalok);
 						set.add(nova);
@@ -508,11 +499,11 @@ public class Igra {
 		return set;
 	}
 	
-	private LinkedList<Poteza> generirajEnostavne_crnimoz(Poteza pot){
+	private LinkedList<Poteza> generirajEnostavne_crnimoz(Lokacija lok){
 		LinkedList<Poteza> set = new LinkedList<Poteza>();
 		int[][] smeri = {{-1, 0},{-1,1},{0,1},{1, 1},{1, 0}};
-		int x = pot.getX(pot.size()-1);
-		int y = pot.getY(pot.size()-1);
+		int x = lok.getX();
+		int y = lok.getY();
 		
 		for(int[] xy: smeri){
 			int k = 1;
@@ -522,8 +513,7 @@ public class Igra {
 				if(0 <= y + k*xy[1] && y + k*xy[1] <= 7 && 0 <= x + k*xy[0] && x + k*xy[0] <= 7){
 					if(stanje.get(x + k*xy[0],y + k*xy[1]) == Polje.Prazno){
 						Poteza nova = new Poteza(true);
-						Lokacija prva = new Lokacija(x,y);
-						nova.add(prva);
+						nova.add(lok);
 						Lokacija novalok = new Lokacija(x + k*xy[0], y + k*xy[1]);
 						nova.add(novalok);
 						set.add(nova);
@@ -536,11 +526,11 @@ public class Igra {
 		return set;
 	}
 	
-	private LinkedList<Poteza> generirajEnostavne_kralj(Poteza pot){
+	private LinkedList<Poteza> generirajEnostavne_kralj(Lokacija lok){
 		LinkedList<Poteza> set = new LinkedList<Poteza>();
 		int[][] smeri = {{-1, 0},{-1,-1},{0,-1},{1, -1},{1, 0},{-1,1},{0,1},{1, 1}};
-		int x = pot.getX(pot.size()-1);
-		int y = pot.getY(pot.size()-1);
+		int x = lok.getX();
+		int y = lok.getY();
 		
 		for(int[] xy: smeri){
 			int k = 1;
@@ -550,8 +540,7 @@ public class Igra {
 				if(0 <= y + k*xy[1] && y + k*xy[1] <= 7 && 0 <= x + k*xy[0] && x + k*xy[0] <= 7){
 					if(stanje.get(x + k*xy[0],y + k*xy[1]) == Polje.Prazno){
 						Poteza nova = new Poteza(true);
-						Lokacija prva = new Lokacija(x,y);
-						nova.add(prva);
+						nova.add(lok);
 						Lokacija novalok = new Lokacija(x + k*xy[0], y + k*xy[1]);
 						nova.add(novalok);
 						set.add(nova);
