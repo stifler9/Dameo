@@ -4,10 +4,10 @@ import logika.Lokacija;
 
 public abstract class Strateg {
 	
-	public abstract void naPotezi();
+	protected abstract void naPotezi();
 	
-	public abstract void prekini();
+	protected abstract void prekini();
 	
-	public abstract void klik(Lokacija lok);
+	protected abstract void klik(Lokacija lok);
 
 }

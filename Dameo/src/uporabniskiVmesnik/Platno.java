@@ -75,12 +75,16 @@ public class Platno extends JPanel implements MouseListener{
 					g.setColor(Color.black);
 					g.fillOval(i*64+2, j*64+2, 60, 60);
 					g.setColor(new Color(197, 180, 48));
-					g.fillOval(i*64+16, j*64+16, 32, 32);
+					g.fillOval(i*64+8, j*64+8, 48, 48);
+					g.setColor(Color.black);
+					g.fillOval(i*64+11, j*64+11, 42, 42);
 				}else if(master.dameo.stanje.get(i,j) == Polje.BelKralj) {
 					g.setColor(Color.WHITE);
 					g.fillOval(i*64+3, j*64+3, 58, 58);
 					g.setColor(new Color(197, 180, 48));
-					g.fillOval(i*64+16, j*64+16, 32, 32);
+					g.fillOval(i*64+8, j*64+8, 48, 48);
+					g.setColor(Color.WHITE);
+					g.fillOval(i*64+11, j*64+11, 42, 42);
 					g.setColor(Color.black);
 					g.drawOval(i*64+2, j*64+2, 60, 60);
 				}
@@ -112,7 +116,7 @@ public class Platno extends JPanel implements MouseListener{
 		}
 	}
 	
-	public void veljavenKlik(Lokacija lokacija) {
+	protected void veljavenKlik(Lokacija lokacija) {
 		if(izbranaFigura == null) {
 			boolean dodaj = false;
 			for(Poteza pot: master.dameo.generirajPoteze()) {

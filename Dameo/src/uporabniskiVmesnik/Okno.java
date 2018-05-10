@@ -55,7 +55,7 @@ public class Okno extends JFrame{
 		novaIgra();
 	}
 	
-	public void novaIgra(){
+	private void novaIgra(){
 		if(strategCrni != null){ strategCrni.prekini();}
 		if(strategBeli != null){ strategBeli.prekini();}
 
@@ -70,7 +70,7 @@ public class Okno extends JFrame{
 		osveziGUI();
 	}
 	
-	public void klik(Lokacija lok) {
+	protected void klik(Lokacija lok) {
 		if(dameo.napotezi == Igralec.CRNI){
 			strategCrni.klik(lok);
 		} else if(dameo.napotezi == Igralec.BELI){
@@ -78,7 +78,7 @@ public class Okno extends JFrame{
 		}
 	}
 	
-	public boolean odigraj(Lokacija lok1, Lokacija lok2){
+	protected boolean odigraj(Lokacija lok1, Lokacija lok2){
 		boolean ali = dameo.odigraj(lok1, lok2);
 		if(dameo.napotezi == Igralec.CRNI){
 			strategCrni.naPotezi();
@@ -88,7 +88,7 @@ public class Okno extends JFrame{
 		return ali;
 	}
 	
-	public void osveziGUI(){
+	protected void osveziGUI(){
 		if(dameo == null){
 			status.setText("Igra ni v teku");
 		} else{

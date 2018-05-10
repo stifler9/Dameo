@@ -10,15 +10,15 @@ public class Clovek extends Strateg {
 	}
 
 	@Override
-	public void naPotezi() {
+	protected void naPotezi() {
 	}
 
 	@Override
-	public void prekini() {
+	protected void prekini() {
 	}
 
 	@Override
-	public void klik(Lokacija lok){
+	protected void klik(Lokacija lok){
 		// TODO Auto-generated method stub
 		master.platno.veljavenKlik(lok);
 	}
