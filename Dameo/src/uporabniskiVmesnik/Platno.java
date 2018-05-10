@@ -11,7 +11,6 @@ import java.util.LinkedList;
 
 import javax.swing.JPanel;
 
-import logika.Igralec;
 import logika.Lokacija;
 import logika.Polje;
 import logika.Poteza;
@@ -31,31 +30,41 @@ public class Platno extends JPanel implements MouseListener{
 		this.master = master;
 	}
 	
-
-	public Igralec napotezi(){
-		if(master.dameo != null){
-			return master.dameo.napotezi;
-		}
-		return null;
+	public Dimension getPreferredSize() {
+		return new Dimension(512, 512);
 	}
 	
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.setColor(Color.LIGHT_GRAY);
+		
+		// Narisemo igralno plosco
+		g.setColor(new Color(154, 97, 76));
 		for(int i = 0; i<4; i++) {
 			for(int j = 0; j<4; j++) {
 				g.fillRect(i*128, 64 + j*128, 64, 64);
 				g.fillRect(64 + i*128, j*128, 64, 64);
 			}
 		}
+		g.setColor(new Color(220, 205, 190));
+		for(int i = 0; i<4; i++) {
+			for(int j = 0; j<4; j++) {
+				g.fillRect(i*128, j*128, 64, 64);
+				g.fillRect(64 + i*128,64 + j*128, 64, 64);
+			}
+		}
+		
+		// Narisemo crte
 		g.setColor(Color.black);
 		for(int i = 1; i<=8; i++) {
 			g.drawLine(i*64, 0, i*64, 512);
 			g.drawLine(0, i*64, 512, i*64);
 		}
+		
+		// Narisemo figure
 		for(int i=0;i<8;i++) {
 			for(int j=0;j<8;j++) {
 				if(master.dameo.stanje.get(i,j) == Polje.CrniMoz) {
+					g.setColor(Color.black);
 					g.fillOval(i*64+2, j*64+2, 60, 60);
 				}else if(master.dameo.stanje.get(i,j) == Polje.BelMoz) {
 					g.setColor(Color.WHITE);
@@ -63,20 +72,24 @@ public class Platno extends JPanel implements MouseListener{
 					g.setColor(Color.black);
 					g.drawOval(i*64+2, j*64+2, 60, 60);
 				}else if(master.dameo.stanje.get(i,j) == Polje.CrniKralj) {
-					g.fillOval(i*64+2, j*64+2, 60, 60);
-					g.setColor(Color.ORANGE);
-					g.fillOval(i*64+16, j*64+16, 32, 32);
 					g.setColor(Color.black);
+					g.fillOval(i*64+2, j*64+2, 60, 60);
+					g.setColor(new Color(197, 180, 48));
+					g.fillOval(i*64+16, j*64+16, 32, 32);
 				}else if(master.dameo.stanje.get(i,j) == Polje.BelKralj) {
 					g.setColor(Color.WHITE);
 					g.fillOval(i*64+3, j*64+3, 58, 58);
-					g.setColor(Color.ORANGE);
+					g.setColor(new Color(197, 180, 48));
 					g.fillOval(i*64+16, j*64+16, 32, 32);
 					g.setColor(Color.black);
 					g.drawOval(i*64+2, j*64+2, 60, 60);
 				}
 			}
 		}
+		
+		/*
+		 * Obarvamo poteze
+		 */
 		g.setColor(Color.GREEN);
 		for(Poteza pot: obarvanePoteze) {
 			int[] xi = new int[pot.size()];
@@ -91,24 +104,15 @@ public class Platno extends JPanel implements MouseListener{
 			}
 			g.drawPolyline(xi, yi, n);
 		}
-	}
-	
-	public Dimension getPreferredSize() {
-		return new Dimension(512, 512);
-	}
-	
-	public void mouseClicked(MouseEvent e) {
-		Lokacija lokacija = new Lokacija(e.getX()/64, e.getY()/64);
-		if(napotezi() == Igralec.BELI){
-			master.strategBeli.klik(lokacija);
-		}else if(napotezi() == Igralec.CRNI){
-			master.strategCrni.klik(lokacija);
+		
+		// Obarvamo izbrano figuro
+		if(!(izbranaFigura == null)) {
+			g.setColor(new Color(17, 140, 183));
+			g.fillOval(izbranaFigura.getX()*64 + 24, izbranaFigura.getY()*64 + 24, 16, 16);
 		}
 	}
 	
-
 	public void veljavenKlik(Lokacija lokacija) {
-		// TODO Auto-generated method stub
 		if(izbranaFigura == null) {
 			boolean dodaj = false;
 			for(Poteza pot: master.dameo.generirajPoteze()) {
@@ -128,12 +132,7 @@ public class Platno extends JPanel implements MouseListener{
 				for(Poteza pot: obarvanePoteze){
 					if(pot.naDrugemMestu(lokacija)) {
 						master.odigraj(izbranaFigura, lokacija);
-							
-						if(napotezi() == Igralec.CRNI){
-							master.strategCrni.naPotezi();
-						} else if(napotezi() == Igralec.BELI){
-							master.strategBeli.naPotezi();
-						}
+						
 						obarvanePoteze.clear();
 						if(master.dameo.nujnost == null) {
 							izbranaFigura = null;
@@ -149,6 +148,11 @@ public class Platno extends JPanel implements MouseListener{
 			}
 		}
 		master.osveziGUI();
+	}
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		master.klik(new Lokacija(e.getX()/64, e.getY()/64));
 	}
 
 	@Override
@@ -173,6 +177,5 @@ public class Platno extends JPanel implements MouseListener{
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
 	}
 }

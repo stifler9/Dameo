@@ -17,8 +17,8 @@ public class Okno extends JFrame{
 	protected Platno platno;
 	private JLabel status;
 	protected Igra dameo;
-	protected Strateg strategCrni;
-	protected Strateg strategBeli;
+	private Strateg strategCrni;
+	private Strateg strategBeli;
 
 	
 	public Okno() {
@@ -68,7 +68,14 @@ public class Okno extends JFrame{
 			strategBeli.naPotezi();
 		}
 		osveziGUI();
-		
+	}
+	
+	public void klik(Lokacija lok) {
+		if(dameo.napotezi == Igralec.CRNI){
+			strategCrni.klik(lok);
+		} else if(dameo.napotezi == Igralec.BELI){
+			strategBeli.klik(lok);
+		}
 	}
 	
 	public boolean odigraj(Lokacija lok1, Lokacija lok2){
