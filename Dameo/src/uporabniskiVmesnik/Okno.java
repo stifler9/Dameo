@@ -14,7 +14,7 @@ import logika.Lokacija;
 
 @SuppressWarnings("serial")
 public class Okno extends JFrame{
-	private Platno platno;
+	protected Platno platno;
 	private JLabel status;
 	protected Igra dameo;
 	protected Strateg strategCrni;
@@ -86,8 +86,8 @@ public class Okno extends JFrame{
 			status.setText("Igra ni v teku");
 		} else{
 			switch(dameo.napotezi){
-			case CRNI: status.setText("Na potezi je èrni"); break;
-			case BELI: status.setText("Na potezi je beli"); break;
+			case CRNI: if(dameo.nujnost == null){status.setText("Na potezi je èrni");}else{status.setText("Èrni dela potezo...");}  break;
+			case BELI: if(dameo.nujnost == null){status.setText("Na potezi je beli");}else{status.setText("Beli dela potezo...");}  break;
 			case ZMAGACRNI: status.setText("Zmagal je èrni"); break;
 			case ZMAGABELI: status.setText("Zmagal je beli"); break;
 

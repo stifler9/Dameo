@@ -8,6 +8,6 @@ public abstract class Strateg {
 	
 	public abstract void prekini();
 	
-	public abstract void skok(Lokacija lok1, Lokacija lok2);
+	public abstract void klik(Lokacija lok);
 
 }

@@ -9,10 +9,8 @@ public class Igra {
 	
 	public Igra(){
 		stanje = new Stanje();
-		//moznePoteze = new LinkedList<Poteza>();
 		napotezi = Igralec.BELI;
 		nujnost = null;
-		//moznePoteze = generirajPoteze();
 	}
 	
 	private static int abs(int x){
@@ -77,10 +75,8 @@ public class Igra {
 			if(generirajPoteze().isEmpty()){
 				if(napotezi == Igralec.BELI){
 					napotezi = Igralec.ZMAGACRNI;
-					System.out.println("Zmagal je CRNI!");
 				}else{
 					napotezi = Igralec.ZMAGABELI;
-					System.out.println("Zmagal je BELI!");
 				}
 			}
 		}

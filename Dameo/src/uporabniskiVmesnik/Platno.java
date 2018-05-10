@@ -21,8 +21,6 @@ public class Platno extends JPanel implements MouseListener{
 	private Lokacija izbranaFigura;
 	private LinkedList<Poteza> obarvanePoteze;
 	private Okno master;
-
-	
 	
 	public Platno(Okno master){
 		super();
@@ -99,12 +97,18 @@ public class Platno extends JPanel implements MouseListener{
 		return new Dimension(512, 512);
 	}
 	
+	public void mouseClicked(MouseEvent e) {
+		Lokacija lokacija = new Lokacija(e.getX()/64, e.getY()/64);
+		if(napotezi() == Igralec.BELI){
+			master.strategBeli.klik(lokacija);
+		}else if(napotezi() == Igralec.CRNI){
+			master.strategCrni.klik(lokacija);
+		}
+	}
 	
 
-	@Override
-	public void mouseClicked(MouseEvent e) {
+	public void veljavenKlik(Lokacija lokacija) {
 		// TODO Auto-generated method stub
-		Lokacija lokacija = new Lokacija(e.getX()/64, e.getY()/64);
 		if(izbranaFigura == null) {
 			boolean dodaj = false;
 			for(Poteza pot: master.dameo.generirajPoteze()) {
@@ -123,24 +127,12 @@ public class Platno extends JPanel implements MouseListener{
 			}else {
 				for(Poteza pot: obarvanePoteze){
 					if(pot.naDrugemMestu(lokacija)) {
-						if(napotezi() == Igralec.BELI){
+						master.odigraj(izbranaFigura, lokacija);
 							
-							master.strategBeli.skok(izbranaFigura, lokacija);
-							
-							if(napotezi() == Igralec.CRNI){
-								master.strategCrni.naPotezi();
-							} else if(napotezi() == Igralec.BELI){
-								master.strategBeli.naPotezi();
-							}
-						} else if(napotezi() == Igralec.CRNI){
-							
-							master.strategCrni.skok(izbranaFigura, lokacija);
-							
-							if(napotezi() == Igralec.BELI){
-								master.strategBeli.naPotezi();
-							} else if(napotezi() == Igralec.CRNI){
-								master.strategCrni.naPotezi();
-							}
+						if(napotezi() == Igralec.CRNI){
+							master.strategCrni.naPotezi();
+						} else if(napotezi() == Igralec.BELI){
+							master.strategBeli.naPotezi();
 						}
 						obarvanePoteze.clear();
 						if(master.dameo.nujnost == null) {
