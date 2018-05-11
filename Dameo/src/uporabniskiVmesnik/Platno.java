@@ -36,83 +36,80 @@ public class Platno extends JPanel implements MouseListener{
 	
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		
-		// Narisemo igralno plosco
-		g.setColor(new Color(154, 97, 76));
-		for(int i = 0; i<4; i++) {
-			for(int j = 0; j<4; j++) {
-				g.fillRect(i*128, 64 + j*128, 64, 64);
-				g.fillRect(64 + i*128, j*128, 64, 64);
-			}
-		}
-		g.setColor(new Color(220, 205, 190));
-		for(int i = 0; i<4; i++) {
-			for(int j = 0; j<4; j++) {
-				g.fillRect(i*128, j*128, 64, 64);
-				g.fillRect(64 + i*128,64 + j*128, 64, 64);
-			}
-		}
-		
-		// Narisemo crte
-		g.setColor(Color.black);
-		for(int i = 1; i<=8; i++) {
-			g.drawLine(i*64, 0, i*64, 512);
-			g.drawLine(0, i*64, 512, i*64);
-		}
-		
-		// Narisemo figure
-		for(int i=0;i<8;i++) {
-			for(int j=0;j<8;j++) {
-				if(master.dameo.stanje.get(i,j) == Polje.CrniMoz) {
-					g.setColor(Color.black);
-					g.fillOval(i*64+2, j*64+2, 60, 60);
-				}else if(master.dameo.stanje.get(i,j) == Polje.BelMoz) {
-					g.setColor(Color.WHITE);
-					g.fillOval(i*64+3, j*64+3, 58, 58);
-					g.setColor(Color.black);
-					g.drawOval(i*64+2, j*64+2, 60, 60);
-				}else if(master.dameo.stanje.get(i,j) == Polje.CrniKralj) {
-					g.setColor(Color.black);
-					g.fillOval(i*64+2, j*64+2, 60, 60);
-					g.setColor(new Color(197, 180, 48));
-					g.fillOval(i*64+8, j*64+8, 48, 48);
-					g.setColor(Color.black);
-					g.fillOval(i*64+11, j*64+11, 42, 42);
-				}else if(master.dameo.stanje.get(i,j) == Polje.BelKralj) {
-					g.setColor(Color.WHITE);
-					g.fillOval(i*64+3, j*64+3, 58, 58);
-					g.setColor(new Color(197, 180, 48));
-					g.fillOval(i*64+8, j*64+8, 48, 48);
-					g.setColor(Color.WHITE);
-					g.fillOval(i*64+11, j*64+11, 42, 42);
-					g.setColor(Color.black);
-					g.drawOval(i*64+2, j*64+2, 60, 60);
+		if (!(master.dameo == null)) {
+			// Narisemo igralno plosco
+			g.setColor(new Color(154, 97, 76));
+			for (int i = 0; i < 4; i++) {
+				for (int j = 0; j < 4; j++) {
+					g.fillRect(i * 128, 64 + j * 128, 64, 64);
+					g.fillRect(64 + i * 128, j * 128, 64, 64);
 				}
 			}
-		}
-		
-		/*
-		 * Obarvamo poteze
-		 */
-		g.setColor(Color.GREEN);
-		for(Poteza pot: obarvanePoteze) {
-			int[] xi = new int[pot.size()];
-			int[] yi = new int[pot.size()];
-			int n = 0;
-			for(int i=0; i<pot.size();i++) {
-				Lokacija lok = pot.get(i);
-				g.fillOval(lok.getX()*64 + 24, lok.getY()*64 + 24, 16, 16);
-				xi[n] = lok.getX()*64 + 32;
-				yi[n] = lok.getY()*64 + 32;
-				n++;
+			g.setColor(new Color(220, 205, 190));
+			for (int i = 0; i < 4; i++) {
+				for (int j = 0; j < 4; j++) {
+					g.fillRect(i * 128, j * 128, 64, 64);
+					g.fillRect(64 + i * 128, 64 + j * 128, 64, 64);
+				}
 			}
-			g.drawPolyline(xi, yi, n);
-		}
-		
-		// Obarvamo izbrano figuro
-		if(!(izbranaFigura == null)) {
-			g.setColor(new Color(17, 140, 183));
-			g.fillOval(izbranaFigura.getX()*64 + 24, izbranaFigura.getY()*64 + 24, 16, 16);
+			// Narisemo crte
+			g.setColor(Color.black);
+			for (int i = 1; i <= 8; i++) {
+				g.drawLine(i * 64, 0, i * 64, 512);
+				g.drawLine(0, i * 64, 512, i * 64);
+			}
+			// Narisemo figure
+			for (int i = 0; i < 8; i++) {
+				for (int j = 0; j < 8; j++) {
+					if (master.dameo.stanje.get(i, j) == Polje.CrniMoz) {
+						g.setColor(Color.black);
+						g.fillOval(i * 64 + 2, j * 64 + 2, 60, 60);
+					} else if (master.dameo.stanje.get(i, j) == Polje.BelMoz) {
+						g.setColor(Color.WHITE);
+						g.fillOval(i * 64 + 3, j * 64 + 3, 58, 58);
+						g.setColor(Color.black);
+						g.drawOval(i * 64 + 2, j * 64 + 2, 60, 60);
+					} else if (master.dameo.stanje.get(i, j) == Polje.CrniKralj) {
+						g.setColor(Color.black);
+						g.fillOval(i * 64 + 2, j * 64 + 2, 60, 60);
+						g.setColor(new Color(197, 180, 48));
+						g.fillOval(i * 64 + 8, j * 64 + 8, 48, 48);
+						g.setColor(Color.black);
+						g.fillOval(i * 64 + 11, j * 64 + 11, 42, 42);
+					} else if (master.dameo.stanje.get(i, j) == Polje.BelKralj) {
+						g.setColor(Color.WHITE);
+						g.fillOval(i * 64 + 3, j * 64 + 3, 58, 58);
+						g.setColor(new Color(197, 180, 48));
+						g.fillOval(i * 64 + 8, j * 64 + 8, 48, 48);
+						g.setColor(Color.WHITE);
+						g.fillOval(i * 64 + 11, j * 64 + 11, 42, 42);
+						g.setColor(Color.black);
+						g.drawOval(i * 64 + 2, j * 64 + 2, 60, 60);
+					}
+				}
+			}
+			/*
+			 * Obarvamo poteze
+			 */
+			g.setColor(Color.GREEN);
+			for (Poteza pot : obarvanePoteze) {
+				int[] xi = new int[pot.size()];
+				int[] yi = new int[pot.size()];
+				int n = 0;
+				for (int i = 0; i < pot.size(); i++) {
+					Lokacija lok = pot.get(i);
+					g.fillOval(lok.getX() * 64 + 24, lok.getY() * 64 + 24, 16, 16);
+					xi[n] = lok.getX() * 64 + 32;
+					yi[n] = lok.getY() * 64 + 32;
+					n++;
+				}
+				g.drawPolyline(xi, yi, n);
+			}
+			// Obarvamo izbrano figuro
+			if (!(izbranaFigura == null)) {
+				g.setColor(new Color(17, 140, 183));
+				g.fillOval(izbranaFigura.getX() * 64 + 24, izbranaFigura.getY() * 64 + 24, 16, 16);
+			} 
 		}
 	}
 	

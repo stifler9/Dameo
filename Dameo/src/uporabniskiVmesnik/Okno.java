@@ -19,14 +19,13 @@ public class Okno extends JFrame{
 	protected Igra dameo;
 	private Strateg strategCrni;
 	private Strateg strategBeli;
-
+	
 	
 	public Okno() {
 		super();
 		setTitle("Dameo");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new GridBagLayout());
-		dameo = null;
 
 		//menu 
 		//...
@@ -71,11 +70,13 @@ public class Okno extends JFrame{
 	}
 	
 	protected void klik(Lokacija lok) {
-		if(dameo.napotezi == Igralec.CRNI){
-			strategCrni.klik(lok);
-		} else if(dameo.napotezi == Igralec.BELI){
-			strategBeli.klik(lok);
-		}
+		if (!(dameo == null)) {
+			if (dameo.napotezi == Igralec.CRNI) {
+				strategCrni.klik(lok);
+			} else if (dameo.napotezi == Igralec.BELI) {
+				strategBeli.klik(lok);
+			} 
+		} else { osveziGUI();}
 	}
 	
 	protected boolean odigraj(Lokacija lok1, Lokacija lok2){
