@@ -37,54 +37,52 @@ public class Platno extends JPanel implements MouseListener{
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		if (!(master.dameo == null)) {
+			final int sirina = getBounds().width/8;
+			final int visina = getBounds().height/8;
+			
 			// Narisemo igralno plosco
 			g.setColor(new Color(154, 97, 76));
 			for (int i = 0; i < 4; i++) {
 				for (int j = 0; j < 4; j++) {
-					g.fillRect(i * 128, 64 + j * 128, 64, 64);
-					g.fillRect(64 + i * 128, j * 128, 64, 64);
+					g.fillRect(i * 2*sirina,                      visina + j * 2*visina, sirina, visina);
+					g.fillRect(sirina + i * 2*sirina, 2*visina * j,                     sirina, visina);
 				}
 			}
 			g.setColor(new Color(220, 205, 190));
 			for (int i = 0; i < 4; i++) {
 				for (int j = 0; j < 4; j++) {
-					g.fillRect(i * 128, j * 128, 64, 64);
-					g.fillRect(64 + i * 128, 64 + j * 128, 64, 64);
+					g.fillRect(i * 2*sirina,                     j * 2*visina, sirina, visina);
+					g.fillRect(sirina + i * 2*sirina, visina + j * 2*visina, sirina, visina);
 				}
 			}
-			// Narisemo crte
-			g.setColor(Color.black);
-			for (int i = 1; i <= 8; i++) {
-				g.drawLine(i * 64, 0, i * 64, 512);
-				g.drawLine(0, i * 64, 512, i * 64);
-			}
+			
 			// Narisemo figure
 			for (int i = 0; i < 8; i++) {
 				for (int j = 0; j < 8; j++) {
 					if (master.dameo.stanje.get(i, j) == Polje.CrniMoz) {
 						g.setColor(Color.black);
-						g.fillOval(i * 64 + 2, j * 64 + 2, 60, 60);
+						g.fillOval(i * sirina + sirina/32, j * visina + visina/32, sirina - sirina/16, visina - visina/16);
 					} else if (master.dameo.stanje.get(i, j) == Polje.BelMoz) {
 						g.setColor(Color.WHITE);
-						g.fillOval(i * 64 + 3, j * 64 + 3, 58, 58);
+						g.fillOval(i * sirina + sirina/32, j * visina + visina/32, sirina - sirina/16, visina - visina/16);
 						g.setColor(Color.black);
-						g.drawOval(i * 64 + 2, j * 64 + 2, 60, 60);
+						g.drawOval(i * sirina + sirina/32, j * visina + visina/32, sirina - sirina/16, visina - visina/16);
 					} else if (master.dameo.stanje.get(i, j) == Polje.CrniKralj) {
 						g.setColor(Color.black);
-						g.fillOval(i * 64 + 2, j * 64 + 2, 60, 60);
+						g.fillOval(i * sirina + sirina/32, j * visina + visina/32, sirina - sirina/16, visina - visina/16);
 						g.setColor(new Color(197, 180, 48));
-						g.fillOval(i * 64 + 8, j * 64 + 8, 48, 48);
+						g.fillOval(i * sirina + sirina/6, j * visina + visina/6, sirina - sirina/3, visina - visina/3);
 						g.setColor(Color.black);
-						g.fillOval(i * 64 + 11, j * 64 + 11, 42, 42);
+						g.fillOval(i * sirina + sirina/4, j * visina + visina/4, sirina - sirina/2, visina - visina/2);
 					} else if (master.dameo.stanje.get(i, j) == Polje.BelKralj) {
 						g.setColor(Color.WHITE);
-						g.fillOval(i * 64 + 3, j * 64 + 3, 58, 58);
+						g.fillOval(i * sirina + sirina/32, j * visina + visina/32, sirina - sirina/16, visina - visina/16);
 						g.setColor(new Color(197, 180, 48));
-						g.fillOval(i * 64 + 8, j * 64 + 8, 48, 48);
+						g.fillOval(i * sirina + sirina/6, j * visina + visina/6, sirina - sirina/3, visina - visina/3);
 						g.setColor(Color.WHITE);
-						g.fillOval(i * 64 + 11, j * 64 + 11, 42, 42);
+						g.fillOval(i * sirina + sirina/4, j * visina + visina/4, sirina - sirina/2, visina - visina/2);
 						g.setColor(Color.black);
-						g.drawOval(i * 64 + 2, j * 64 + 2, 60, 60);
+						g.drawOval(i * sirina + sirina/32, j * visina + visina/32, sirina - sirina/16, visina - visina/16);
 					}
 				}
 			}
@@ -98,9 +96,9 @@ public class Platno extends JPanel implements MouseListener{
 				int n = 0;
 				for (int i = 0; i < pot.size(); i++) {
 					Lokacija lok = pot.get(i);
-					g.fillOval(lok.getX() * 64 + 24, lok.getY() * 64 + 24, 16, 16);
-					xi[n] = lok.getX() * 64 + 32;
-					yi[n] = lok.getY() * 64 + 32;
+					g.fillOval(lok.getX() * sirina + 3*sirina/8, lok.getY() * visina + 3*visina/8, sirina/4, visina/4);
+					xi[n] = lok.getX() * sirina + sirina/2;
+					yi[n] = lok.getY() * visina + visina/2;
 					n++;
 				}
 				g.drawPolyline(xi, yi, n);
@@ -108,7 +106,7 @@ public class Platno extends JPanel implements MouseListener{
 			// Obarvamo izbrano figuro
 			if (!(izbranaFigura == null)) {
 				g.setColor(new Color(17, 140, 183));
-				g.fillOval(izbranaFigura.getX() * 64 + 24, izbranaFigura.getY() * 64 + 24, 16, 16);
+				g.fillOval(izbranaFigura.getX() * sirina + 3*sirina/8, izbranaFigura.getY() * visina + 3*visina/8, sirina/4, visina/4);
 			} 
 		}
 	}
@@ -153,7 +151,7 @@ public class Platno extends JPanel implements MouseListener{
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		master.klik(new Lokacija(e.getX()/64, e.getY()/64));
+		master.klik(new Lokacija(e.getX()/(getBounds().width/8), e.getY()/(getBounds().height/8)));
 	}
 
 	@Override
