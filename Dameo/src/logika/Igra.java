@@ -13,11 +13,6 @@ public class Igra {
 		nujnost = null;
 	}
 	
-	private static int abs(int x){
-		if(x>=0){
-			return x;
-		}else{return -x;}
-	}
 	/*
 	 * Figuro na mestu lok1 premaknemo na lok2
 	 * (Igramo 1 SKOK naenkrat)
@@ -41,19 +36,14 @@ public class Igra {
 				/*
 				 * naredimo enostavno potezo (1 skok, kjer ne jemo).
 				 */
-				stanje.narediPotezo(lok1.getX(), lok1.getY(), lok2.getX(), lok2.getY());
+				stanje.narediEnostavno(lok1.getX(), lok1.getY(), lok2.getX(), lok2.getY());
 				if(napotezi == Igralec.BELI){napotezi = Igralec.CRNI;}else{napotezi=Igralec.BELI;}
 			}else{
 				/*
 				 * Ce je kralj jedel, moramo pojesti tistega, ki je eno polje pred lok2.
 				 */
-				int dolzina;
-				if(lok2.getX() - lok1.getX() == 0){
-					dolzina = abs(lok2.getY() - lok1.getY());
-				}else{dolzina = abs(lok2.getX() - lok1.getX());}
-				
-				int[] smer = {(lok2.getX() - lok1.getX())/dolzina, (lok2.getY() - lok1.getY())/dolzina};
-				stanje.narediPotezo(lok1.getX(), lok1.getY(), lok2.getX() - smer[0], lok2.getY() - smer[1], lok2.getX(), lok2.getY());
+
+				stanje.narediSkok(lok1.getX(), lok1.getY(), lok2.getX(), lok2.getY());
 
 				if(maks > 2){
 					nujnost = lok2;
@@ -82,10 +72,18 @@ public class Igra {
 		}
 		return ali;
 	}
+	
+	public boolean odigrajPotezo(Poteza pot) {
+		for(int i = 1; i<pot.size(); i++) {
+			if(!(odigraj(pot.get(i-1), pot.get(i)))){
+				return false;
+			}
+		}
+		return true;
+	}
 	/*
 	 * Poteze kjer lahko figura je'.
 	 */
-	
 	public LinkedList<Poteza> generirajPoteze(){
 		LinkedList<Poteza> f = new LinkedList<Poteza>();
 		int maks = 2;
@@ -295,7 +293,7 @@ public class Igra {
 							set.add(nova);
 						}else{
 							//Naredimo potezo na matriki in si zapomnemo koga smo pojedli:
-							Polje pojeden = stanje.narediPotezo(x, y, x + xy[0], y + xy[1], x + 2*xy[0], y + 2*xy[1]);
+							Polje pojeden = stanje.narediSkok(x, y, x + 2*xy[0], y + 2*xy[1]);
 							
 							Poteza nova = new Poteza();
 							nova = pot.clone();
@@ -309,7 +307,7 @@ public class Igra {
 							}
 							
 							//razveljavimo:
-							stanje.razveljaviPotezo(x, y, x + xy[0], y + xy[1], x + 2*xy[0], y + 2*xy[1], pojeden);
+							stanje.razveljaviSkok(x, y, x + 2*xy[0], y + 2*xy[1], pojeden);
 						}
 					}
 				}
@@ -346,7 +344,7 @@ public class Igra {
 							set.add(nova);
 						}else{
 							//Naredimo potezo na matriki in si zapomnemo koga smo pojedli:
-							Polje pojeden = stanje.narediPotezo(x, y, x + xy[0], y + xy[1], x + 2*xy[0], y + 2*xy[1]);
+							Polje pojeden = stanje.narediSkok(x, y, x + 2*xy[0], y + 2*xy[1]);
 							
 							Poteza nova = new Poteza();
 							nova = pot.clone();
@@ -359,7 +357,7 @@ public class Igra {
 								set.add(poteza);
 							}
 							//razveljavimo:
-							stanje.razveljaviPotezo(x, y, x + xy[0], y + xy[1], x + 2*xy[0], y + 2*xy[1], pojeden);
+							stanje.razveljaviSkok(x, y, x + 2*xy[0], y + 2*xy[1], pojeden);
 						}
 					}
 				}
@@ -392,7 +390,7 @@ public class Igra {
 							lahkoje = true;
 							
 							//Naredimo potezo na matriki in si zapomnemo koga smo pojedli:
-							Polje pojeden = stanje.narediPotezo(x, y, x + (k-1)*xy[0], y + (k-1)*xy[1], x + k*xy[0], y + k*xy[1]);
+							Polje pojeden = stanje.narediSkok(x, y, x + k*xy[0], y + k*xy[1]);
 
 							Poteza nova = new Poteza();
 							nova = pot.clone();
@@ -405,7 +403,7 @@ public class Igra {
 								set.add(poteza);
 							}
 							//razveljavimo:
-							stanje.razveljaviPotezo(x, y, x + (k-1)*xy[0], y + (k-1)*xy[1], x + k*xy[0], y + k*xy[1], pojeden);
+							stanje.razveljaviSkok(x, y, x + k*xy[0], y + k*xy[1], pojeden);
 							stikalo = false;
 					}else if(!(stanje.get(x + (k-1)*xy[0],y + (k-1)*xy[1]) == Polje.Prazno)) {stikalo = false;}
 					k++;
@@ -440,7 +438,7 @@ public class Igra {
 							lahkoje = true;
 							
 							//Naredimo potezo na matriki in si zapomnemo koga smo pojedli:
-							Polje pojeden = stanje.narediPotezo(x, y, x + (k-1)*xy[0], y + (k-1)*xy[1], x + k*xy[0], y + k*xy[1]);
+							Polje pojeden = stanje.narediSkok(x, y, x + k*xy[0], y + k*xy[1]);
 							
 							Poteza nova = new Poteza();
 							nova = pot.clone();
@@ -453,7 +451,7 @@ public class Igra {
 								set.add(poteza);
 							}
 							//razveljavimo:
-							stanje.razveljaviPotezo(x, y, x + (k-1)*xy[0], y + (k-1)*xy[1], x + k*xy[0], y + k*xy[1], pojeden);
+							stanje.razveljaviSkok(x, y, x + k*xy[0], y + k*xy[1], pojeden);
 							stikalo = false;
 					}else if(!(stanje.get(x + (k-1)*xy[0],y + (k-1)*xy[1]) == Polje.Prazno)) {stikalo = false;}
 					k++;

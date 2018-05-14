@@ -24,26 +24,47 @@ public class Stanje {
 		}
 	}
 	
-	public Polje narediPotezo(int x1,int y1,int x2,int y2,int x3,int y3) {
-		matrika[y3][x3] = matrika[y1][x1];
-		Polje polje = matrika[y2][x2];
-		matrika[y2][x2] = Polje.Prazno;
+	private static int abs(int x){
+		if(x>=0){
+			return x;
+		}else{return -x;}
+	}
+	
+	protected Polje narediSkok(int x1,int y1,int x2,int y2) {
+		
+		int dolzina;
+		if(x2 - x1 == 0){
+			dolzina = abs(y2 - y1);
+		}else{dolzina = abs(x2 - x1);}
+		
+		int[] smer = {(x2 - x1)/dolzina, (y2 - y1)/dolzina};
+		
+		matrika[y2][x2] = matrika[y1][x1];
+		Polje polje = matrika[y2 - smer[1]][x2 - smer[0]];
+		matrika[y2 - smer[1]][x2 - smer[0]] = Polje.Prazno;
 		matrika[y1][x1] = Polje.Prazno;
 		return polje;
 	}
 	
-	public void narediPotezo(int x1, int y1, int x2, int y2) {
+	protected void narediEnostavno(int x1, int y1, int x2, int y2) {
 		matrika[y2][x2] = matrika[y1][x1];
 		matrika[y1][x1] = Polje.Prazno;
 	}
 	
-	public void razveljaviPotezo(int x1,int y1,int x2,int y2,int x3,int y3, Polje pojeden) {
-		matrika[y1][x1] = matrika[y3][x3];
-		matrika[y2][x2] = pojeden;
-		matrika[y3][x3] = Polje.Prazno;
+	protected void razveljaviSkok(int x1,int y1,int x2,int y2, Polje pojeden) {
+		int dolzina;
+		if(x2 - x1 == 0){
+			dolzina = abs(y2 - y1);
+		}else{dolzina = abs(x2 - x1);}
+		
+		int[] smer = {(x2 - x1)/dolzina, (y2 - y1)/dolzina};
+		
+		matrika[y1][x1] = matrika[y2][x2];
+		matrika[y2 - smer[1]][x2 - smer[0]] = pojeden;
+		matrika[y2][x2] = Polje.Prazno;
 	}
 	
-	public void mozjeVKralje() {
+	protected void mozjeVKralje() {
 		for(int i = 0; i<8; i++){
 			if(matrika[7][i] == Polje.CrniMoz){
 				matrika[7][i] = Polje.CrniKralj;
