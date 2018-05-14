@@ -3,9 +3,14 @@ package uporabniskiVmesnik;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 import logika.Igra;
 import logika.Igralec;
@@ -13,12 +18,14 @@ import logika.Lokacija;
 
 
 @SuppressWarnings("serial")
-public class Okno extends JFrame{
+public class Okno extends JFrame implements ActionListener{
 	protected Platno platno;
 	private JLabel status;
 	protected Igra dameo;
 	private Strateg strategCrni;
 	private Strateg strategBeli;
+	
+	private JMenuItem igraClovekClovek;
 	
 	
 	public Okno() {
@@ -28,7 +35,15 @@ public class Okno extends JFrame{
 		setLayout(new GridBagLayout());
 
 		//menu 
-		//...
+		JMenuBar menu_bar = new JMenuBar();
+		this.setJMenuBar(menu_bar);
+		JMenu igra_menu = new JMenu("Igra");
+		menu_bar.add(igra_menu);
+		
+		//Igra Èlovek-èlovek
+		igraClovekClovek = new JMenuItem("Èlovek – èlovek");
+		igra_menu.add(igraClovekClovek);
+		igraClovekClovek.addActionListener(this);
 		
 		//platno
 		platno = new Platno(this);
@@ -51,16 +66,16 @@ public class Okno extends JFrame{
 		getContentPane().add(status, statusLayout);
 		
 		//zaènemo novo igro
-		novaIgra();
+		novaIgra(new Clovek(this), new Clovek(this));
 	}
 	
-	private void novaIgra(){
+	private void novaIgra(Strateg beli, Strateg crni){
 		if(strategCrni != null){ strategCrni.prekini();}
 		if(strategBeli != null){ strategBeli.prekini();}
 
 		dameo = new Igra();
-		strategCrni = new Clovek(this);
-		strategBeli = new Clovek(this);
+		strategBeli = beli;
+		strategCrni = crni;
 		if(dameo.napotezi == Igralec.CRNI){
 			strategCrni.naPotezi();
 		} else if(dameo.napotezi == Igralec.BELI){
@@ -102,6 +117,16 @@ public class Okno extends JFrame{
 			}
 		}
 		platno.repaint();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if (e.getSource() == igraClovekClovek) {
+			novaIgra(new Clovek(this),
+			         new Clovek(this));
+		}
+		
 	}
 
 }
