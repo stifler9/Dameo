@@ -116,7 +116,7 @@ public class Platno extends JPanel implements MouseListener{
 					dodaj = true;
 				}
 			}
-			if(dodaj) {izbranaFigura = lokacija;}
+			if(dodaj){izbranaFigura = lokacija;}
 		}else {
 			if(lokacija.equals(izbranaFigura)) {
 				if(master.dameo.nujnost == null) {

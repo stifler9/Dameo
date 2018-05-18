@@ -13,6 +13,14 @@ public class Igra {
 		nujnost = null;
 	}
 	
+	public Igra clone() {
+		Igra nova = new Igra();
+		nova.stanje = this.stanje;
+		nova.napotezi = this.napotezi;
+		nova.nujnost = this.nujnost;
+		return nova;
+	}
+	
 	/*
 	 * Figuro na mestu lok1 premaknemo na lok2
 	 * (Igramo 1 SKOK naenkrat)

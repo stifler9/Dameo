@@ -94,12 +94,18 @@ public class Okno extends JFrame implements ActionListener{
 		} else { osveziGUI();}
 	}
 	
+	public void veljavenKlik(Lokacija lok) {
+		platno.veljavenKlik(lok);
+	}
+	
 	protected boolean odigraj(Lokacija lok1, Lokacija lok2){
 		boolean ali = dameo.odigraj(lok1, lok2);
-		if(dameo.napotezi == Igralec.CRNI){
-			strategCrni.naPotezi();
-		} else if(dameo.napotezi == Igralec.BELI){
-			strategBeli.naPotezi();
+		if (dameo.nujnost == null) {
+			if (dameo.napotezi == Igralec.CRNI) {
+				strategCrni.naPotezi();
+			} else if (dameo.napotezi == Igralec.BELI) {
+				strategBeli.naPotezi();
+			} 
 		}
 		return ali;
 	}
@@ -127,6 +133,10 @@ public class Okno extends JFrame implements ActionListener{
 			         new Clovek(this));
 		}
 		
+	}
+	
+	public Igra copyIgra() {
+		return dameo.clone();
 	}
 
 }

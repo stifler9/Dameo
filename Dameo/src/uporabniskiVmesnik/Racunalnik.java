@@ -1,24 +1,34 @@
 package uporabniskiVmesnik;
 
+import javax.swing.SwingWorker;
+
+import intiligenca.Minimax;
+import logika.Igralec;
 import logika.Lokacija;
+import logika.Poteza;
 
 public class Racunalnik extends Strateg{
 	private Okno master;
+	private Igralec jaz;
+	private SwingWorker<Poteza,Object> mislec;
 	
-	public Racunalnik(Okno master){
+	
+	public Racunalnik(Okno master, Igralec jaz){
 		this.master = master;
+		this.jaz = jaz;
 	}
 	
 	@Override
 	protected void naPotezi() {
-		// TODO Auto-generated method stub
-		
+		mislec = new Minimax(master, 4, jaz);
+		mislec.execute();
 	}
 
 	@Override
 	protected void prekini() {
-		// TODO Auto-generated method stub
-		
+		if (mislec != null) {
+			mislec.cancel(true);
+		}
 	}
 
 	@Override
