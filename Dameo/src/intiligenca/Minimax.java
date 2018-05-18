@@ -24,35 +24,25 @@ public class Minimax extends SwingWorker<Poteza, Object>{
 	protected Poteza doInBackground() throws Exception {
 		Igra trenutna = master.copyIgra();
 		
-		//Naredimo listo potez in iger, ki sledijo tem potezam
-		LinkedList<Poteza> moznePoteze = trenutna.generirajPoteze();
-		Igra[] igrePotez = new Igra[moznePoteze.size()];
-		for(int i = 0; i < moznePoteze.size(); i++) {
-			Igra dodana = trenutna.clone();
-			dodana.odigrajPotezo(moznePoteze.get(i));
-			igrePotez[i] = dodana;
-		}
-		
-		//Naraèunamo ocene za igrePotez
-		double[] ocene = new double[moznePoteze.size()];
-		
-		//Ce smo sploh poklicali misleca, je nekdo na vrsti
-		int pomnozi = -1;
+		//Ce smo sploh poklicali misleca, je nekdo na vrsti (beli ali crni)
+		// Ocena je za belega, za èrnega je - ocena belega.
+		int pomnozi = -1; // Ce je na vrsti crni
 		if(jaz == Igralec.BELI) {pomnozi = 1;}
 		
-		for(int i = 0; i < moznePoteze.size(); i++) {
-			ocene[i] = pomnozi*minimaksBelega(igrePotez[i], 0);
-		}
-		
-		//Pogledamo, katera ocena nam je najboljsa in vrnemo to potezo
 		Poteza najboljsa = null;
 		double ocena = Ocena.PORAZ;
-		for(int i = 0; i < moznePoteze.size(); i++) {
-			if(ocene[i] > ocena) {
-				najboljsa = moznePoteze.get(i);
+		
+		//Pogledamo ocene po odigranih moznih potezah,
+		// najboljsa poteza je tista, ki da najboljso oceno
+		for(Poteza poteza: trenutna.generirajPoteze()) {
+			Igra poTejPotezi = trenutna.clone();
+			poTejPotezi.odigrajPotezo(poteza);
+			double novaOcena = pomnozi*minimaksBelega(poTejPotezi, 0);
+			if(novaOcena >= ocena) {
+				ocena = novaOcena;
+				najboljsa = poteza;
 			}
 		}
-		
 		return najboljsa;
 	}
 	
@@ -81,9 +71,8 @@ public class Minimax extends SwingWorker<Poteza, Object>{
 			return Ocena.trdaOcena(igra);
 		}else {
 			if(igra.napotezi == Igralec.BELI) {
-				LinkedList<Poteza> moznePoteze = igra.generirajPoteze();
 				double ocena = Ocena.PORAZ;
-				for(Poteza poteza: moznePoteze) {
+				for(Poteza poteza: igra.generirajPoteze()) {
 					Igra naslednja = igra.clone();
 					naslednja.odigrajPotezo(poteza);
 					double novaocena = minimaksBelega(naslednja, g+1);
@@ -93,9 +82,8 @@ public class Minimax extends SwingWorker<Poteza, Object>{
 				}
 				return ocena;
 			}else if(igra.napotezi == Igralec.CRNI) {
-				LinkedList<Poteza> moznePoteze = igra.generirajPoteze();
 				double ocena = Ocena.ZMAGA;
-				for(Poteza poteza: moznePoteze) {
+				for(Poteza poteza: igra.generirajPoteze()) {
 					Igra naslednja = igra.clone();
 					naslednja.odigrajPotezo(poteza);
 					double novaocena = minimaksBelega(naslednja, g+1);

@@ -61,22 +61,22 @@ public class Platno extends JPanel implements MouseListener{
 				for (int j = 0; j < 8; j++) {
 					if (master.dameo.stanje.get(i, j) == Polje.CrniMoz) {
 						g.setColor(Color.black);
-						g.fillOval(i * sirina + sirina/32, j * visina + visina/32, sirina - sirina/16, visina - visina/16);
+						g.fillOval(i * sirina + sirina/32, j * visina + visina/32, sirina - 2*(sirina/32), visina - 2*(visina/32));
 					} else if (master.dameo.stanje.get(i, j) == Polje.BelMoz) {
 						g.setColor(Color.WHITE);
-						g.fillOval(i * sirina + sirina/32, j * visina + visina/32, sirina - sirina/16, visina - visina/16);
+						g.fillOval(i * sirina + sirina/32, j * visina + visina/32, sirina - 2*(sirina/32), visina - 2*(visina/32));
 					} else if (master.dameo.stanje.get(i, j) == Polje.CrniKralj) {
 						g.setColor(Color.black);
-						g.fillOval(i * sirina + sirina/32, j * visina + visina/32, sirina - sirina/16, visina - visina/16);
+						g.fillOval(i * sirina + sirina/32, j * visina + visina/32, sirina - 2*(sirina/32), visina - 2*(visina/32));
 						g.setColor(new Color(197, 180, 48));
-						g.fillOval(i * sirina + sirina/8, j * visina + visina/8, sirina - sirina/4, visina - visina/4);
+						g.fillOval(i * sirina + sirina/8, j * visina + visina/8, sirina - 2*(sirina/8), visina - 2*(visina/8));
 						g.setColor(Color.black);
 						g.fillOval(i * sirina + sirina/6, j * visina + visina/6, sirina - 2*(sirina/6), visina - 2*(visina/6));
 					} else if (master.dameo.stanje.get(i, j) == Polje.BelKralj) {
 						g.setColor(Color.WHITE);
-						g.fillOval(i * sirina + sirina/32, j * visina + visina/32, sirina - sirina/16, visina - visina/16);
+						g.fillOval(i * sirina + sirina/32, j * visina + visina/32, sirina - 2*(sirina/32), visina - 2*(visina/32));
 						g.setColor(new Color(197, 180, 48));
-						g.fillOval(i * sirina + sirina/8, j * visina + visina/8, sirina - sirina/4, visina - visina/4);
+						g.fillOval(i * sirina + sirina/8, j * visina + visina/8, sirina - 2*(sirina/8), visina - 2*(visina/8));
 						g.setColor(Color.WHITE);
 						g.fillOval(i * sirina + sirina/6, j * visina + visina/6, sirina - 2*(sirina/6), visina - 2*(visina/6));
 					}
@@ -92,7 +92,7 @@ public class Platno extends JPanel implements MouseListener{
 				int n = 0;
 				for (int i = 0; i < pot.size(); i++) {
 					Lokacija lok = pot.get(i);
-					g.fillOval(lok.getX() * sirina + 3*sirina/8, lok.getY() * visina + 3*visina/8, sirina/4, visina/4);
+					g.fillOval(lok.getX() * sirina + 3*sirina/8, lok.getY() * visina + 3*visina/8, 2*(sirina/8), 2*(visina/8));
 					xi[n] = lok.getX() * sirina + sirina/2;
 					yi[n] = lok.getY() * visina + visina/2;
 					n++;
@@ -102,7 +102,7 @@ public class Platno extends JPanel implements MouseListener{
 			// Obarvamo izbrano figuro
 			if (!(izbranaFigura == null)) {
 				g.setColor(new Color(17, 140, 183));
-				g.fillOval(izbranaFigura.getX() * sirina + 3*sirina/8, izbranaFigura.getY() * visina + 3*visina/8, sirina/4, visina/4);
+				g.fillOval(izbranaFigura.getX() * sirina + 3*sirina/8, izbranaFigura.getY() * visina + 3*visina/8, 2*(sirina/8), 2*(visina/8));
 			} 
 		}
 	}

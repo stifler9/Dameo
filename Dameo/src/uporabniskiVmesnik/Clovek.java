@@ -20,6 +20,6 @@ public class Clovek extends Strateg {
 	@Override
 	protected void klik(Lokacija lok){
 		// TODO Auto-generated method stub
-		master.platno.veljavenKlik(lok);
+		master.veljavenKlik(lok);
 	}
 }
