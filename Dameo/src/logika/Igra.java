@@ -13,10 +13,13 @@ public class Igra {
 		nujnost = null;
 	}
 	
+	/*
+	 * Igro bom vedno kopiral, ko bo nujnost = null.
+	 */
 	public Igra(Igra igra) {
 		stanje = new Stanje(igra.stanje);
 		this.napotezi = igra.napotezi;
-		this.nujnost = igra.nujnost;
+		this.nujnost = null;
 	}
 	
 	/*
@@ -79,13 +82,30 @@ public class Igra {
 		return ali;
 	}
 	
-	public boolean odigrajPotezo(Poteza pot) {
-		for(int i = 1; i<pot.size(); i++) {
-			if(!(odigraj(pot.get(i-1), pot.get(i)))){
-				return false;
+	/*
+	 * Pomozna metoda za misleca (uporabljam na kopiji igre):
+	 * 
+	 * Poteza je že veljavna,
+	 * nujnost bo ves èas null
+	 * na koncu zamenjamo IgralecIgre naPotezi.
+	 */
+	public void odigrajPotezo(Poteza pot) {
+		if(pot.enostavnost) {
+			stanje.narediEnostavno(pot.getX(0), pot.getY(0), pot.getX(1), pot.getY(1));
+		}else {
+			for(int i = 1; i<pot.size(); i++) {
+				stanje.narediSkok(pot.getX(i-1), pot.getY(i-1), pot.getX(i), pot.getY(i));
 			}
 		}
-		return true;
+		if(napotezi == IgralecIgre.BELI){napotezi = IgralecIgre.CRNI;}else{napotezi=IgralecIgre.BELI;}
+		
+		if(generirajPoteze().isEmpty()){
+			if(napotezi == IgralecIgre.BELI){
+				napotezi = IgralecIgre.ZMAGACRNI;
+			}else{
+				napotezi = IgralecIgre.ZMAGABELI;
+			}
+		}
 	}
 	/*
 	 * Poteze kjer lahko figura je'.

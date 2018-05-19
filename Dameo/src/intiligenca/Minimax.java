@@ -76,7 +76,17 @@ public class Minimax extends SwingWorker<Poteza, Object>{
 				for(Poteza poteza: igra.generirajPoteze()) {
 					Igra naslednja = new Igra(igra);
 					naslednja.odigrajPotezo(poteza);
-					int novaocena = minimaksBelega(naslednja, g+1);
+					int novaocena;
+					
+					/*
+					 * Enostavnih potez je vec, zato pri enostavnih povecujemo g, ki gre do globine,
+					 * pri potezah s skoki, pa globine ne povecamo.
+					 */
+					if(poteza.enostavnost) {
+						novaocena = minimaksBelega(naslednja, g+1);
+					}else {
+						novaocena = minimaksBelega(naslednja, g);
+					}
 					if(novaocena > ocena) {
 						ocena = novaocena;
 					}
@@ -87,7 +97,17 @@ public class Minimax extends SwingWorker<Poteza, Object>{
 				for(Poteza poteza: igra.generirajPoteze()) {
 					Igra naslednja = new Igra(igra);
 					naslednja.odigrajPotezo(poteza);
-					int novaocena = minimaksBelega(naslednja, g+1);
+					int novaocena;
+					
+					/*
+					 * Enostavnih potez je vec, zato pri enostavnih povecujemo g, ki gre do globine,
+					 * pri potezah s skoki, pa globine ne povecamo.
+					 */
+					if(poteza.enostavnost) {
+						novaocena = minimaksBelega(naslednja, g+1);
+					}else {
+						novaocena = minimaksBelega(naslednja, g);
+					}
 					if(novaocena < ocena) {
 						ocena = novaocena;
 					}
