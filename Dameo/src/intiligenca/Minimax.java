@@ -71,8 +71,8 @@ public class Minimax extends SwingWorker<Poteza, Object>{
 			return Ocena.PORAZ;
 		}
 		if(g >= globina) {
-			// TrdaOcena naj bo za boljšo oceno narejena, ko se ve, da so naslednje poteze mozne enostavne.
 			
+			// TrdaOcena naj bo za boljšo oceno narejena, ko se ve, da so naslednje poteze mozne enostavne.
 			LinkedList<Poteza> moznosti = igra.generirajPoteze();
 			if (moznosti.get(0).enostavnost) {
 				return Ocena.trdaOcena(igra.stanje);
