@@ -1,12 +1,11 @@
 package intiligenca;
 
-import java.util.LinkedList;
-
 import javax.swing.SwingWorker;
 
 import logika.Igra;
-import logika.Igralec;
+import logika.IgralecIgre;
 import logika.Poteza;
+import uporabniskiVmesnik.Igralec;
 import uporabniskiVmesnik.Okno;
 
 public class Minimax extends SwingWorker<Poteza, Object>{
@@ -30,19 +29,20 @@ public class Minimax extends SwingWorker<Poteza, Object>{
 		if(jaz == Igralec.BELI) {pomnozi = 1;}
 		
 		Poteza najboljsa = null;
-		double ocena = Ocena.PORAZ;
+		int ocena = Ocena.PORAZ;
 		
 		//Pogledamo ocene po odigranih moznih potezah,
 		// najboljsa poteza je tista, ki da najboljso oceno
 		for(Poteza poteza: trenutna.generirajPoteze()) {
-			Igra poTejPotezi = trenutna.clone();
+			Igra poTejPotezi = new Igra(trenutna);
 			poTejPotezi.odigrajPotezo(poteza);
-			double novaOcena = pomnozi*minimaksBelega(poTejPotezi, 0);
+			int novaOcena = pomnozi*minimaksBelega(poTejPotezi, 0);
 			if(novaOcena >= ocena) {
 				ocena = novaOcena;
 				najboljsa = poteza;
 			}
 		}
+		assert(najboljsa != null);
 		return najboljsa;
 	}
 	
@@ -51,42 +51,43 @@ public class Minimax extends SwingWorker<Poteza, Object>{
 		try {
 			Poteza p = this.get();
 			if (p != null) { 
-				for(int i = 0; i < p.size(); i++) {
-					Thread.sleep(1000);
+				master.veljavenKlik(p.get(0));
+				for(int i = 1; i < p.size(); i++) {
+					//Thread.sleep(1000);
 					master.veljavenKlik(p.get(i));
 				}
 			}
 		} catch (Exception e) {
-		}
+		} 
 	}
 	
-	private double minimaksBelega(Igra igra, int g) {
-		if(igra.napotezi == Igralec.ZMAGABELI) {
+	private int minimaksBelega(Igra igra, int g) {
+		if(igra.napotezi == IgralecIgre.ZMAGABELI) {
 			return Ocena.ZMAGA;
 		}
-		if(igra.napotezi == Igralec.ZMAGACRNI) {
+		if(igra.napotezi == IgralecIgre.ZMAGACRNI) {
 			return Ocena.PORAZ;
 		}
 		if(g >= globina) {
-			return Ocena.trdaOcena(igra);
+			return Ocena.trdaOcena(igra.stanje);
 		}else {
-			if(igra.napotezi == Igralec.BELI) {
-				double ocena = Ocena.PORAZ;
+			if(igra.napotezi == IgralecIgre.BELI) {
+				int ocena = Ocena.PORAZ;
 				for(Poteza poteza: igra.generirajPoteze()) {
-					Igra naslednja = igra.clone();
+					Igra naslednja = new Igra(igra);
 					naslednja.odigrajPotezo(poteza);
-					double novaocena = minimaksBelega(naslednja, g+1);
+					int novaocena = minimaksBelega(naslednja, g+1);
 					if(novaocena > ocena) {
 						ocena = novaocena;
 					}
 				}
 				return ocena;
-			}else if(igra.napotezi == Igralec.CRNI) {
-				double ocena = Ocena.ZMAGA;
+			}else{
+				int ocena = Ocena.ZMAGA;
 				for(Poteza poteza: igra.generirajPoteze()) {
-					Igra naslednja = igra.clone();
+					Igra naslednja = new Igra(igra);
 					naslednja.odigrajPotezo(poteza);
-					double novaocena = minimaksBelega(naslednja, g+1);
+					int novaocena = minimaksBelega(naslednja, g+1);
 					if(novaocena < ocena) {
 						ocena = novaocena;
 					}

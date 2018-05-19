@@ -24,6 +24,15 @@ public class Stanje {
 		}
 	}
 	
+	public Stanje(Stanje stanje) {
+		matrika = new Polje[8][8];
+		for(int i=0; i<8;i++) {
+			for(int j=0; j<8;j++) {
+				matrika[i][j] = stanje.matrika[i][j];
+			}
+		}
+	}
+	
 	private static int abs(int x){
 		if(x>=0){
 			return x;
@@ -75,7 +84,7 @@ public class Stanje {
 		}
 	}
 	
-	public Polje get(int x, int y){
+	public Polje get(int x, int y) throws ArrayIndexOutOfBoundsException{
 		return matrika[y][x];
 	}
 }

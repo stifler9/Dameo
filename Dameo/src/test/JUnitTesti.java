@@ -42,7 +42,7 @@ public class JUnitTesti {
 
 		dameo.odigraj(lok7, lok8);
 		//preverimo, ce po tem, ce odigra napacno potezo, še zmeraj ostane isti na potezi
-		Igralec igralec = dameo.napotezi;
+		IgralecIgre igralec = dameo.napotezi;
 		
 		Lokacija lok9 = new Lokacija(6,6);
 		Lokacija lok10 = new Lokacija(3,3);

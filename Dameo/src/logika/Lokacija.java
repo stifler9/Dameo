@@ -20,4 +20,5 @@ public class Lokacija {
 	public int getY() {
 		return y;
 	}
+	
 }

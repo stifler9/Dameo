@@ -1,6 +1,6 @@
 package logika;
 
-public enum Igralec {
+public enum IgralecIgre {
 	BELI,
 	CRNI,
 	ZMAGABELI,

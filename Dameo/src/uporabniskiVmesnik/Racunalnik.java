@@ -3,7 +3,6 @@ package uporabniskiVmesnik;
 import javax.swing.SwingWorker;
 
 import intiligenca.Minimax;
-import logika.Igralec;
 import logika.Lokacija;
 import logika.Poteza;
 
@@ -20,7 +19,7 @@ public class Racunalnik extends Strateg{
 	
 	@Override
 	protected void naPotezi() {
-		mislec = new Minimax(master, 4, jaz);
+		mislec = new Minimax(master, 2, jaz);
 		mislec.execute();
 	}
 
