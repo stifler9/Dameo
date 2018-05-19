@@ -1,6 +1,7 @@
 package intiligenca;
 
 import java.util.LinkedList;
+import java.util.Random;
 
 import javax.swing.SwingWorker;
 
@@ -30,7 +31,7 @@ public class Minimax extends SwingWorker<Poteza, Object>{
 		int pomnozi = -1; // Ce je na vrsti crni
 		if(jaz == Igralec.BELI) {pomnozi = 1;}
 		
-		Poteza najboljsa = null;
+		LinkedList<Poteza> najboljse = new LinkedList<Poteza>();
 		int ocena = Ocena.PORAZ;
 		
 		//Pogledamo ocene po odigranih moznih potezah,
@@ -39,13 +40,16 @@ public class Minimax extends SwingWorker<Poteza, Object>{
 			Igra poTejPotezi = new Igra(trenutna);
 			poTejPotezi.odigrajPotezo(poteza);
 			int novaOcena = pomnozi*minimaksBelega(poTejPotezi, 0);
-			if(novaOcena >= ocena) {
+			if(novaOcena > ocena) {
 				ocena = novaOcena;
-				najboljsa = poteza;
+				najboljse.clear();
+				najboljse.add(poteza);
 			}
 		}
-		assert(najboljsa != null);
-		return najboljsa;
+		
+		assert(!najboljse.isEmpty());
+		Random x = new Random();
+		return najboljse.get(x.nextInt(najboljse.size()));
 	}
 	
 	@Override

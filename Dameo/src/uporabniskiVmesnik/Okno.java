@@ -19,7 +19,7 @@ import logika.Lokacija;
 
 @SuppressWarnings("serial")
 public class Okno extends JFrame implements ActionListener{
-	protected Platno platno;
+	private Platno platno;
 	private JLabel status;
 	protected Igra dameo;
 	private Strateg strategCrni;
