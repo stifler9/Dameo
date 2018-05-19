@@ -1,5 +1,7 @@
 package intiligenca;
 
+import java.util.LinkedList;
+
 import javax.swing.SwingWorker;
 
 import logika.Igra;
@@ -69,7 +71,38 @@ public class Minimax extends SwingWorker<Poteza, Object>{
 			return Ocena.PORAZ;
 		}
 		if(g >= globina) {
-			return Ocena.trdaOcena(igra.stanje);
+			// TrdaOcena naj bo za boljšo oceno narejena, ko se ve, da so naslednje poteze mozne enostavne.
+			
+			LinkedList<Poteza> moznosti = igra.generirajPoteze();
+			if (moznosti.get(0).enostavnost) {
+				return Ocena.trdaOcena(igra.stanje);
+			}else {
+				if(igra.napotezi == IgralecIgre.BELI) {
+					int ocena = Ocena.PORAZ;
+					for(Poteza poteza: moznosti) {
+						Igra naslednja = new Igra(igra);
+						naslednja.odigrajPotezo(poteza);
+						
+						int novaocena = minimaksBelega(naslednja, g);
+						if(novaocena > ocena) {
+							ocena = novaocena;
+						}
+					}
+					return ocena;
+				}else{
+					int ocena = Ocena.ZMAGA;
+					for(Poteza poteza: moznosti) {
+						Igra naslednja = new Igra(igra);
+						naslednja.odigrajPotezo(poteza);
+						
+						int novaocena = minimaksBelega(naslednja, g);
+						if(novaocena < ocena) {
+							ocena = novaocena;
+						}
+					}
+					return ocena;
+				}
+			}
 		}else {
 			if(igra.napotezi == IgralecIgre.BELI) {
 				int ocena = Ocena.PORAZ;
