@@ -15,6 +15,7 @@ import javax.swing.JMenuItem;
 import logika.Igra;
 import logika.IgralecIgre;
 import logika.Lokacija;
+import logika.Poteza;
 
 
 @SuppressWarnings("serial")
@@ -102,7 +103,17 @@ public class Okno extends JFrame implements ActionListener{
 		} else { osveziGUI();}
 	}
 	
-	public void veljavenKlik(Lokacija lok) {
+	// Še ne dela delay*
+	public void odigrajLepo(Poteza p) {
+		veljavenKlik(p.get(0));
+		for(int i = 1; i < p.size(); i++) {
+			// Delay
+			veljavenKlik(p.get(i));
+		}
+	}
+	
+	
+	protected void veljavenKlik(Lokacija lok) {
 		platno.veljavenKlik(lok);
 	}
 	

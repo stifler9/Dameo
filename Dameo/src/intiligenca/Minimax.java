@@ -57,11 +57,7 @@ public class Minimax extends SwingWorker<Poteza, Object>{
 		try {
 			Poteza p = this.get();
 			if (p != null) { 
-				master.veljavenKlik(p.get(0));
-				for(int i = 1; i < p.size(); i++) {
-					//Thread.sleep(1000);
-					master.veljavenKlik(p.get(i));
-				}
+				master.odigrajLepo(p);
 			}
 		} catch (Exception e) {
 		} 
