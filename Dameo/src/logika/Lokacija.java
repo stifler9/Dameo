@@ -20,5 +20,12 @@ public class Lokacija {
 	public int getY() {
 		return y;
 	}
+
+	@Override
+	public String toString() {
+		return "Lokacija [x=" + x + ", y=" + y + "]";
+	}
+
+	
 	
 }

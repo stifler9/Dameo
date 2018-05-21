@@ -15,7 +15,6 @@ import javax.swing.JMenuItem;
 import logika.Igra;
 import logika.IgralecIgre;
 import logika.Lokacija;
-import logika.Poteza;
 
 
 @SuppressWarnings("serial")
@@ -29,6 +28,7 @@ public class Okno extends JFrame implements ActionListener{
 	
 	private JMenuItem igraClovekClovek;
 	private JMenuItem igraClovekRacunalnik;
+	private JMenuItem igraRacunalnikRacunalnik;
 	
 	
 	public Okno() {
@@ -52,6 +52,12 @@ public class Okno extends JFrame implements ActionListener{
 		igraClovekRacunalnik = new JMenuItem("Èlovek – raèunalnik");
 		igra_menu.add(igraClovekRacunalnik);
 		igraClovekRacunalnik.addActionListener(this);
+		
+		//Igra Raèunalnik-raèunalnik
+		igraRacunalnikRacunalnik = new JMenuItem("Raèunalnik – raèunalnik");
+		igra_menu.add(igraRacunalnikRacunalnik);
+		igraRacunalnikRacunalnik.addActionListener(this);
+
 
 		//platno
 		platno = new Platno(this);
@@ -103,17 +109,8 @@ public class Okno extends JFrame implements ActionListener{
 		} else { osveziGUI();}
 	}
 	
-	// Še ne dela delay*
-	public void odigrajLepo(Poteza p) {
-		veljavenKlik(p.get(0));
-		for(int i = 1; i < p.size(); i++) {
-			// Delay
-			veljavenKlik(p.get(i));
-		}
-	}
 	
-	
-	protected void veljavenKlik(Lokacija lok) {
+	public void veljavenKlik(Lokacija lok) {
 		platno.veljavenKlik(lok);
 	}
 	
@@ -153,6 +150,10 @@ public class Okno extends JFrame implements ActionListener{
 		}
 		if (e.getSource() == igraClovekRacunalnik) {
 			novaIgra(new Clovek(this),
+			         new Racunalnik(this, Igralec.CRNI));
+		}
+		if (e.getSource() == igraRacunalnikRacunalnik) {
+			novaIgra(new Racunalnik(this, Igralec.BELI),
 			         new Racunalnik(this, Igralec.CRNI));
 		}
 		

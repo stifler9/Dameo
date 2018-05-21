@@ -1,17 +1,19 @@
 package intiligenca;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 import javax.swing.SwingWorker;
 
 import logika.Igra;
 import logika.IgralecIgre;
+import logika.Lokacija;
 import logika.Poteza;
 import uporabniskiVmesnik.Igralec;
 import uporabniskiVmesnik.Okno;
 
-public class Minimax extends SwingWorker<Poteza, Object>{
+public class Minimax extends SwingWorker<Poteza, Lokacija>{
 	private Okno master;
 	private int globina;
 	private Igralec jaz;
@@ -51,20 +53,31 @@ public class Minimax extends SwingWorker<Poteza, Object>{
 		
 		assert(!najboljse.isEmpty());
 		Random x = new Random();
+		
+		// po kosih narisemo potezo
+		Poteza p = najboljse.get(x.nextInt(najboljse.size()));
+		for(int i = 0; i < p.size(); i++){
+			Thread.sleep(600);
+			this.publish(p.get(i));
+		}
+		
 		return najboljse.get(x.nextInt(najboljse.size()));
 	}
 	
 	@Override
 	public void done() {
-		try {
-			Poteza p = this.get();
-			if (p != null) { 
-				master.odigrajLepo(p);
-			}
-		} catch (Exception e) {
-		} 
+		
 	}
 	
+	@Override
+	protected void process(List<Lokacija> chunks) {
+		super.process(chunks);
+		for(Lokacija lok: chunks){
+			master.veljavenKlik(lok);
+		}
+	}
+
+
 	private int minimaksBelega(Igra igra, int g) {
 		if(igra.napotezi == IgralecIgre.ZMAGABELI) {
 			return Ocena.ZMAGA;

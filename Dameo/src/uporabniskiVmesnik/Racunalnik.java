@@ -9,7 +9,7 @@ import logika.Poteza;
 public class Racunalnik extends Strateg{
 	private Okno master;
 	private Igralec jaz;
-	private SwingWorker<Poteza,Object> mislec;
+	private SwingWorker<Poteza,Lokacija> mislec;
 	private int c;
 	
 	
