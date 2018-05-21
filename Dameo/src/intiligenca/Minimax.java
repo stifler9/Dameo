@@ -44,6 +44,8 @@ public class Minimax extends SwingWorker<Poteza, Object>{
 				ocena = novaOcena;
 				najboljse.clear();
 				najboljse.add(poteza);
+			}else if(novaOcena == ocena){
+				najboljse.add(poteza);
 			}
 		}
 		

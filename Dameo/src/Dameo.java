@@ -9,5 +9,4 @@ public class Dameo {
 		glavnoOkno.pack();
 		glavnoOkno.setVisible(true);
 	}
-
 }
