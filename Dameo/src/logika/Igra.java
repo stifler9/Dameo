@@ -23,6 +23,23 @@ public class Igra {
 	}
 	
 	/*
+	 * v igrah v undoIgre so samo igre, ki imajo nujnost = null,
+	 * torej true vrne, èe igra(dameo).nujnost == null 
+	 */
+	public boolean equals(Igra igra){
+		if(!igra.stanje.equals(this.stanje)){
+			return false;
+		}
+		if(igra.napotezi != this.napotezi){
+			return false;
+		}
+		if(igra.nujnost != null){
+			return false;
+		}
+		return true;
+	}
+	
+	/*
 	 * Figuro na mestu lok1 premaknemo na lok2
 	 * (Igramo 1 SKOK naenkrat)
 	 * (Ce ima igralec na voljo vec skokov, ostane na potezi)
@@ -65,7 +82,7 @@ public class Igra {
 			 * Ce kdo pride na zadnje polje, se spremeni v kralja:
 			 */
 			stanje.mozjeVKralje();
-
+			
 			/*
 			 * Spremenili smo stanje, kdo je na potezi in nujnost,
 			 * treba je pogledati ce se lahko igra

@@ -87,4 +87,15 @@ public class Stanje {
 	public Polje get(int x, int y) throws ArrayIndexOutOfBoundsException{
 		return matrika[y][x];
 	}
+	
+	public boolean equals(Stanje st){
+		for(int i = 0; i < 8; i++){
+			for(int j = 0; j<8; j++){
+				if(this.get(i, j) != st.get(i, j)){
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 }

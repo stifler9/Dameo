@@ -5,6 +5,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,10 +26,15 @@ public class Okno extends JFrame implements ActionListener{
 	private Strateg strategCrni;
 	private Strateg strategBeli;
 	
+	private LinkedList<Igra> undoIgre;
 	
 	private JMenuItem igraClovekClovek;
 	private JMenuItem igraClovekRacunalnik;
 	private JMenuItem igraRacunalnikRacunalnik;
+	private JMenuItem igraRacunalnikClovek;
+	
+	//Uredi meni
+	private JMenuItem razveljavi;
 	
 	
 	public Okno() {
@@ -37,11 +43,16 @@ public class Okno extends JFrame implements ActionListener{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new GridBagLayout());
 
+		undoIgre = new LinkedList<Igra>();
+		
 		//menu 
 		JMenuBar menu_bar = new JMenuBar();
 		this.setJMenuBar(menu_bar);
-		JMenu igra_menu = new JMenu("Igra");
+		JMenu igra_menu = new JMenu("Nova igra");
 		menu_bar.add(igra_menu);
+		
+		JMenu uredi = new JMenu("Uredi");
+		menu_bar.add(uredi);
 		
 		//Igra Èlovek-èlovek
 		igraClovekClovek = new JMenuItem("Èlovek – èlovek");
@@ -57,7 +68,16 @@ public class Okno extends JFrame implements ActionListener{
 		igraRacunalnikRacunalnik = new JMenuItem("Raèunalnik – raèunalnik");
 		igra_menu.add(igraRacunalnikRacunalnik);
 		igraRacunalnikRacunalnik.addActionListener(this);
-
+		
+		//Igra Raèunalnik-èlovek
+		igraRacunalnikClovek = new JMenuItem("Raèunalnik – èlovek");
+		igra_menu.add(igraRacunalnikClovek);
+		igraRacunalnikClovek.addActionListener(this);
+		
+		//Razveljavi
+		razveljavi = new JMenuItem("Razveljavi");
+		uredi.add(razveljavi);
+		razveljavi.addActionListener(this);
 
 		//platno
 		platno = new Platno(this);
@@ -87,6 +107,7 @@ public class Okno extends JFrame implements ActionListener{
 	private void novaIgra(Strateg beli, Strateg crni){
 		if(strategCrni != null){ strategCrni.prekini();}
 		if(strategBeli != null){ strategBeli.prekini();}
+		undoIgre.clear();
 
 		dameo = new Igra();
 		strategBeli = beli;
@@ -95,6 +116,30 @@ public class Okno extends JFrame implements ActionListener{
 			strategCrni.naPotezi();
 		} else if(dameo.napotezi == IgralecIgre.BELI){
 			strategBeli.naPotezi();
+		}
+		osveziGUI();
+	}
+	
+	public void dodajUndo(){
+		if(undoIgre.size() > 9){
+			undoIgre.removeFirst();
+		}
+		undoIgre.add(copyIgra());
+	}
+	
+	private void razveljavi() {
+		if(!undoIgre.isEmpty()){
+			strategCrni.prekini();
+			strategBeli.prekini();
+			
+			if(!undoIgre.get(undoIgre.size()-1).equals(dameo)){
+				dameo = new Igra(undoIgre.get(undoIgre.size()-1));
+			}else{
+				if (undoIgre.size() > 1) {
+					undoIgre.removeLast();
+					dameo = new Igra(undoIgre.get(undoIgre.size() - 1));
+				}
+			}
 		}
 		osveziGUI();
 	}
@@ -156,9 +201,16 @@ public class Okno extends JFrame implements ActionListener{
 			novaIgra(new Racunalnik(this, Igralec.BELI),
 			         new Racunalnik(this, Igralec.CRNI));
 		}
+		if(e.getSource() == razveljavi){
+			razveljavi();
+		}
+		if (e.getSource() == igraRacunalnikClovek) {
+			novaIgra(new Racunalnik(this, Igralec.BELI),
+			         new Clovek(this));
+		}
 		
 	}
-	
+
 	public Igra copyIgra() {
 		return new Igra(dameo);
 	}

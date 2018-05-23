@@ -11,6 +11,7 @@ public class Clovek extends Strateg {
 
 	@Override
 	protected void naPotezi() {
+		master.dodajUndo();
 	}
 
 	@Override
