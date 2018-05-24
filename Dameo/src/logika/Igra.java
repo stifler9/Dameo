@@ -528,7 +528,7 @@ public class Igra {
 						nova.add(novalok);
 						set.add(nova);
 						stikalo = false;
-					}else if(stanje.get(x + k*xy[0],y + k*xy[1]) == Polje.BelMoz){}else{stikalo = false;}
+					}else if(stanje.get(x + k*xy[0],y + k*xy[1]) != Polje.BelMoz){stikalo = false;}
 				}else{stikalo = false;}
 				k++;
 			}	
@@ -555,7 +555,7 @@ public class Igra {
 						nova.add(novalok);
 						set.add(nova);
 						stikalo = false;
-					}else if(stanje.get(x + k*xy[0],y + k*xy[1]) == Polje.CrniMoz){}else{stikalo = false;}
+					}else if(stanje.get(x + k*xy[0],y + k*xy[1]) != Polje.CrniMoz){stikalo = false;}
 				}else{stikalo = false;}
 				k++;
 			}

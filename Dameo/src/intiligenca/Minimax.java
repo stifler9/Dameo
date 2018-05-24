@@ -41,7 +41,12 @@ public class Minimax extends SwingWorker<Poteza, Lokacija>{
 		for(Poteza poteza: trenutna.generirajPoteze()) {
 			Igra poTejPotezi = new Igra(trenutna);
 			poTejPotezi.odigrajPotezo(poteza);
-			int novaOcena = pomnozi*minimaksBelega(poTejPotezi, 0);
+			int novaOcena;
+			if (poteza.enostavnost) {
+				novaOcena = pomnozi * minimaksBelega(poTejPotezi, 0);
+			}else {
+				novaOcena = pomnozi * minimaksBelega(poTejPotezi, -1);
+			}
 			if(novaOcena > ocena) {
 				ocena = novaOcena;
 				najboljse.clear();

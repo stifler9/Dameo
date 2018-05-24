@@ -92,7 +92,7 @@ public class Platno extends JPanel implements MouseListener{
 				int n = 0;
 				for (int i = 0; i < pot.size(); i++) {
 					Lokacija lok = pot.get(i);
-					g.fillOval(lok.getX() * sirina + 3*sirina/8, lok.getY() * visina + 3*visina/8, 2*(sirina/8), 2*(visina/8));
+					g.fillOval(lok.getX() * sirina + 3*sirina/8, lok.getY() * visina + 3*visina/8, sirina - 6*(sirina/8), visina - 6*(visina/8));
 					xi[n] = lok.getX() * sirina + sirina/2;
 					yi[n] = lok.getY() * visina + visina/2;
 					n++;
@@ -102,7 +102,7 @@ public class Platno extends JPanel implements MouseListener{
 			// Obarvamo izbrano figuro
 			if (!(izbranaFigura == null)) {
 				g.setColor(new Color(17, 140, 183));
-				g.fillOval(izbranaFigura.getX() * sirina + 3*sirina/8, izbranaFigura.getY() * visina + 3*visina/8, 2*(sirina/8), 2*(visina/8));
+				g.fillOval(izbranaFigura.getX() * sirina + 3*sirina/8, izbranaFigura.getY() * visina + 3*visina/8, sirina - 6*(sirina/8), visina - 6*(visina/8));
 			} 
 		}
 	}
