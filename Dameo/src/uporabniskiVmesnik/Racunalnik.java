@@ -22,7 +22,9 @@ public class Racunalnik extends Strateg{
 	@Override
 	protected void naPotezi() {
 		c++;
-		if(c > 9) {
+		if(c > 35) {
+			mislec = new Minimax(master, 3, jaz);
+		}else if(c > 10) {
 			mislec = new Minimax(master, 2, jaz);
 		}else {
 			mislec = new Minimax(master, 1, jaz);
@@ -38,7 +40,9 @@ public class Racunalnik extends Strateg{
 	}
 
 	@Override
-	protected void klik(Lokacija lok) {
-	}
+	protected void klik(Lokacija lok) {}
+
+	@Override
+	protected void zmanjsajC() {c--;}
 
 }

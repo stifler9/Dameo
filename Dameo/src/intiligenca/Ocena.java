@@ -24,7 +24,7 @@ public class Ocena {
 	protected static final int PORAZ = -ZMAGA;
 	
 	protected static final int Moz = 1;
-	protected static final int Kralj = 3;
+	protected static final int Kralj = 2;
 	
 	protected static int trdaOcena(Stanje matrika) {
 		int ocenaBeli = 0;
@@ -75,7 +75,7 @@ public class Ocena {
 					 * Ce je okoli njega njegova figura ali rob, se mu vrednost poveca
 					 */
 					int[][] smeri = {{-1, 0},{-1,-1},{0,-1},{1, -1},{1, 0},{1,1},{0,1},{-1,1}};
-					int vrednost = 8;
+					int vrednost = 12;
 					for(int[] smer: smeri) {
 						try {
 							if(matrika.get(i + smer[0], j + smer[1]) == Polje.BelMoz || matrika.get(i + smer[0], j + smer[1]) == Polje.BelKralj) {
@@ -94,7 +94,7 @@ public class Ocena {
 					 * Ce je okoli njega njegova figura ali rob, se mu vrednost poveca
 					 */
 					int[][] smeri = {{-1, 0},{-1,-1},{0,-1},{1, -1},{1, 0},{1,1},{0,1},{-1,1}};
-					int vrednost = 8;
+					int vrednost = 12;
 					for(int[] smer: smeri) {
 						try {
 							if(matrika.get(i + smer[0], j + smer[1]) == Polje.CrniMoz || matrika.get(i + smer[0], j + smer[1]) == Polje.CrniKralj) {

@@ -10,4 +10,6 @@ public abstract class Strateg {
 	
 	protected abstract void klik(Lokacija lok);
 
+	protected abstract void zmanjsajC();
+
 }

@@ -15,11 +15,13 @@ public class Clovek extends Strateg {
 	}
 
 	@Override
-	protected void prekini() {
-	}
+	protected void prekini() {}
 
 	@Override
 	protected void klik(Lokacija lok){
 		master.veljavenKlik(lok);
 	}
+
+	@Override
+	protected void zmanjsajC() {}
 }

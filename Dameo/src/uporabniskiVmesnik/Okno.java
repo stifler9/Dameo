@@ -120,7 +120,7 @@ public class Okno extends JFrame implements ActionListener{
 		osveziGUI();
 	}
 	
-	public void dodajUndo(){
+	protected void dodajUndo(){
 		if(undoIgre.size() > 9){
 			undoIgre.removeFirst();
 		}
@@ -134,10 +134,14 @@ public class Okno extends JFrame implements ActionListener{
 			
 			if(!undoIgre.get(undoIgre.size()-1).equals(dameo)){
 				dameo = new Igra(undoIgre.get(undoIgre.size()-1));
+				strategCrni.zmanjsajC();
+				strategBeli.zmanjsajC();
 			}else{
 				if (undoIgre.size() > 1) {
 					undoIgre.removeLast();
 					dameo = new Igra(undoIgre.get(undoIgre.size() - 1));
+					strategCrni.zmanjsajC();
+					strategBeli.zmanjsajC();
 				}
 			}
 		}
