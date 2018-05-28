@@ -107,6 +107,11 @@ public class Platno extends JPanel implements MouseListener{
 		}
 	}
 	
+	protected void izbrisiPoti(){
+		obarvanePoteze.clear();
+		izbranaFigura = null;
+	}
+	
 	protected void veljavenKlik(Lokacija lokacija) {
 		if(izbranaFigura == null) {
 			boolean dodaj = false;

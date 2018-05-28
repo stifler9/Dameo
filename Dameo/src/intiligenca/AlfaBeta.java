@@ -43,9 +43,9 @@ public class AlfaBeta extends SwingWorker<Poteza, Lokacija>{
 			poTejPotezi.odigrajPotezo(poteza);
 			int novaOcena;
 			if (poteza.enostavnost) {
-				novaOcena = pomnozi * minimaksBelega(poTejPotezi, 0, Ocena.PORAZ, Ocena.ZMAGA);
+				novaOcena = pomnozi * alfaBetaBelega(poTejPotezi, 0, Ocena.PORAZ, Ocena.ZMAGA);
 			}else {
-				novaOcena = pomnozi * minimaksBelega(poTejPotezi, -1, Ocena.PORAZ, Ocena.ZMAGA);
+				novaOcena = pomnozi * alfaBetaBelega(poTejPotezi, -1, Ocena.PORAZ, Ocena.ZMAGA);
 			}
 			if(novaOcena > ocena) {
 				ocena = novaOcena;
@@ -83,7 +83,7 @@ public class AlfaBeta extends SwingWorker<Poteza, Lokacija>{
 	}
 
 
-	private int minimaksBelega(Igra igra, int g, int a, int b) {
+	private int alfaBetaBelega(Igra igra, int g, int a, int b) {
 		if(igra.napotezi == IgralecIgre.ZMAGABELI) {
 			return Ocena.ZMAGA;
 		}
@@ -102,9 +102,9 @@ public class AlfaBeta extends SwingWorker<Poteza, Lokacija>{
 						Igra naslednja = new Igra(igra);
 						naslednja.odigrajPotezo(poteza);
 						
-						int novaocena = minimaksBelega(naslednja, g, a, b);
+						int novaocena = alfaBetaBelega(naslednja, g, a, b);
 						a = Math.max(a, novaocena);
-						if(a >= b){return b;}
+						if(a > b){break;}
 					}
 					return a;
 				}else{
@@ -112,9 +112,9 @@ public class AlfaBeta extends SwingWorker<Poteza, Lokacija>{
 						Igra naslednja = new Igra(igra);
 						naslednja.odigrajPotezo(poteza);
 						
-						int novaocena = minimaksBelega(naslednja, g, a, b);
+						int novaocena = alfaBetaBelega(naslednja, g, a, b);
 						b = Math.min(novaocena, b);
-						if(a >= b){return a;}
+						if(a > b){break;}
 					}
 					return b;
 				}
@@ -131,12 +131,12 @@ public class AlfaBeta extends SwingWorker<Poteza, Lokacija>{
 					 * pri potezah s skoki, pa globine ne povecamo.
 					 */
 					if(poteza.enostavnost) {
-						novaocena = minimaksBelega(naslednja, g+1, a, b);
+						novaocena = alfaBetaBelega(naslednja, g+1, a, b);
 					}else {
-						novaocena = minimaksBelega(naslednja, g, a, b);
+						novaocena = alfaBetaBelega(naslednja, g, a, b);
 					}
 					a = Math.max(novaocena, a);
-					if(a >= b){return b;}
+					if(a > b){break;}
 				}
 				return a;
 			}else{
@@ -150,12 +150,12 @@ public class AlfaBeta extends SwingWorker<Poteza, Lokacija>{
 					 * pri potezah s skoki, pa globine ne povecamo.
 					 */
 					if(poteza.enostavnost) {
-						novaocena = minimaksBelega(naslednja, g+1, a, b);
+						novaocena = alfaBetaBelega(naslednja, g+1, a, b);
 					}else {
-						novaocena = minimaksBelega(naslednja, g, a, b);
+						novaocena = alfaBetaBelega(naslednja, g, a, b);
 					}
 					b = Math.min(novaocena, b);
-					if(a >= b){return a;}
+					if(a > b){break;}
 				}
 				return b;
 			}

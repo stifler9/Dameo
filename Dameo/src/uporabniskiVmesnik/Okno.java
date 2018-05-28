@@ -117,6 +117,7 @@ public class Okno extends JFrame implements ActionListener{
 		} else if(dameo.napotezi == IgralecIgre.BELI){
 			strategBeli.naPotezi();
 		}
+		platno.izbrisiPoti();
 		osveziGUI();
 	}
 	
