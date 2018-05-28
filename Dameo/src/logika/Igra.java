@@ -115,7 +115,7 @@ public class Igra {
 			}
 		}
 		if(napotezi == IgralecIgre.BELI){napotezi = IgralecIgre.CRNI;}else{napotezi=IgralecIgre.BELI;}
-		
+		stanje.mozjeVKralje();
 		if(generirajPoteze().isEmpty()){
 			if(napotezi == IgralecIgre.BELI){
 				napotezi = IgralecIgre.ZMAGACRNI;

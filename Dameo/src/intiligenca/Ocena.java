@@ -20,7 +20,7 @@ public class Ocena {
 	 * Tako bomo dobili oceno, koliko ocena belih presega oceno crnih, glede na oceno vseh figur na plošèi.
 	 */
 	
-	protected static final int ZMAGA = 10000;
+	protected static final int ZMAGA = 1<<15;
 	protected static final int PORAZ = -ZMAGA;
 	
 	private static final int Moz = 1;

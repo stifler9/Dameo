@@ -30,30 +30,53 @@ public class AlfaBeta extends SwingWorker<Poteza, Lokacija>{
 		
 		//Ce smo sploh poklicali misleca, je nekdo na vrsti (beli ali crni)
 		// Ocena je za belega, za èrnega je - ocena belega.
-		int pomnozi = -1; // Ce je na vrsti crni
-		if(jaz == Igralec.BELI) {pomnozi = 1;}
 		
 		LinkedList<Poteza> najboljse = new LinkedList<Poteza>();
-		int ocena = Ocena.PORAZ;
 		
-		//Pogledamo ocene po odigranih moznih potezah,
-		// najboljsa poteza je tista, ki da najboljso oceno
-		for(Poteza poteza: trenutna.generirajPoteze()) {
-			Igra poTejPotezi = new Igra(trenutna);
-			poTejPotezi.odigrajPotezo(poteza);
-			int novaOcena;
-			if (poteza.enostavnost) {
-				novaOcena = pomnozi * alfaBetaBelega(poTejPotezi, 0, Ocena.PORAZ, Ocena.ZMAGA);
-			}else {
-				novaOcena = pomnozi * alfaBetaBelega(poTejPotezi, -1, Ocena.PORAZ, Ocena.ZMAGA);
-			}
-			if(novaOcena > ocena) {
-				ocena = novaOcena;
-				najboljse.clear();
-				najboljse.add(poteza);
-			}else if(novaOcena == ocena){
-				najboljse.add(poteza);
-			}
+		if (jaz == Igralec.BELI) {
+			int a = Ocena.PORAZ;
+			
+			//Pogledamo ocene po odigranih moznih potezah,
+			// najboljsa poteza je tista, ki da najboljso oceno
+			for (Poteza poteza : trenutna.generirajPoteze()) {
+				Igra poTejPotezi = new Igra(trenutna);
+				poTejPotezi.odigrajPotezo(poteza);
+				int novaOcena;
+				if (poteza.enostavnost) {
+					novaOcena = alfaBetaBelega(poTejPotezi, 0, a, Ocena.ZMAGA);
+				} else {
+					novaOcena = alfaBetaBelega(poTejPotezi, -1, a, Ocena.ZMAGA);
+				}
+				if (novaOcena > a) {
+					a = novaOcena;
+					najboljse.clear();
+					najboljse.add(poteza);
+				} else if (novaOcena == a) {
+					najboljse.add(poteza);
+				}
+			} 
+		}else{
+			int b = Ocena.ZMAGA;
+			
+			//Pogledamo ocene po odigranih moznih potezah,
+			// najboljsa poteza je tista, ki da najboljso oceno
+			for (Poteza poteza : trenutna.generirajPoteze()) {
+				Igra poTejPotezi = new Igra(trenutna);
+				poTejPotezi.odigrajPotezo(poteza);
+				int novaOcena;
+				if (poteza.enostavnost) {
+					novaOcena = alfaBetaBelega(poTejPotezi, 0, Ocena.PORAZ, b);
+				} else {
+					novaOcena = alfaBetaBelega(poTejPotezi, -1, Ocena.PORAZ, b);
+				}
+				if (novaOcena < b) {
+					b = novaOcena;
+					najboljse.clear();
+					najboljse.add(poteza);
+				} else if (novaOcena == b) {
+					najboljse.add(poteza);
+				}
+			} 
 		}
 		
 		assert(!najboljse.isEmpty());
@@ -102,8 +125,7 @@ public class AlfaBeta extends SwingWorker<Poteza, Lokacija>{
 						Igra naslednja = new Igra(igra);
 						naslednja.odigrajPotezo(poteza);
 						
-						int novaocena = alfaBetaBelega(naslednja, g, a, b);
-						a = Math.max(a, novaocena);
+						a = Math.max(a, alfaBetaBelega(naslednja, g, a, b));
 						if(a > b){break;}
 					}
 					return a;
@@ -112,8 +134,7 @@ public class AlfaBeta extends SwingWorker<Poteza, Lokacija>{
 						Igra naslednja = new Igra(igra);
 						naslednja.odigrajPotezo(poteza);
 						
-						int novaocena = alfaBetaBelega(naslednja, g, a, b);
-						b = Math.min(novaocena, b);
+						b = Math.min(alfaBetaBelega(naslednja, g, a, b), b);
 						if(a > b){break;}
 					}
 					return b;
