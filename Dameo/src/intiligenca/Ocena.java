@@ -20,11 +20,11 @@ public class Ocena {
 	 * Tako bomo dobili oceno, koliko ocena belih presega oceno crnih, glede na oceno vseh figur na plošèi.
 	 */
 	
-	protected static final int ZMAGA = 5000;
+	protected static final int ZMAGA = 10000;
 	protected static final int PORAZ = -ZMAGA;
 	
-	protected static final int Moz = 1;
-	protected static final int Kralj = 3;
+	private static final int Moz = 1;
+	private static final int Kralj = 3;
 	
 	protected static int trdaOcena(Stanje matrika) {
 		int ocenaBeli = 0;

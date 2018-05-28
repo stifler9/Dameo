@@ -2,7 +2,7 @@ package uporabniskiVmesnik;
 
 import javax.swing.SwingWorker;
 
-import intiligenca.Minimax;
+import intiligenca.AlfaBeta;
 import logika.Lokacija;
 import logika.Poteza;
 
@@ -22,12 +22,12 @@ public class Racunalnik extends Strateg{
 	@Override
 	protected void naPotezi() {
 		c++;
-		if(c > 35) {
-			mislec = new Minimax(master, 3, jaz);
-		}else if(c > 10) {
-			mislec = new Minimax(master, 2, jaz);
+		if(c > 40) {
+			mislec = new AlfaBeta(master, 4, jaz);
+		}else if(c > 15) {
+			mislec = new AlfaBeta(master, 3, jaz);
 		}else {
-			mislec = new Minimax(master, 1, jaz);
+			mislec = new AlfaBeta(master, 2, jaz);
 		}
 		mislec.execute();
 	}
