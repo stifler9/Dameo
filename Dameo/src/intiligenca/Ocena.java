@@ -20,11 +20,11 @@ public class Ocena {
 	 * Tako bomo dobili oceno, koliko ocena belih presega oceno crnih, glede na oceno vseh figur na plošèi.
 	 */
 	
-	protected static final int ZMAGA = 1<<15;
+	protected static final int ZMAGA = 200000;
 	protected static final int PORAZ = -ZMAGA;
 	
 	private static final int Moz = 1;
-	private static final int Kralj = 3;
+	private static final int Kralj = 6;
 	
 	protected static int trdaOcena(Stanje matrika) {
 		int ocenaBeli = 0;
@@ -37,14 +37,14 @@ public class Ocena {
 					 * Ce je za njim ali na strani njegova figura ali rob, se mu vrednost poveca
 					 */
 					int[][] smeri = {{-1, 0},{-1,-1},{0,-1},{1, -1},{1, 0}};
-					int vrednost = j + 1 + 8;
+					int vrednost = (j + 1)*3 + 16;
 					for(int[] smer: smeri) {
 						try {
 							if(matrika.get(i + smer[0], j + smer[1]) == Polje.CrniMoz || matrika.get(i + smer[0], j + smer[1]) == Polje.CrniKralj) {
-								vrednost++;
+								vrednost+=2;
 							}
 						}catch(ArrayIndexOutOfBoundsException e) {
-							vrednost++;
+							vrednost+=2;
 						}
 					}
 					
@@ -56,14 +56,14 @@ public class Ocena {
 					 * Ce je za njim ali na strani njegova figura ali rob, se mu vrednost poveca
 					 */
 					int[][] smeri = {{-1, 0},{-1,1},{0,1},{1, 1},{1, 0}};
-					int vrednost = 8 - j + 8;
+					int vrednost = (8 - j)*3 + 16;
 					for(int[] smer: smeri) {
 						try {
 							if(matrika.get(i + smer[0], j + smer[1]) == Polje.BelMoz || matrika.get(i + smer[0], j + smer[1]) == Polje.BelKralj) {
-								vrednost++;
+								vrednost+=2;
 							}
 						}catch(ArrayIndexOutOfBoundsException e) {
-							vrednost++;
+							vrednost+=2;
 						}
 					}
 					
@@ -75,7 +75,7 @@ public class Ocena {
 					 * Ce je okoli njega njegova figura ali rob, se mu vrednost poveca
 					 */
 					int[][] smeri = {{-1, 0},{-1,-1},{0,-1},{1, -1},{1, 0},{1,1},{0,1},{-1,1}};
-					int vrednost = 8;
+					int vrednost = 10;
 					for(int[] smer: smeri) {
 						try {
 							if(matrika.get(i + smer[0], j + smer[1]) == Polje.BelMoz || matrika.get(i + smer[0], j + smer[1]) == Polje.BelKralj) {
@@ -94,7 +94,7 @@ public class Ocena {
 					 * Ce je okoli njega njegova figura ali rob, se mu vrednost poveca
 					 */
 					int[][] smeri = {{-1, 0},{-1,-1},{0,-1},{1, -1},{1, 0},{1,1},{0,1},{-1,1}};
-					int vrednost = 8;
+					int vrednost = 10;
 					for(int[] smer: smeri) {
 						try {
 							if(matrika.get(i + smer[0], j + smer[1]) == Polje.CrniMoz || matrika.get(i + smer[0], j + smer[1]) == Polje.CrniKralj) {

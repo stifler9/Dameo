@@ -121,27 +121,32 @@ public class AlfaBeta extends SwingWorker<Poteza, Lokacija>{
 				return Ocena.trdaOcena(igra.stanje);
 			}else {
 				if(igra.napotezi == IgralecIgre.BELI) {
+					int v = Ocena.PORAZ;
 					for(Poteza poteza: moznosti) {
 						Igra naslednja = new Igra(igra);
 						naslednja.odigrajPotezo(poteza);
 						
-						a = Math.max(a, alfaBetaBelega(naslednja, g, a, b));
+						v = Math.max(v, alfaBetaBelega(naslednja, g, a, b));
+						a = Math.max(a,v);
 						if(a > b){break;}
 					}
-					return a;
+					return v;
 				}else{
+					int v = Ocena.ZMAGA;
 					for(Poteza poteza: moznosti) {
 						Igra naslednja = new Igra(igra);
 						naslednja.odigrajPotezo(poteza);
 						
-						b = Math.min(alfaBetaBelega(naslednja, g, a, b), b);
+						v = Math.min(alfaBetaBelega(naslednja, g, a, b), v);
+						b = Math.min(v, b);
 						if(a > b){break;}
 					}
-					return b;
+					return v;
 				}
 			}
 		}else {
 			if(igra.napotezi == IgralecIgre.BELI) {
+				int v = Ocena.PORAZ;
 				for(Poteza poteza: igra.generirajPoteze()) {
 					Igra naslednja = new Igra(igra);
 					naslednja.odigrajPotezo(poteza);
@@ -156,11 +161,13 @@ public class AlfaBeta extends SwingWorker<Poteza, Lokacija>{
 					}else {
 						novaocena = alfaBetaBelega(naslednja, g, a, b);
 					}
-					a = Math.max(novaocena, a);
+					v = Math.max(novaocena, v);
+					a = Math.max(v, a);
 					if(a > b){break;}
 				}
-				return a;
+				return v;
 			}else{
+				int v = Ocena.ZMAGA;
 				for(Poteza poteza: igra.generirajPoteze()) {
 					Igra naslednja = new Igra(igra);
 					naslednja.odigrajPotezo(poteza);
@@ -175,10 +182,11 @@ public class AlfaBeta extends SwingWorker<Poteza, Lokacija>{
 					}else {
 						novaocena = alfaBetaBelega(naslednja, g, a, b);
 					}
-					b = Math.min(novaocena, b);
+					v = Math.min(novaocena, v);
+					b = Math.min(v, b);
 					if(a > b){break;}
 				}
-				return b;
+				return v;
 			}
 		}
 	}

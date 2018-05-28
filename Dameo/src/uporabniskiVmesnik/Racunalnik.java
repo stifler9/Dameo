@@ -22,12 +22,10 @@ public class Racunalnik extends Strateg{
 	@Override
 	protected void naPotezi() {
 		c++;
-		if(c > 35) {
+		if(c > 20) {
 			mislec = new AlfaBeta(master, 3, jaz);
-		}else if(c > 10) {
-			mislec = new AlfaBeta(master, 2, jaz);
 		}else {
-			mislec = new AlfaBeta(master, 1, jaz);
+			mislec = new AlfaBeta(master, 2, jaz);
 		}
 		mislec.execute();
 	}
