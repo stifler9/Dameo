@@ -146,6 +146,7 @@ public class Okno extends JFrame implements ActionListener{
 				}
 			}
 		}
+		platno.izbrisiPoti();
 		osveziGUI();
 	}
 	
