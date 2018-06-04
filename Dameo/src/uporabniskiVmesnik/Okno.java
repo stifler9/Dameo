@@ -54,23 +54,23 @@ public class Okno extends JFrame implements ActionListener{
 		JMenu uredi = new JMenu("Uredi");
 		menu_bar.add(uredi);
 		
-		//Igra Èlovek-èlovek
-		igraClovekClovek = new JMenuItem("Èlovek – èlovek");
+		//Igra ÄŒlovek-Älovek
+		igraClovekClovek = new JMenuItem("ÄŒlovek-Älovek");
 		igra_menu.add(igraClovekClovek);
 		igraClovekClovek.addActionListener(this);
 		
-		//Igra Èlovek-raèunalnik
-		igraClovekRacunalnik = new JMenuItem("Èlovek – raèunalnik");
+		//Igra ÄŒlovek-raÄunalnik
+		igraClovekRacunalnik = new JMenuItem("ÄŒlovek-raÄunalnik");
 		igra_menu.add(igraClovekRacunalnik);
 		igraClovekRacunalnik.addActionListener(this);
 		
-		//Igra Raèunalnik-raèunalnik
-		igraRacunalnikRacunalnik = new JMenuItem("Raèunalnik – raèunalnik");
+		//Igra RaÄunalnik - raÄunalnik
+		igraRacunalnikRacunalnik = new JMenuItem("RaÄunalnik - raÄunalnik");
 		igra_menu.add(igraRacunalnikRacunalnik);
 		igraRacunalnikRacunalnik.addActionListener(this);
 		
-		//Igra Raèunalnik-èlovek
-		igraRacunalnikClovek = new JMenuItem("Raèunalnik – èlovek");
+		//Igra RaÄunalnik - Älovek
+		igraRacunalnikClovek = new JMenuItem("RaÄunalnik - Älovek");
 		igra_menu.add(igraRacunalnikClovek);
 		igraRacunalnikClovek.addActionListener(this);
 		
@@ -99,7 +99,7 @@ public class Okno extends JFrame implements ActionListener{
 		statusLayout.anchor = GridBagConstraints.CENTER;
 		getContentPane().add(status, statusLayout);
 		
-		//zaènemo novo igro
+		//zaï¿½nemo novo igro
 		novaIgra(new Clovek(this),
 		         new Racunalnik(this, Igralec.CRNI));
 	}
@@ -181,9 +181,9 @@ public class Okno extends JFrame implements ActionListener{
 			status.setText("Igra ni v teku");
 		} else{
 			switch(dameo.napotezi){
-			case CRNI: if(dameo.nujnost == null){status.setText("Na potezi je èrni");}else{status.setText("Èrni dela potezo...");}  break;
+			case CRNI: if(dameo.nujnost == null){status.setText("Na potezi je Ärni");}else{status.setText("ÄŒrni dela potezo...");}  break;
 			case BELI: if(dameo.nujnost == null){status.setText("Na potezi je beli");}else{status.setText("Beli dela potezo...");}  break;
-			case ZMAGACRNI: status.setText("Zmagal je èrni"); break;
+			case ZMAGACRNI: status.setText("Zmagal je Ärni"); break;
 			case ZMAGABELI: status.setText("Zmagal je beli"); break;
 
 			}

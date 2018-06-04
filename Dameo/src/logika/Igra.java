@@ -24,7 +24,7 @@ public class Igra {
 	
 	/*
 	 * v igrah v undoIgre so samo igre, ki imajo nujnost = null,
-	 * torej true vrne, Ëe igra(dameo).nujnost == null 
+	 * torej true vrne, ƒçe igra(dameo).nujnost == null 
 	 */
 	public boolean equals(Igra igra){
 		if(!igra.stanje.equals(this.stanje)){
@@ -102,8 +102,8 @@ public class Igra {
 	/*
 	 * Pomozna metoda za misleca (uporabljam na kopiji igre):
 	 * 
-	 * Poteza je ûe veljavna,
-	 * nujnost bo ves Ëas null
+	 * Poteza je ÔøΩe veljavna,
+	 * nujnost bo ves ÔøΩas null
 	 * na koncu zamenjamo IgralecIgre naPotezi.
 	 */
 	public void odigrajPotezo(Poteza pot) {

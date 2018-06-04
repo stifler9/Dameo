@@ -104,6 +104,7 @@ public class Platno extends JPanel implements MouseListener{
 				g.setColor(new Color(17, 140, 183));
 				g.fillOval(izbranaFigura.getX() * sirina + 3*sirina/8, izbranaFigura.getY() * visina + 3*visina/8, sirina - 6*(sirina/8), visina - 6*(visina/8));
 			} 
+			
 		}
 	}
 	
