@@ -15,8 +15,15 @@ https://en.wikipedia.org/wiki/Dameo
 * a multi-jump can consist of single jumps having a combination of different directions;
 * a player whose pieces all become captured, or is unable to make a legal move, loses the game.
 
+## Play totorial:
+* Click on the field you want to move your figure from.
+* If figure on selected field is able to make a move (captures maximum number of opponents), all the ways of possible moves will be drawn with green line, making green dots on field you can jump on.
+* If figure is unable to make a move it won't be selected.
+* When ways are drawn, click on field(s) where you want your figure to move (one after another).
+* If you change your mind (before making first move with your figure) click on selected figure again and ways will be deleted.
 
-## Pristop k programiranju igre:
+
+## Pristop k programiranju:
 Potrebujemo igralno ploščo s polji na katerem so lahko figure ali je pa to polje prazno.
 To je shranjeno v atributu Stanje stanje, ki je matrika polj.
 
