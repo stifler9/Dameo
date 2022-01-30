@@ -42,5 +42,7 @@ public class Racunalnik extends Strateg{
 
 	@Override
 	protected void zmanjsajC() {c--;}
-
+	
+	@Override
+	protected void pokaziPoteze() {}
 }

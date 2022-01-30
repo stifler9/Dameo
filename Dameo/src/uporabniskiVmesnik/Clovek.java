@@ -24,4 +24,9 @@ public class Clovek extends Strateg {
 
 	@Override
 	protected void zmanjsajC() {}
+
+	@Override
+	protected void pokaziPoteze() {
+		master.pokaziMoznePoteze();
+	}
 }

@@ -42,7 +42,7 @@ public class Igra {
 	/*
 	 * Figuro na mestu lok1 premaknemo na lok2
 	 * (Igramo 1 SKOK naenkrat)
-	 * (Ce ima igralec na voljo vec skokov, ostane na potezi)
+	 * (Če ima igralec na voljo vec skokov, ostane na potezi)
 	 */
 	public boolean odigraj(Lokacija lok1, Lokacija lok2){
 		boolean ali = false;
@@ -66,7 +66,7 @@ public class Igra {
 				if(napotezi == IgralecIgre.BELI){napotezi = IgralecIgre.CRNI;}else{napotezi=IgralecIgre.BELI;}
 			}else{
 				/*
-				 * Ce je kralj jedel, moramo pojesti tistega, ki je eno polje pred lok2.
+				 * Če je kralj jedel, moramo pojesti tistega, ki je eno polje pred lok2.
 				 */
 
 				stanje.narediSkok(lok1.getX(), lok1.getY(), lok2.getX(), lok2.getY());
@@ -79,13 +79,13 @@ public class Igra {
 				}
 			}
 			/*
-			 * Ce kdo pride na zadnje polje, se spremeni v kralja:
+			 * Če kdo pride na zadnje polje, se spremeni v kralja:
 			 */
 			stanje.mozjeVKralje();
 			
 			/*
 			 * Spremenili smo stanje, kdo je na potezi in nujnost,
-			 * treba je pogledati ce se lahko igra
+			 * treba je pogledati če se lahko igra
 			 */
 			
 			if(generirajPoteze().isEmpty()){
@@ -100,10 +100,10 @@ public class Igra {
 	}
 	
 	/*
-	 * Pomozna metoda za misleca (uporabljam na kopiji igre):
+	 * Pomožna metoda za misleca (uporabljam na kopiji igre):
 	 * 
-	 * Poteza je �e veljavna,
-	 * nujnost bo ves �as null
+	 * Poteza je že veljavna,
+	 * nujnost bo ves čas null
 	 * na koncu zamenjamo IgralecIgre naPotezi.
 	 */
 	public void odigrajPotezo(Poteza pot) {
@@ -519,7 +519,7 @@ public class Igra {
 			int k = 1;
 			boolean stikalo = true;
 			while(stikalo){
-				// Ce pade ven:
+				// Če pade ven:
 				if(0 <= y + k*xy[1] && y + k*xy[1] <= 7 && 0 <= x + k*xy[0] && x + k*xy[0] <= 7){
 					if(stanje.get(x + k*xy[0],y + k*xy[1]) == Polje.Prazno){
 						Poteza nova = new Poteza(true);
@@ -546,7 +546,7 @@ public class Igra {
 			int k = 1;
 			boolean stikalo = true;
 			while(stikalo){
-				// Ce pade ven:
+				// Če pade ven:
 				if(0 <= y + k*xy[1] && y + k*xy[1] <= 7 && 0 <= x + k*xy[0] && x + k*xy[0] <= 7){
 					if(stanje.get(x + k*xy[0],y + k*xy[1]) == Polje.Prazno){
 						Poteza nova = new Poteza(true);
@@ -573,7 +573,7 @@ public class Igra {
 			int k = 1;
 			boolean stikalo = true;
 			while(stikalo){
-				// Ce pade ven:
+				// Če pade ven:
 				if(0 <= y + k*xy[1] && y + k*xy[1] <= 7 && 0 <= x + k*xy[0] && x + k*xy[0] <= 7){
 					if(stanje.get(x + k*xy[0],y + k*xy[1]) == Polje.Prazno){
 						Poteza nova = new Poteza(true);

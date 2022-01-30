@@ -33,9 +33,9 @@ public class Okno extends JFrame implements ActionListener{
 	private JMenuItem igraRacunalnikRacunalnik;
 	private JMenuItem igraRacunalnikClovek;
 	
-	//Uredi meni
 	private JMenuItem razveljavi;
 	
+	private JMenuItem pokaziPoteze;
 	
 	public Okno() {
 		super();
@@ -48,12 +48,19 @@ public class Okno extends JFrame implements ActionListener{
 		//menu 
 		JMenuBar menu_bar = new JMenuBar();
 		this.setJMenuBar(menu_bar);
+
+		//#region Menus
 		JMenu igra_menu = new JMenu("Nova igra");
 		menu_bar.add(igra_menu);
 		
 		JMenu uredi = new JMenu("Uredi");
 		menu_bar.add(uredi);
+
+		JMenu pomoc = new JMenu("Pomoč");
+		menu_bar.add(pomoc);
+		//#endregion Menus
 		
+		//#region Menu Items
 		//Igra Človek-človek
 		igraClovekClovek = new JMenuItem("Človek-človek");
 		igra_menu.add(igraClovekClovek);
@@ -79,6 +86,12 @@ public class Okno extends JFrame implements ActionListener{
 		uredi.add(razveljavi);
 		razveljavi.addActionListener(this);
 
+		//Pokazi mozne poteze
+		pokaziPoteze = new JMenuItem("Pokaži možne poteze");
+		pomoc.add(pokaziPoteze);
+		pokaziPoteze.addActionListener(this);
+		//#endregion Menu Items
+
 		//platno
 		platno = new Platno(this);
 		GridBagConstraints platnoLayout = new GridBagConstraints();
@@ -99,7 +112,7 @@ public class Okno extends JFrame implements ActionListener{
 		statusLayout.anchor = GridBagConstraints.CENTER;
 		getContentPane().add(status, statusLayout);
 		
-		//za�nemo novo igro
+		//začnemo novo igro
 		novaIgra(new Clovek(this),
 		         new Racunalnik(this, Igralec.CRNI));
 	}
@@ -117,7 +130,7 @@ public class Okno extends JFrame implements ActionListener{
 		} else if(dameo.napotezi == IgralecIgre.BELI){
 			strategBeli.naPotezi();
 		}
-		platno.izbrisiPoti();
+		platno.izbrisiOznacitve();
 		osveziGUI();
 	}
 	
@@ -146,8 +159,22 @@ public class Okno extends JFrame implements ActionListener{
 				}
 			}
 		}
-		platno.izbrisiPoti();
+		platno.izbrisiOznacitve();
 		osveziGUI();
+	}
+
+	private void pokaziPoteze() {
+		if (!(dameo == null)) {
+			if (dameo.napotezi == IgralecIgre.CRNI) {
+				strategCrni.pokaziPoteze();
+			} else if (dameo.napotezi == IgralecIgre.BELI) {
+				strategBeli.pokaziPoteze();
+			} 
+		} else { osveziGUI();}
+	}
+
+	protected void pokaziMoznePoteze() {
+		platno.pokaziMoznePoteze();
 	}
 	
 	protected void klik(Lokacija lok) {
@@ -182,11 +209,10 @@ public class Okno extends JFrame implements ActionListener{
 			status.setText("Igra ni v teku");
 		} else{
 			switch(dameo.napotezi){
-			case CRNI: if(dameo.nujnost == null){status.setText("Na potezi je črni");}else{status.setText("Črni dela potezo...");}  break;
-			case BELI: if(dameo.nujnost == null){status.setText("Na potezi je beli");}else{status.setText("Beli dela potezo...");}  break;
-			case ZMAGACRNI: status.setText("Zmagal je črni"); break;
-			case ZMAGABELI: status.setText("Zmagal je beli"); break;
-
+				case CRNI: if(dameo.nujnost == null){status.setText("Na potezi je črni");}else{status.setText("Črni dela potezo...");} break;
+				case BELI: if(dameo.nujnost == null){status.setText("Na potezi je beli");}else{status.setText("Beli dela potezo...");} break;
+				case ZMAGACRNI: status.setText("Zmagal je črni"); break;
+				case ZMAGABELI: status.setText("Zmagal je beli"); break;
 			}
 		}
 		platno.repaint();
@@ -206,19 +232,19 @@ public class Okno extends JFrame implements ActionListener{
 			novaIgra(new Racunalnik(this, Igralec.BELI),
 			         new Racunalnik(this, Igralec.CRNI));
 		}
+		if (e.getSource() == igraRacunalnikClovek) {
+			novaIgra(new Racunalnik(this, Igralec.BELI),
+			new Clovek(this));
+		}
 		if(e.getSource() == razveljavi){
 			razveljavi();
 		}
-		if (e.getSource() == igraRacunalnikClovek) {
-			novaIgra(new Racunalnik(this, Igralec.BELI),
-			         new Clovek(this));
+		if(e.getSource() == pokaziPoteze){
+			pokaziPoteze();
 		}
-		
 	}
 
 	public Igra copyIgra() {
 		return new Igra(dameo);
 	}
-
 }
-

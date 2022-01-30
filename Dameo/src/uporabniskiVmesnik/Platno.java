@@ -19,6 +19,7 @@ import logika.Poteza;
 public class Platno extends JPanel implements MouseListener{
 	private Lokacija izbranaFigura;
 	private LinkedList<Poteza> obarvanePoteze;
+	private LinkedList<Lokacija> pokazaneFigure;
 	private Okno master;
 	
 	public Platno(Okno master){
@@ -26,6 +27,7 @@ public class Platno extends JPanel implements MouseListener{
 		this.setBackground(Color.white);
 		izbranaFigura = null;
 		obarvanePoteze = new LinkedList<Poteza>();
+		pokazaneFigure = new LinkedList<Lokacija>();
 		addMouseListener(this);
 		this.master = master;
 	}
@@ -101,14 +103,31 @@ public class Platno extends JPanel implements MouseListener{
 			if (!(izbranaFigura == null)) {
 				g.setColor(new Color(17, 140, 183));
 				g.fillOval(izbranaFigura.getX() * sirina + 3*sirina/8, izbranaFigura.getY() * visina + 3*visina/8, sirina - 6*(sirina/8), visina - 6*(visina/8));
-			} 
-			
+			} else {
+				// Obarvamo pokazane mozne figure
+				g.setColor(new Color(235, 34, 244));
+				for(Lokacija lok: pokazaneFigure) {
+					g.fillOval(lok.getX() * sirina + 3*sirina/8, lok.getY() * visina + 3*visina/8, sirina - 6*(sirina/8), visina - 6*(visina/8));
+				}
+			}
 		}
 	}
 	
-	protected void izbrisiPoti(){
+	protected void izbrisiOznacitve(){
 		obarvanePoteze.clear();
+		pokazaneFigure.clear();
 		izbranaFigura = null;
+	}
+
+	protected void pokaziMoznePoteze() {
+		izbrisiOznacitve();
+		for(Poteza pot: master.dameo.generirajPoteze()) {
+			Lokacija lok = pot.get(0);
+			if(!pokazaneFigure.contains(lok)) {
+				pokazaneFigure.add(lok);
+			}
+		}
+		repaint();
 	}
 	
 	protected void veljavenKlik(Lokacija lokacija) {
@@ -120,7 +139,10 @@ public class Platno extends JPanel implements MouseListener{
 					dodaj = true;
 				}
 			}
-			if(dodaj){izbranaFigura = lokacija;}
+			if(dodaj){
+				izbranaFigura = lokacija;
+				pokazaneFigure.clear();
+			}
 		}else {
 			if(lokacija.equals(izbranaFigura)) {
 				if(master.dameo.nujnost == null) {
